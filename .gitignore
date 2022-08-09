@@ -2,3 +2,5 @@
 .ipynb_checkpoints
 # Python files
 __pycache__/
+# Example files
+example_files/
