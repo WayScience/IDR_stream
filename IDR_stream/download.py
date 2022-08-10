@@ -18,8 +18,6 @@ class AsperaDownloader:
         dataframe with curated IDR screen data for specific study
     idr_id: str
         accession ID for IDR study
-    save_dir: pathlib.Path
-        path to directory for saving downloaded IDR image data
     
     Methods
     -------
@@ -39,8 +37,8 @@ class AsperaDownloader:
     idr_id = "idr0013"
     save_dir = pathlib.Path("downloaded_images/")
     
-    downloader = AsperaDownloader(aspera_path, aspera_key_path, screens_path, idr_id, save_dir)
-    downloader.download_image("LT0001_02", 4)
+    downloader = AsperaDownloader(aspera_path, aspera_key_path, screens_path, idr_id)
+    downloader.download_image("LT0001_02", 4, save_dir)
     """
     
     def __init__(
@@ -49,7 +47,6 @@ class AsperaDownloader:
         aspera_key_path: pathlib.Path,
         screens_path: pathlib.Path,
         idr_id: str,
-        save_dir: pathlib.Path,
     ):
         """
         __init__ function for AsperaDownloader class.
@@ -71,8 +68,6 @@ class AsperaDownloader:
         self.aspera_key_path = aspera_key_path
         self.screens = pd.read_csv(screens_path, sep="\t", header=None, names=["Plate", "Screen"])
         self.idr_id = idr_id
-        self.save_dir = save_dir
-        self.save_dir.mkdir(parents=True, exist_ok=True)
 
     def get_IDR_image_path(self, plate: str, well_num: int) -> str:
         """
@@ -103,7 +98,7 @@ class AsperaDownloader:
         )
         return image_path
     
-    def download_image(self, plate: str, well_num: int) -> pathlib.Path:
+    def download_image(self, plate: str, well_num: int, save_dir: pathlib.Path) -> pathlib.Path:
         """
         download image corresponding to plate and well number with Aspera
 
@@ -113,6 +108,8 @@ class AsperaDownloader:
             name of plate with desired image data
         well_num : int
             number of well with desired image data
+        save_dir : pathlib.Path
+           path to dir to save IDR download in
 
         Returns
         -------
@@ -122,8 +119,8 @@ class AsperaDownloader:
         image_path = self.get_IDR_image_path(plate, well_num)
         idr_location = f"{self.idr_id}@fasp.ebi.ac.uk:{image_path} "
         
-        command = f"sudo {self.aspera_path} -TQ -l500m -P 33001 -i {self.aspera_key_path} {idr_location} {self.save_dir}"
+        command = f"sudo {self.aspera_path} -TQ -l500m -P 33001 -i {self.aspera_key_path} {idr_location} {save_dir}"
         print(command)
         os.system(command)
 
-        return pathlib.Path(f"{self.save_dir}/00{str(well_num).zfill(3)}_01.ch5")
+        return pathlib.Path(f"{save_dir}/00{str(well_num).zfill(3)}_01.ch5")
