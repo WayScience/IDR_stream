@@ -56,13 +56,12 @@ class IdrStream:
             print(f"Profiling batch {batch_num}")
             
             try:
-                prepare_batch(batch_metadata)
-                compile_DP_batch_index_csv(batch_metadata)
-                profile_batch()
+                self.prepare_batch(batch_metadata) # download images, segment/illum correct data and place these data into the Deep Profiler project
+                self.compile_DP_batch_index_csv(batch_metadata) # compile index csv for DeepProfiler project for the specific batch
+                self.profile_batch() # profile batch with Deep Profiler
                 features_path = pathlib.Path(f"data/batch_{batch_num}.csv.gz")
-                preprocess_batch_features(features_path)
-                clear_batch()
+                self.preprocess_batch_features(features_path) # preprocess features for specific batch
+                self.clear_batch() #delete image/segmentation data for batch
             except Exception as e:
                 print(f"Execption for batch {batch_num}")
                 print(e)
-                continue
