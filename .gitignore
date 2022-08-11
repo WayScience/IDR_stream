@@ -6,3 +6,4 @@ __pycache__/
 example_files/
 data/
 tmp/
+idr_stream.log

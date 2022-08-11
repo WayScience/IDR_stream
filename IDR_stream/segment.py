@@ -1,4 +1,3 @@
-# from cellpose.io import logger_setup
 from cellpose import models, core, io, utils
 import logging
 logging.getLogger('cellpose.core').setLevel(logging.WARNING)
@@ -13,7 +12,6 @@ class CellPoseSegmentor:
     def __init__(self, model_specs: dict):
         self.use_GPU = core.use_gpu()
         print(">>> GPU activated? %d" % self.use_GPU)
-        # logger_setup();
         self.model_specs = model_specs
 
     def get_object_locations(self, image: np.ndarray) -> pd.DataFrame:
