@@ -80,7 +80,7 @@ class BasicpyPreprocessor:
         # if only 1 frame give basicpy 3 random frames of context
         if len(frame_nums) == 1:
             new_frame_nums = self.random_movie_sample(frame_nums[0], 90)
-            original_movie = self.load_movie_data(movie_load_path, self.ij)
+            original_movie = self.load_movie_data(movie_load_path)
             choice_frames = []
             for frame_num in new_frame_nums:
                 choice_frames.append(original_movie[frame_num - 1])
@@ -91,7 +91,7 @@ class BasicpyPreprocessor:
 
         # if more than one frame to correct process all of movie with basicpy
         else:
-            original_movie = self.load_movie_data(movie_load_path, ij)
+            original_movie = self.load_movie_data(movie_load_path)
             corrected_movie = self.pybasic_illumination_correction(original_movie)
 
             frames_list = []

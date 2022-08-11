@@ -60,8 +60,6 @@ class AsperaDownloader:
             path to tsv with curated IDR screen data for specific study
         idr_id : str
             accession ID for IDR study, ex "idr0013"
-        save_dir : pathlib.Path
-            path to directory for saving downloaded IDR image data
         """
         self.aspera_path = aspera_path
         self.aspera_key_path = aspera_key_path
@@ -115,11 +113,12 @@ class AsperaDownloader:
         pathlib.Path
             path to saved image data
         """
+        save_dir.mkdir(parents=True, exist_ok=True)
         image_path = self.get_IDR_image_path(plate, well_num)
         idr_location = f"{self.idr_id}@fasp.ebi.ac.uk:{image_path} "
         
         command = f"sudo {self.aspera_path} -TQ -l500m -P 33001 -i {self.aspera_key_path} {idr_location} {save_dir}"
-        print(command)
+        # print(command)
         os.system(command)
 
         return pathlib.Path(f"{save_dir}/00{str(well_num).zfill(3)}_01.ch5")

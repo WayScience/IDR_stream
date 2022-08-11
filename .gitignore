@@ -4,3 +4,5 @@
 __pycache__/
 # Example files
 example_files/
+data/
+tmp/
