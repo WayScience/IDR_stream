@@ -1,20 +1,64 @@
-2022-08-11 14:54:05,692 - INFO - IDR stream initialized
-2022-08-11 14:54:05,717 - INFO - Aspera downloader initialized
-2022-08-11 14:54:08,508 - INFO - Basicpy preprocessor initialized
-2022-08-11 14:54:09,181 - INFO - CellPose segmentor initialized
-2022-08-11 14:54:09,213 - INFO - Copied Deep Profiler config and checkpoint files
-2022-08-11 14:54:09,256 - INFO - Running IDR stream with: 
-batch_size 5 
-start_batch 13 
-batches 1349
-2022-08-11 14:54:09,257 - INFO - Profiling batch 13
-2022-08-11 14:54:09,258 - INFO - Processing well C15 from LT0003_02, frames [50]
-2022-08-11 14:54:16,734 - INFO - well_movie_path: tmp/downloads/LT0003_02/00063_01.ch5
-2022-08-11 14:54:19,573 - INFO - Saved corrected frames
-2022-08-11 14:54:24,753 - INFO - Saved nuclei locations
-2022-08-11 14:54:24,754 - INFO - Processing well D2 from LT0003_02, frames [50]
-2022-08-11 14:54:32,736 - INFO - well_movie_path: tmp/downloads/LT0003_02/00074_01.ch5
-2022-08-11 14:54:34,846 - INFO - Saved corrected frames
-2022-08-11 14:54:39,076 - INFO - Saved nuclei locations
-2022-08-11 14:54:39,077 - INFO - Processing well M16 from LT0003_02, frames [50]
-2022-08-11 14:54:46,209 - INFO - well_movie_path: tmp/downloads/LT0003_02/00304_01.ch5
+2022-08-12 17:30:21,612 - INFO - IDR stream initialized
+2022-08-12 17:30:21,631 - INFO - Aspera downloader initialized
+2022-08-12 17:30:24,288 - INFO - Basicpy preprocessor initialized
+2022-08-12 17:30:24,969 - INFO - CellPose segmentor initialized
+2022-08-12 17:30:25,001 - INFO - Copied Deep Profiler config and checkpoint files
+2022-08-12 17:30:25,025 - INFO - Running IDR stream with: 
+batch_size 10 
+start_batch 0 
+batches 675
+2022-08-12 17:30:25,025 - INFO - Profiling batch 0
+2022-08-12 17:30:25,026 - INFO - Processing well A4 from LT0001_02, frames [50]
+2022-08-12 17:30:33,513 - INFO - well_movie_path: tmp/downloads/LT0001_02/00004_01.ch5
+2022-08-12 17:30:36,319 - INFO - Saved corrected frames
+2022-08-12 17:30:41,907 - INFO - Saved nuclei locations
+2022-08-12 17:30:41,908 - INFO - Processing well A15 from LT0001_02, frames [50]
+2022-08-12 17:30:50,129 - INFO - well_movie_path: tmp/downloads/LT0001_02/00015_01.ch5
+2022-08-12 17:30:52,996 - INFO - Saved corrected frames
+2022-08-12 17:30:57,278 - INFO - Saved nuclei locations
+2022-08-12 17:30:57,278 - INFO - Processing well B2 from LT0001_02, frames [50]
+2022-08-12 17:31:05,597 - INFO - well_movie_path: tmp/downloads/LT0001_02/00026_01.ch5
+2022-08-12 17:31:07,939 - INFO - Saved corrected frames
+2022-08-12 17:31:12,062 - INFO - Saved nuclei locations
+2022-08-12 17:31:12,062 - INFO - Processing well C1 from LT0001_02, frames [50]
+2022-08-12 17:31:20,631 - INFO - well_movie_path: tmp/downloads/LT0001_02/00049_01.ch5
+2022-08-12 17:31:22,875 - INFO - Saved corrected frames
+2022-08-12 17:31:26,913 - INFO - Saved nuclei locations
+2022-08-12 17:31:26,913 - INFO - Processing well C4 from LT0001_02, frames [50]
+2022-08-12 17:31:34,842 - INFO - well_movie_path: tmp/downloads/LT0001_02/00052_01.ch5
+2022-08-12 17:31:37,280 - INFO - Saved corrected frames
+2022-08-12 17:31:41,313 - INFO - Saved nuclei locations
+2022-08-12 17:31:41,313 - INFO - Processing well C15 from LT0001_02, frames [50]
+2022-08-12 17:31:48,728 - INFO - well_movie_path: tmp/downloads/LT0001_02/00063_01.ch5
+2022-08-12 17:31:51,371 - INFO - Saved corrected frames
+2022-08-12 17:31:55,375 - INFO - Saved nuclei locations
+2022-08-12 17:31:55,375 - INFO - Processing well D2 from LT0001_02, frames [50]
+2022-08-12 17:32:17,777 - INFO - well_movie_path: tmp/downloads/LT0001_02/00074_01.ch5
+2022-08-12 17:32:20,116 - INFO - Saved corrected frames
+2022-08-12 17:32:24,635 - INFO - Saved nuclei locations
+2022-08-12 17:32:24,636 - INFO - Processing well M16 from LT0001_02, frames [50]
+2022-08-12 17:32:32,853 - INFO - well_movie_path: tmp/downloads/LT0001_02/00304_01.ch5
+2022-08-12 17:32:34,719 - INFO - Saved corrected frames
+2022-08-12 17:32:38,728 - INFO - Saved nuclei locations
+2022-08-12 17:32:38,728 - INFO - Processing well N3 from LT0001_02, frames [50]
+2022-08-12 17:32:46,997 - INFO - well_movie_path: tmp/downloads/LT0001_02/00315_01.ch5
+2022-08-12 17:32:48,989 - INFO - Saved corrected frames
+2022-08-12 17:32:53,139 - INFO - Saved nuclei locations
+2022-08-12 17:32:53,139 - INFO - Processing well O16 from LT0001_02, frames [50]
+2022-08-12 17:33:00,929 - INFO - well_movie_path: tmp/downloads/LT0001_02/00352_01.ch5
+2022-08-12 17:33:02,763 - INFO - Saved corrected frames
+2022-08-12 17:33:06,409 - INFO - Saved nuclei locations
+2022-08-12 17:33:06,411 - INFO - Compiled index.csv file to tmp/DP_project/inputs/metadata/index.csv
+2022-08-12 17:33:28,957 - INFO - Deep Profiler run done
+2022-08-12 17:33:30,690 - INFO - Batch features compiled with PyCytominer
+2022-08-12 17:33:30,693 - INFO - Temporary batch files cleared
+2022-08-12 17:33:30,693 - INFO - Profiling batch 1
+2022-08-12 17:33:30,693 - INFO - Processing well A4 from LT0001_09, frames [50]
+2022-08-12 17:33:39,585 - INFO - well_movie_path: tmp/downloads/LT0001_09/00004_01.ch5
+2022-08-12 17:33:42,284 - INFO - Saved corrected frames
+2022-08-12 17:33:46,330 - INFO - Saved nuclei locations
+2022-08-12 17:33:46,330 - INFO - Processing well A15 from LT0001_09, frames [50]
+2022-08-12 17:33:57,580 - INFO - well_movie_path: tmp/downloads/LT0001_09/00015_01.ch5
+2022-08-12 17:34:00,271 - INFO - Saved corrected frames
+2022-08-12 17:34:03,743 - INFO - Saved nuclei locations
+2022-08-12 17:34:03,743 - INFO - Processing well B2 from LT0001_09, frames [50]
