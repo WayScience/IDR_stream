@@ -24,18 +24,18 @@ class IdrStream:
         
         # create logger for IDR stream
         self.logger = logging.getLogger('idr_stream')
-        if log:
+        if log == False:
+            self.logger.setLevel(logging.WARN)
+        else:
             # only print log messsages above warn level
             self.logger.setLevel(logging.INFO)
             # create file handler to save log messages from debug level
-            file_handler = logging.FileHandler('idr_stream.log')
+            file_handler = logging.FileHandler(log)
             file_handler.setLevel(logging.INFO)
             formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
             file_handler.setFormatter(formatter)
             self.logger.addHandler(file_handler)
             self.logger.info("IDR stream initialized")
-        else:
-            self.logger.setLevel(logging.WARN)
 
     def copy_DP_files(self, config_path: pathlib.Path, checkpoint_path: pathlib.Path):
         # copy config file to DP project

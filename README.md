@@ -2,7 +2,23 @@
 
 Software for feature extraction from IDR image data!
 
-250 min, 87 batches * 10 images/batch = 870 images, 1.3 GB
+`example.ipynb` - All positive/negative control wells from Mitocheck mitosis movies (idr0013 - Screen A).
+Wells A1 are excluded because of irregular illumination (see [mitocheck data preprocessing](https://github.com/WayScience/mitocheck_data/tree/main/1.preprocess_data)).
+
+Stream info:
+- 6743 images (frame 50 from 6743 wells)
+- batch_size 10
+- start_batch 1
+- batches 675
+
+Run 1:
+- Error for batches 35, 105, 255: `'str' object has no attribute 'values'` (ImageJ not able to read downloaded CH5 movie).
+All other batches were processsed.
+- 9.8 GB for compressed 672 batches.
+- ~ 2000 minutes run time - 1.4 days
+
+No errors while rerunning batches 35, 105, 255 so error is most likely caused by `preprocess` being called slightly too soon (mitosis movie has not been completed saved so ImageJ is not able to read to downloaded data).
+In future maybe implement wait or check to see if downloaded file has been completely saved.
 
 ## About
 
@@ -24,7 +40,7 @@ The stream processes image data in the following pipeline:
 
 ![Stream Design](images/Stream_Design.png "Stream Design")
 
-The stream setup functions as follows:
+The stream is set up as follows:
 
 1) Create the temporary final data directories (if they don't already exist).
 A Deep Profiler (DP) project folder is also created in the temporary directory.
