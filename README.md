@@ -97,8 +97,70 @@ Compiled features with metadata are saved to the final data directory (step 4).
 
 ## Setup
 
+### Necessary Packages:
 
+The necessary packages for idrstream can be installed into a conda environment with the following:
+```sh
+# Run this command to create the conda environment for idrstream
+conda env create -f idrstream_env.yml
+```
+
+This environment must be activated before using `idrstream` with the following:
+```sh
+# Run this command to activate the conda environment for idrstream
+conda activate idrstream
+```
+
+### Aspera Downloader:
+
+#### Step 1: Install Aspera
+
+Install Aspera high-speed transfer client as described at https://github.com/IBM/aspera-cli#installation.
+We used the direct installation method.
+
+##### Step 1a: Allow Aspera to run without password
+
+It is necessary to allow Aspera command line interface (ascp) to run without a password to use it more easily with python.
+In order to run ascp without a password do the following:
+1) Type sudo visudo at the terminal to open the sudo permissions (sudoers) file
+2) Find the line with: `%sudo   ALL=(ALL:ALL) ALL`
+3) **Below that line**, insert the following line: `username  ALL=(ALL) NOPASSWD: path_to_aspera`
+
+  Note: `username` is your username and path_to_aspera can be found with `ascli config ascp show`
+  
+4) Save and exit the editor
+
+#### Step 2: Download Aspera Public Key
+
+Download and configure [Aspera public key](https://idr.openmicroscopy.org/about/img/aspera/asperaweb_id_dsa.openssh).
+
+### ImageJ:
+
+PyImageJ needs to use be initialized with [FIJI](https://imagej.net/software/fiji/) to be able to read downloaded mitosis movies (CH5 files).
+Download FIJI from the [downloads page](https://imagej.net/software/fiji/downloads) and setup Fiji.app.
+
+### PyBaSiC Illumination Correction Preprocessor:
+
+PyBaisc is currently under development and cannot be installed with `pip`.
+This is overcome by using a locally-downloaded version of PyBasic.
+Clone the repository into `idrstream/` with:
+
+```sh
+cd idrstream/
+git clone https://github.com/peng-lab/PyBaSiC.git
+```
+
+### DeepProfiler Feature Extractor:
+
+Deep Profiler must be installed via Github.
+Commit [`2fb3ed3`](https://github.com/cytomining/DeepProfiler/commit/2fb3ed3027cded6676b7e409687322ef67491ec7) was used while developing `idrstream`.
+Install the repository into `idrstream/` with:
+```sh
+cd idrstream/
+git clone https://github.com/cytomining/DeepProfiler.git
+cd DeepProfiler/
+pip install -e .
+```
 
 ## Usage
-
 
