@@ -2,45 +2,6 @@
 
 Software for feature extraction from IDR image data!
 
-`example.ipynb` - All positive/negative control wells from Mitocheck mitosis movies (idr0013 - Screen A).
-Wells A1 are excluded because of irregular illumination (see [mitocheck data preprocessing](https://github.com/WayScience/mitocheck_data/tree/main/1.preprocess_data)).
-
-Stream info:
-- 6743 images (frame 50 from 6743 wells)
-- batch_size 10
-- start_batch 1
-- batches 675
-
-Run 1:
-- Error for batches 35, 105, 255: `'str' object has no attribute 'values'` (ImageJ not able to read downloaded CH5 movie).
-All other batches were processsed.
-No errors while rerunning batches 35, 105, 255 so error is most likely caused by `preprocess` being called slightly too soon (mitosis movie has not been completed saved so ImageJ is not able to read to downloaded data).
-In future maybe implement wait or check to see if downloaded file has been completely saved.
-- 9.9 GB for compressed 675 batches.
-- ~ 2000 minutes run time - 1.4 days.
-~ 17 seconds per image
-
-**Note:** This example IDR stream was run with the following specs:
-
-- 24 CPUs
-- 68 GB RAM
-- ~ 650 MB/s download speed (as measured by [speedtest.net](https://www.speedtest.net/)).
-- GeForce RTX 3060 sm_86 with following output from nvidia-smi:
-```
-+-----------------------------------------------------------------------------+
-| NVIDIA-SMI 470.129.06   Driver Version: 470.129.06   CUDA Version: 11.4     |
-|-------------------------------+----------------------+----------------------+
-| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
-|                               |                      |               MIG M. |
-|===============================+======================+======================|
-|   0  NVIDIA GeForce ...  Off  | 00000000:2D:00.0  On |                  N/A |
-|  0%   54C    P8    23W / 170W |    532MiB / 12045MiB |     40%      Default |
-|                               |                      |                  N/A |
-+-------------------------------+----------------------+----------------------+
-```
-
-
 ## About
 
 Idrstream is a package for deriving features associated with metadata from medical image data hosted on [IDR](https://idr.openmicroscopy.org/).
@@ -162,5 +123,45 @@ cd DeepProfiler/
 pip install -e .
 ```
 
-## Usage
+## Example Usage
 
+Example usage of `idrstream` can be found at [example.ipynb](example.ipynb).
+This notebook was run as a python script ([example.py](example.py)).
+
+`example.ipynb` - All positive/negative control wells from Mitocheck mitosis movies (idr0013 - Screen A).
+Wells A1 are excluded because of irregular illumination (see [mitocheck data preprocessing](https://github.com/WayScience/mitocheck_data/tree/main/1.preprocess_data)).
+
+Stream info:
+- 6743 images (frame 50 from 6743 wells)
+- batch_size 10
+- start_batch 1
+- batches 675
+
+Run 1:
+- Error for batches 35, 105, 255: `'str' object has no attribute 'values'` (ImageJ not able to read downloaded CH5 movie).
+All other batches were processsed.
+No errors while rerunning batches 35, 105, 255 so error is most likely caused by `preprocess` being called slightly too soon (mitosis movie has not been completed saved so ImageJ is not able to read to downloaded data).
+In future maybe implement wait or check to see if downloaded file has been completely saved.
+- 9.9 GB for compressed 675 batches.
+- ~ 2000 minutes run time - 1.4 days.
+~ 17 seconds per image
+
+**Note:** This example IDR stream was run with the following specs:
+
+- 24 CPUs
+- 68 GB RAM
+- ~ 650 MB/s download speed (as measured by [speedtest.net](https://www.speedtest.net/)).
+- GeForce RTX 3060 sm_86 with following output from nvidia-smi:
+```
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 470.129.06   Driver Version: 470.129.06   CUDA Version: 11.4     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  NVIDIA GeForce ...  Off  | 00000000:2D:00.0  On |                  N/A |
+|  0%   54C    P8    23W / 170W |    532MiB / 12045MiB |     40%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+```
