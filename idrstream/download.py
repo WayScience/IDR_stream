@@ -92,9 +92,8 @@ class AsperaDownloader:
             .replace(".screen", "")
         )
         well = str(well_num).zfill(3)
-        image_path = (
-            f"20150916-mitocheck-analysis/mitocheck/{screen_loc}/hdf5/00{well}_01.ch5"
-        )
+        image_path = f"20150916-mitocheck-analysis/mitocheck/{screen_loc}/hdf5/00{well}_01.ch5"
+        
         return image_path
 
     def download_image(

@@ -2,11 +2,19 @@
 
 Software for feature extraction from IDR image data!
 
+Idrstream is a package for deriving features associated with metadata from microscopy-image data hosted on [IDR](https://idr.openmicroscopy.org/).
+
+The typical image-based cell profiling workflow includes many steps such as downloading images, preprocessing these images, segmenting the cells in these images, and extracting features from these cells. 
+However, it is difficult to process entire microscopy-image datasets in these workflows as the image data from these datasets are often several terabytes in size. 
+These workflows need even more disk space than just the size of the image data: intermediate files are used throughout the process to store information about cell location, metadata etc.
+
+Idrstream completes this workflow in batches such that the disk space needed for image data and intermediate files is reduced.
+In this way, idrstream "streams" all the steps of a profiling workflow and saves valuable disk space!
+Only the features extracted from the images (as well as the metadata for the features) have a permanent spot on the hard drive.
+
 ## About
 
-Idrstream is a package for deriving features associated with metadata from medical image data hosted on [IDR](https://idr.openmicroscopy.org/).
-
-It uses the following tools to process data:
+Idrstream uses the following tools to process data:
 
 - [Aspera](https://www.ibm.com/products/aspera) high-speed transfer client is used to download IDR data.
 More details can be found on the [IDR website](https://idr.openmicroscopy.org/about/download.html) and in setup/usage sections.
