@@ -340,13 +340,13 @@ class IdrStream:
         batch_size : int, optional
             number of images to process in one batch, by default 10
         start_batch : int, optional
-            batch to start feature from, by default 0
+            batch to start feature extraction from, by default 0
         """
         batches = math.ceil(data_to_process.shape[0] / batch_size)
         self.logger.info(
             f"Running IDR stream with: \nbatch_size {batch_size} \nstart_batch {start_batch} \nbatches {batches}"
         )
-        # prepare, profile, and delete each batch
+        # prepare, profile, compile, and delete intermediate files for each batch
         for batch_num in range(batches):
             batch_metadata = data_to_process.iloc[0:batch_size]
             data_to_process = data_to_process.iloc[batch_size:]
@@ -355,7 +355,9 @@ class IdrStream:
 
             self.logger.info(f"Profiling batch {batch_num}")
             try:
-                self.prepare_batch(batch_metadata)
+                self.prepare_batch(
+                    batch_metadata
+                )  # put image and location data in DP-required locations
                 self.compile_DP_batch_index_csv(
                     batch_metadata
                 )  # compile index csv for DeepProfiler project for the specific batch
@@ -363,7 +365,9 @@ class IdrStream:
                 features_path = pathlib.Path(
                     f"{self.final_data_dir}/batch_{batch_num}.csv.gz"
                 )
-                self.compile_batch_features(features_path)
+                self.compile_batch_features(
+                    features_path
+                )  # compile and save features with PyCytominer
                 self.clear_batch()  # delete image/segmentation data for batch
             except Exception as e:
                 self.logger.info(f"Error while profiling batch {batch_num}:")
