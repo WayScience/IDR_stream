@@ -119,6 +119,10 @@ cd idrstream/
 git clone https://github.com/peng-lab/PyBaSiC.git
 ```
 
+**Note:** The version of PyBaSic we use needs at least 3 images to perform illumination correction.
+For mitosis movie frames, we give PyBaSiC 2 frames before/after the desired frame (depending on position in movie) to perform illumination correction.
+We discuss different methods of illumination correction in [#1](https://github.com/WayScience/IDR_stream/issues/1).
+
 ### DeepProfiler Feature Extractor:
 
 Deep Profiler must be installed via Github.
