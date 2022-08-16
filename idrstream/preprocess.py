@@ -16,8 +16,8 @@ from random import choice
 
 class BasicpyPreprocessor:
     """
-    This class holds all functions needed to preprocess IDR-downloaded mitosis movies with PyBaSiC.
-    When preprocessing a mitosis movie, imagej is used to load the movie and convert it to a numpy array before illumination correction with PyBaSiC.
+    This class holds all functions needed to preprocess IDR-downloaded mitosis movies with PyBaSiC
+    When preprocessing a mitosis movie, imagej is used to load the movie and convert it to a numpy array before illumination correction with PyBaSiC
 
     Attributes
     ----------
@@ -40,7 +40,7 @@ class BasicpyPreprocessor:
 
     def __init__(self, fiji_path: pathlib.Path):
         """
-        __init__ function for BasicpyPreprocessor class.
+        __init__ function for BasicpyPreprocessor class
 
         Parameters
         ----------

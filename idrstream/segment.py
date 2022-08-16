@@ -1,26 +1,68 @@
 from cellpose import models, core, io, utils
-import logging
-logging.getLogger('cellpose.core').setLevel(logging.WARNING)
-logging.getLogger('cellpose.io').setLevel(logging.WARNING)
 
 import pathlib
 import pandas as pd
 import skimage
 import numpy as np
 
+
 class CellPoseSegmentor:
+    """
+    This class holds all functions needed to segment image data
+
+    Attributes
+    ----------
+    use_GPU : bool
+        whether or not GPU is available for use with CellPose
+    model_specs : dict
+        dictionary with parameters for segmentation
+
+    Methods
+    -------
+    get_object_locations(image)
+        finds center coords of objects using specs from model_specs and return pandas array with objects coords
+    frames_to_objects(plate, well_num, frames_save_path, frame_nums)
+        get object coords for each frame image from DP project format (plate/plate_well_frame.tif)
+    save_nuclei_locations(plate, well_num, frames_save_path, frame_nums, objects_save_path)
+        save object coords for each image in DP project format (plate/well_num_frame_num-1-Nuclei.csv)
+    """
+
     def __init__(self, model_specs: dict):
+        """
+        __init__ function for CellPoseSegmentor class
+
+        Parameters
+        ----------
+        model_specs : dict
+            information for how to segment image data
+
+            example:
+            model_specs = {
+                "model_type": "cyto",
+                "channels": [0, 0],
+                "diameter": 0,
+                "flow_threshold": 0.8,
+                "cellprob_threshold": 0,
+                "remove_edge_masks": True,
+            }
+        """
         self.use_GPU = core.use_gpu()
         print(">>> GPU activated? %d" % self.use_GPU)
         self.model_specs = model_specs
 
     def get_object_locations(self, image: np.ndarray) -> pd.DataFrame:
-        """finds center X,Y of objects using specs from model_specs and return pandas array with center X,Y of objects
-        Args:
-            image (np.ndarray): image with objects to segment
-            model_specs (dict): specifications for cellpose segmentation
-        Returns:
-            pd.DataFrame: dataframe with object center coords
+        """
+        finds center coords of objects using specs from model_specs and return pandas array with objects coords
+
+        Parameters
+        ----------
+        image : np.ndarray
+            image with objects to segment
+
+        Returns
+        -------
+        pd.DataFrame
+            dataframe with object center coords
         """
         objects_data = []
 
@@ -56,7 +98,26 @@ class CellPoseSegmentor:
         well_num: int,
         frames_save_path: pathlib.Path,
         frame_nums: list,
-    ):
+    ) -> list:
+        """
+        get object coords for each frame image from DP project format (plate/plate_well_frame.tif)
+
+        Parameters
+        ----------
+        plate : str
+            plate image data is from
+        well_num : int
+            well number image data is from
+        frames_save_path : pathlib.Path
+            path to directory to load frames from
+        frame_nums : list
+            frame number to segment
+
+        Returns
+        -------
+        list
+            list of object locations for each frame number given as argument
+        """
 
         frame_objects_list = []
         for frame_num in frame_nums:
@@ -84,6 +145,22 @@ class CellPoseSegmentor:
         frame_nums: list,
         objects_save_path: pathlib.Path,
     ):
+        """
+        save object coords for each image in DP project format (plate/well_num_frame_num-1-Nuclei.csv)
+
+        Parameters
+        ----------
+        plate : str
+            plate image data is from
+        well_num : int
+            well number image data is from
+        frames_save_path : pathlib.Path
+            path to directory to to load frames from
+        frame_nums : list
+            frame numbers to process images for
+        objects_save_path : pathlib.Path
+            path to directory to save nuclei locations to
+        """
         objects_save_path.mkdir(parents=True, exist_ok=True)
 
         frame_objects_list = self.frames_to_objects(

@@ -27,11 +27,11 @@ The stream is set up as follows:
 1) Create the temporary final data directories (if they don't already exist).
 A Deep Profiler (DP) project folder is also created in the temporary directory.
 2) Initialize downloader.
-The Aspera downloader needs to be initialized with information about Aspera and the screens being downloaded (see setup and usage for more information).
+The Aspera downloader needs to be initialized with information about Aspera and the screens being downloaded (see example usage for more information).
 3) Initialize preprocessor.
-The ImageJ preprocessor needs to be initalized with information about ImageJ (see setup and usage for more information).
+The ImageJ preprocessor needs to be initalized with information about ImageJ (see example usage for more information).
 4) Initialize segmentor.
-The CellPose segmentor needs to be intialized with information about the CellPose model specifications (see setup and usage for more information).
+The CellPose segmentor needs to be intialized with information about the CellPose model specifications (see example usage for more information).
 5) Create the base DP project folders/files.
 Every DP batch run will use 2 files: config and checkpoint (examples in [example_files/DP_files](example_files/DP_files)).
 These files are copied to their necessary folders in the DP project and will not be deleted until the stream is complete.

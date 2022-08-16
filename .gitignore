@@ -6,3 +6,4 @@ __pycache__/
 example_files/asperaweb_id_dsa.openssh
 data/
 tmp/
+idrstream/PyBaSiC/
