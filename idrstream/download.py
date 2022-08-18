@@ -68,9 +68,9 @@ class AsperaDownloader:
         )
         self.idr_id = idr_id
 
-    def get_IDR_image_path(self, plate: str, well_num: int) -> str:
+    def get_IDR_mitocheck_movie_path(self, plate: str, well_num: int) -> str:
         """
-        get image path for Aspera download by finding screen for specific image in screen metadata
+        get path to mitocheck movie for Aspera download by finding screen for specific image in screen metadata
 
         Parameters
         ----------
@@ -117,9 +117,10 @@ class AsperaDownloader:
             path to saved image data
         """
         save_dir.mkdir(parents=True, exist_ok=True)
-        image_path = self.get_IDR_image_path(plate, well_num)
+        image_path = self.get_IDR_mitocheck_movie_path(plate, well_num)
         idr_location = f"{self.idr_id}@fasp.ebi.ac.uk:{image_path} "
 
+        # -l is flag for maximum download speed (500m is 500 mb/s)
         command = f"sudo {self.aspera_path} -TQ -l500m -P 33001 -i {self.aspera_key_path} {idr_location} {save_dir}"
         # print(command)
         os.system(command)

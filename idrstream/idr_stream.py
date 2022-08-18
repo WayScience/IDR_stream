@@ -1,3 +1,4 @@
+import time
 import pandas as pd
 import pathlib
 import os
@@ -218,7 +219,11 @@ class IdrStream:
                 plate, well_num, download_save_path
             )
             self.logger.info(f"well_movie_path: {well_movie_path}")
-
+            
+            # give time for movie to fully save before trying to open it
+            # otherwise ImageJ tries to open to movie before it has been completely saved and it errors out
+            time.sleep(0.3)
+            
             frames_save_path = pathlib.Path(
                 f"{self.DP_project_path}/inputs/images/{plate}/"
             )
