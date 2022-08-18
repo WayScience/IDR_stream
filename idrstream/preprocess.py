@@ -26,7 +26,7 @@ class BasicpyPreprocessor:
 
     Methods
     -------
-    load_movie_data(movie_load_path)
+    load_mitocheck_movie_data(movie_load_path)
         get numpy array of movie data from .ch5 file
     pybasic_illumination_correction(brightfield_images)
         use pybasic to correct brighfield images
@@ -52,7 +52,7 @@ class BasicpyPreprocessor:
         # imagej init sets directory to fiji_path so have to go back to original dir
         os.chdir(original_path)
 
-    def load_movie_data(self, movie_load_path: pathlib.Path) -> np.ndarray:
+    def load_mitocheck_movie_data(self, movie_load_path: pathlib.Path) -> np.ndarray:
         """
         get numpy array of movie data from .ch5 file
 
@@ -206,7 +206,7 @@ class BasicpyPreprocessor:
         list
             list of desired corrected frames
         """
-        original_movie = self.load_movie_data(movie_load_path)
+        original_movie = self.load_mitocheck_movie_data(movie_load_path)
 
         # if only 1 frame give basicpy 2 other random frames of context
         if len(frame_nums) == 1:

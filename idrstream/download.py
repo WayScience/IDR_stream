@@ -20,7 +20,7 @@ class AsperaDownloader:
 
     Methods
     -------
-    get_IDR_image_path(plate, well_num)
+    get_IDR_mitocheck_movie_path(plate, well_num)
         get image path for Aspera download by finding screen for specific image in screen metadata
     download_image(plate, well_num)
         download image corresponding to plate and well number with Aspera
