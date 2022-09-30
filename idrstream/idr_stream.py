@@ -333,11 +333,10 @@ class IdrStream:
         self.logger.info("Batch features compiled with PyCytominer")
 
     def run_stream(
-        self, data_to_process: pd.DataFrame, batch_size: int = 10, start_batch: int = 0
+        self, data_to_process: pd.DataFrame, batch_size: int = 10, start_batch: int = 0, batch_nums = "all"
     ):
         """
         extract features from IDR study given metadata of images to extract features from
-
         Parameters
         ----------
         data_to_process : pd.DataFrame
@@ -346,17 +345,24 @@ class IdrStream:
             number of images to process in one batch, by default 10
         start_batch : int, optional
             batch to start feature extraction from, by default 0
+        batch_nums : str, list, optional
+            list of batch numbers to extract features from, by default "all"
         """
         batches = math.ceil(data_to_process.shape[0] / batch_size)
         self.logger.info(
-            f"Running IDR stream with: \nbatch_size {batch_size} \nstart_batch {start_batch} \nbatches {batches}"
+            f"Running IDR stream with: \nbatch_size {batch_size} \nstart_batch {start_batch} \nbatches {batches} \nbatch nums {batch_nums}"
         )
         # prepare, profile, compile, and delete intermediate files for each batch
         for batch_num in range(batches):
             batch_metadata = data_to_process.iloc[0:batch_size]
             data_to_process = data_to_process.iloc[batch_size:]
+            
+            # skip batches before start batch and those not in batch nums
             if batch_num < start_batch:
                 continue
+            if batch_nums != "all":
+                if batch_num not in batch_nums:
+                    continue
 
             self.logger.info(f"Profiling batch {batch_num}")
             try:
