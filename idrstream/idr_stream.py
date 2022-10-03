@@ -236,7 +236,7 @@ class IdrStream:
                 f"{self.DP_project_path}/inputs/locations/{plate}/"
             )
             self.segmentor.save_nuclei_locations(
-                plate, well_num, frames_save_path, frame_nums, objects_save_path
+                plate, well_num, frames_save_path, frame_nums, objects_save_path, self.extra_metadata
             )
             self.logger.info("Saved nuclei locations")
 
@@ -326,14 +326,16 @@ class IdrStream:
         )
         # create and save single cell df with feature data and metadata
         deep_single_cell = DeepProfiler_processing.SingleCellDeepProfiler(deep_data)
-        deep_single_cell.get_single_cells(output=True).to_csv(
+        deep_single_cell_df = deep_single_cell.get_single_cells(output=True)
+        
+        deep_single_cell_df.to_csv(
             output_path, compression={"method": "gzip", "compresslevel": 1, "mtime": 1}
         )
 
         self.logger.info("Batch features compiled with PyCytominer")
 
     def run_stream(
-        self, data_to_process: pd.DataFrame, batch_size: int = 10, start_batch: int = 0, batch_nums = "all"
+        self, data_to_process: pd.DataFrame, batch_size: int = 10, start_batch: int = 0, batch_nums = "all", extra_metadata = []
     ):
         """
         extract features from IDR study given metadata of images to extract features from
@@ -347,11 +349,14 @@ class IdrStream:
             batch to start feature extraction from, by default 0
         batch_nums : str, list, optional
             list of batch numbers to extract features from, by default "all"
+        extra_metadata : str, list, optional
+            list of extra metadata to include in final dataframe outputs (object_outlines, object_boxes, etc), by default []
         """
         batches = math.ceil(data_to_process.shape[0] / batch_size)
         self.logger.info(
-            f"Running IDR stream with: \nbatch_size {batch_size} \nstart_batch {start_batch} \nbatches {batches} \nbatch nums {batch_nums}"
+            f"Running IDR stream with: \nbatch_size {batch_size} \nstart_batch {start_batch} \nbatches {batches} \nbatch nums {batch_nums} \nextra metadata {extra_metadata}"
         )
+        self.extra_metadata = extra_metadata
         # prepare, profile, compile, and delete intermediate files for each batch
         for batch_num in range(batches):
             batch_metadata = data_to_process.iloc[0:batch_size]
@@ -379,7 +384,9 @@ class IdrStream:
                 self.compile_batch_features(
                     features_path
                 )  # compile and save features with PyCytominer
-                self.clear_batch()  # delete image/segmentation data for batch
+                #self.clear_batch()  # delete image/segmentation data for batch
             except Exception as e:
                 self.logger.info(f"Error while profiling batch {batch_num}:")
                 self.logger.error(e)
+                
+        self.logger.info("Stream run done!")
