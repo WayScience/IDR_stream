@@ -138,7 +138,9 @@ pip install -e .
 ## Example Usage
 
 Example usage of `idrstream` can be found at [example.ipynb](example.ipynb).
-This notebook was run as a python script ([example.py](example.py)).
+This notebook was run as a python script ([example.py](example.py)) and hence has no output for the final cell.
+
+**Note**: `idrstream` can be used to extract object oulines as extra metadata by passing `extra_metadata=["object_outlines"]` during `idrstream.run_stream()`. Similarly, the desired batch numbers can be chosen with `batch_nums=[#,#,#]`.
 
 `example.ipynb` - All positive/negative control wells from Mitocheck mitosis movies (idr0013 - Screen A).
 Wells A1 are excluded because of irregular illumination (see [mitocheck data preprocessing](https://github.com/WayScience/mitocheck_data/tree/main/1.preprocess_data)).
