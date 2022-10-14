@@ -219,11 +219,11 @@ class IdrStream:
                 plate, well_num, download_save_path
             )
             self.logger.info(f"Movie downloaded to {well_movie_path}")
-            
+
             # give time for movie to fully save before trying to open it
             # otherwise ImageJ tries to open to movie before it has been completely saved and it errors out
             time.sleep(0.3)
-            
+
             frames_save_path = pathlib.Path(
                 f"{self.DP_project_path}/inputs/images/{plate}/"
             )
@@ -236,7 +236,12 @@ class IdrStream:
                 f"{self.DP_project_path}/inputs/locations/{plate}/"
             )
             self.segmentor.save_nuclei_locations(
-                plate, well_num, frames_save_path, frame_nums, objects_save_path, self.extra_metadata
+                plate,
+                well_num,
+                frames_save_path,
+                frame_nums,
+                objects_save_path,
+                self.extra_metadata,
             )
             self.logger.info("Saved nuclei locations")
 
@@ -310,7 +315,9 @@ class IdrStream:
 
         self.logger.info("Temporary batch files cleared")
 
-    def add_batch_object_outlines(self, batch_single_cell_df: pd.DataFrame) -> pd.DataFrame:
+    def add_batch_object_outlines(
+        self, batch_single_cell_df: pd.DataFrame
+    ) -> pd.DataFrame:
         """
         add object outlines to single cell data for current batch
         necessary because we compile original single cell df with pycytominer
@@ -326,33 +333,42 @@ class IdrStream:
         pd.DataFrame
             new batch single cell df with object outlines appended
         """
-        
+
         locations_save_path = pathlib.Path(f"{self.DP_project_path}/inputs/locations/")
         new_batch_single_cell_df = []
-        
+
         # iterate over location files in order of plate map data in batch_single_cell_df
         for DNA_image_path in batch_single_cell_df["Metadata_DNA"].unique():
             # split single cell dataframe into image dataframes to find object outlines for that image
-            DNA_image_single_cell_df = batch_single_cell_df.loc[batch_single_cell_df["Metadata_DNA"] == DNA_image_path].reset_index(drop=True)
+            DNA_image_single_cell_df = batch_single_cell_df.loc[
+                batch_single_cell_df["Metadata_DNA"] == DNA_image_path
+            ].reset_index(drop=True)
             DNA_image_plate = DNA_image_single_cell_df["Metadata_Plate"].unique()[0]
             DNA_image_well = DNA_image_single_cell_df["Metadata_Well"].unique()[0]
             DNA_image_site = DNA_image_single_cell_df["Metadata_Site"].unique()[0]
-            
+
             # load object outlines for a particular image
-            DNA_image_locations_path = pathlib.Path(f"{locations_save_path}/{DNA_image_plate}/{DNA_image_well}-{DNA_image_site}-Nuclei.csv")
-            DNA_image_outline_data = pd.read_csv(DNA_image_locations_path)["object_outline"].reset_index(drop=True)
+            DNA_image_locations_path = pathlib.Path(
+                f"{locations_save_path}/{DNA_image_plate}/{DNA_image_well}-{DNA_image_site}-Nuclei.csv"
+            )
+            DNA_image_outline_data = pd.read_csv(DNA_image_locations_path)[
+                "object_outline"
+            ].reset_index(drop=True)
             print(DNA_image_outline_data)
             # insert object outlines to the single cell df
-            DNA_image_single_cell_df.insert(loc=0, column="Object_Outline", value=DNA_image_outline_data)
-            
+            DNA_image_single_cell_df.insert(
+                loc=0, column="Object_Outline", value=DNA_image_outline_data
+            )
+
             # add to full batch single cell df
             new_batch_single_cell_df.append(DNA_image_single_cell_df)
-            
+
         # compile and return new batch single cell df
-        new_batch_single_cell_df = pd.concat(new_batch_single_cell_df).reset_index(drop=True)
+        new_batch_single_cell_df = pd.concat(new_batch_single_cell_df).reset_index(
+            drop=True
+        )
         self.logger.info("Object outlines added for batch")
         return new_batch_single_cell_df
-        
 
     def compile_batch_features(self, output_path: pathlib.Path):
         """
@@ -380,7 +396,12 @@ class IdrStream:
         self.logger.info(f"Saved compiled batch features to {output_path}")
 
     def run_stream(
-        self, data_to_process: pd.DataFrame, batch_size: int = 10, start_batch: int = 0, batch_nums = "all", extra_metadata = []
+        self,
+        data_to_process: pd.DataFrame,
+        batch_size: int = 10,
+        start_batch: int = 0,
+        batch_nums="all",
+        extra_metadata=[],
     ):
         """
         extract features from IDR study given metadata of images to extract features from
@@ -406,7 +427,7 @@ class IdrStream:
         for batch_num in range(batches):
             batch_metadata = data_to_process.iloc[0:batch_size]
             data_to_process = data_to_process.iloc[batch_size:]
-            
+
             # skip batches before start batch and those not in batch nums
             if batch_num < start_batch:
                 continue
@@ -417,26 +438,20 @@ class IdrStream:
             self.logger.info(f"Profiling batch {batch_num}")
             try:
                 # put image and location data in DP-required locations
-                self.prepare_batch(
-                    batch_metadata
-                )
+                self.prepare_batch(batch_metadata)
                 # compile index csv for DeepProfiler project for the specific batch
-                self.compile_DP_batch_index_csv(
-                    batch_metadata
-                )
+                self.compile_DP_batch_index_csv(batch_metadata)
                 # profile batch with Deep Profiler
                 self.profile_batch()
                 features_path = pathlib.Path(
                     f"{self.final_data_dir}/batch_{batch_num}.csv.gz"
                 )
                 # compile and save features with PyCytominer
-                self.compile_batch_features(
-                    features_path
-                )
+                self.compile_batch_features(features_path)
                 # delete image/segmentation data for batch
                 self.clear_batch()
             except Exception as e:
                 self.logger.info(f"Error while profiling batch {batch_num}:")
                 self.logger.error(e)
-                
+
         self.logger.info("Stream run done!")

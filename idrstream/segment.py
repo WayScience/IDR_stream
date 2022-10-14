@@ -50,7 +50,9 @@ class CellPoseSegmentor:
         print(">>> GPU activated? %d" % self.use_GPU)
         self.model_specs = model_specs
 
-    def get_object_locations(self, image: np.ndarray, extra_metadata: list = []) -> pd.DataFrame:
+    def get_object_locations(
+        self, image: np.ndarray, extra_metadata: list = []
+    ) -> pd.DataFrame:
         """
         finds center coords of objects using specs from model_specs and return pandas array with objects coords
 
@@ -151,7 +153,7 @@ class CellPoseSegmentor:
         frames_save_path: pathlib.Path,
         frame_nums: list,
         objects_save_path: pathlib.Path,
-        extra_metadata: list = []
+        extra_metadata: list = [],
     ):
         """
         save object coords for each image in DP project format (plate/well_num_frame_num-1-Nuclei.csv)
