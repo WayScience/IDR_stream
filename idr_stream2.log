@@ -1,0 +1,436 @@
+2022-10-03 14:48:20,523 - INFO - IDR stream initialized
+2022-10-03 14:48:20,580 - INFO - Aspera downloader initialized
+2022-10-03 14:48:23,320 - INFO - Basicpy preprocessor initialized
+2022-10-03 14:48:24,024 - INFO - CellPose segmentor initialized
+2022-10-03 14:48:24,060 - INFO - Copied Deep Profiler config and checkpoint files
+2022-10-03 14:48:24,100 - INFO - Running IDR stream with: 
+batch_size 1 
+start_batch 0 
+batches 6743 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-03 14:48:24,100 - INFO - Profiling batch 0
+2022-10-03 14:48:24,101 - INFO - Processing well A4 from LT0001_02, frames [50]
+2022-10-03 14:48:38,321 - INFO - well_movie_path: tmp2/downloads/LT0001_02/00004_01.ch5
+2022-10-03 14:48:41,545 - INFO - Saved corrected frames
+2022-10-03 14:48:46,362 - INFO - Saved nuclei locations
+2022-10-03 14:48:46,363 - INFO - Compiled index.csv file to tmp2/DP_project/inputs/metadata/index.csv
+2022-10-03 14:48:54,318 - INFO - Deep Profiler run done
+2022-10-03 14:48:54,539 - INFO - Batch features compiled with PyCytominer
+2022-10-03 14:48:54,638 - INFO - Stream run done!
+2022-10-03 14:51:02,760 - INFO - IDR stream initialized
+2022-10-03 14:51:02,824 - INFO - Aspera downloader initialized
+2022-10-03 14:51:05,799 - INFO - Basicpy preprocessor initialized
+2022-10-03 14:51:06,478 - INFO - CellPose segmentor initialized
+2022-10-03 14:51:06,520 - INFO - Copied Deep Profiler config and checkpoint files
+2022-10-03 14:51:06,559 - INFO - Running IDR stream with: 
+batch_size 1 
+start_batch 0 
+batches 6743 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-03 14:51:06,560 - INFO - Profiling batch 0
+2022-10-03 14:51:06,560 - INFO - Processing well A4 from LT0001_02, frames [50]
+2022-10-03 14:51:14,799 - INFO - well_movie_path: tmp2/downloads/LT0001_02/00004_01.ch5
+2022-10-03 14:51:18,698 - INFO - Saved corrected frames
+2022-10-03 14:51:23,257 - INFO - Saved nuclei locations
+2022-10-03 14:51:23,258 - INFO - Compiled index.csv file to tmp2/DP_project/inputs/metadata/index.csv
+2022-10-03 14:51:31,325 - INFO - Deep Profiler run done
+2022-10-03 14:51:31,558 - INFO - Batch features compiled with PyCytominer
+2022-10-03 14:51:31,662 - INFO - Stream run done!
+2022-10-10 14:47:40,069 - INFO - IDR stream initialized
+2022-10-10 14:47:40,093 - INFO - Aspera downloader initialized
+2022-10-10 14:47:42,743 - INFO - Basicpy preprocessor initialized
+2022-10-10 14:47:43,498 - INFO - CellPose segmentor initialized
+2022-10-10 14:47:43,534 - INFO - Copied Deep Profiler config and checkpoint files
+2022-10-10 14:47:43,564 - INFO - Running IDR stream with: 
+batch_size 1 
+start_batch 0 
+batches 6743 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-10 14:47:43,565 - INFO - Profiling batch 0
+2022-10-10 14:47:43,565 - INFO - Error while profiling batch 0:
+2022-10-10 14:47:43,565 - ERROR - [Errno 2] No such file or directory: 'tmp2/DP_project/inputs/metadata/index.csv'
+2022-10-10 14:47:43,674 - INFO - Stream run done!
+2022-10-10 14:48:39,521 - INFO - IDR stream initialized
+2022-10-10 14:48:39,563 - INFO - Aspera downloader initialized
+2022-10-10 14:48:42,101 - INFO - Basicpy preprocessor initialized
+2022-10-10 14:48:42,802 - INFO - CellPose segmentor initialized
+2022-10-10 14:49:21,198 - INFO - IDR stream initialized
+2022-10-10 14:49:21,198 - INFO - IDR stream initialized
+2022-10-10 14:49:21,232 - INFO - Aspera downloader initialized
+2022-10-10 14:49:21,232 - INFO - Aspera downloader initialized
+2022-10-10 14:49:21,323 - INFO - Basicpy preprocessor initialized
+2022-10-10 14:49:21,323 - INFO - Basicpy preprocessor initialized
+2022-10-10 14:49:21,365 - INFO - CellPose segmentor initialized
+2022-10-10 14:49:21,365 - INFO - CellPose segmentor initialized
+2022-10-10 14:49:21,408 - INFO - Copied Deep Profiler config and checkpoint files
+2022-10-10 14:49:21,408 - INFO - Copied Deep Profiler config and checkpoint files
+2022-10-10 14:49:21,431 - INFO - Running IDR stream with: 
+batch_size 1 
+start_batch 0 
+batches 6743 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-10 14:49:21,431 - INFO - Running IDR stream with: 
+batch_size 1 
+start_batch 0 
+batches 6743 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-10 14:49:21,432 - INFO - Profiling batch 0
+2022-10-10 14:49:21,432 - INFO - Profiling batch 0
+2022-10-10 14:49:21,432 - INFO - Processing well A4 from LT0001_02, frames [50]
+2022-10-10 14:49:21,432 - INFO - Processing well A4 from LT0001_02, frames [50]
+2022-10-10 14:49:30,672 - INFO - well_movie_path: tmp2/downloads/LT0001_02/00004_01.ch5
+2022-10-10 14:49:30,672 - INFO - well_movie_path: tmp2/downloads/LT0001_02/00004_01.ch5
+2022-10-10 14:49:33,939 - INFO - Saved corrected frames
+2022-10-10 14:49:33,939 - INFO - Saved corrected frames
+2022-10-10 14:49:38,776 - INFO - Saved nuclei locations
+2022-10-10 14:49:38,776 - INFO - Saved nuclei locations
+2022-10-10 14:49:38,777 - INFO - Compiled index.csv file to tmp2/DP_project/inputs/metadata/index.csv
+2022-10-10 14:49:38,777 - INFO - Compiled index.csv file to tmp2/DP_project/inputs/metadata/index.csv
+2022-10-10 14:49:46,952 - INFO - Deep Profiler run done
+2022-10-10 14:49:46,952 - INFO - Deep Profiler run done
+2022-10-10 14:49:46,967 - INFO - Error while profiling batch 0:
+2022-10-10 14:49:46,967 - INFO - Error while profiling batch 0:
+2022-10-10 14:49:46,967 - ERROR - local variable 'locations_data' referenced before assignment
+2022-10-10 14:49:46,967 - ERROR - local variable 'locations_data' referenced before assignment
+2022-10-10 14:49:47,065 - INFO - Stream run done!
+2022-10-10 14:49:47,065 - INFO - Stream run done!
+2022-10-10 14:52:09,650 - INFO - IDR stream initialized
+2022-10-10 14:52:09,784 - INFO - Running IDR stream with: 
+batch_size 1 
+start_batch 0 
+batches 6743 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-10 14:52:09,784 - INFO - Profiling batch 0
+2022-10-10 14:52:09,785 - INFO - Error while profiling batch 0:
+2022-10-10 14:52:09,785 - ERROR - [Errno 2] No such file or directory: 'tmp2/DP_project/inputs/metadata/index.csv'
+2022-10-10 14:52:09,902 - INFO - Stream run done!
+2022-10-10 14:52:40,013 - INFO - IDR stream initialized
+2022-10-10 14:52:40,040 - INFO - Aspera downloader initialized
+2022-10-10 14:52:42,562 - INFO - Basicpy preprocessor initialized
+2022-10-10 14:52:43,243 - INFO - CellPose segmentor initialized
+2022-10-10 14:52:43,273 - INFO - Copied Deep Profiler config and checkpoint files
+2022-10-10 14:52:43,300 - INFO - Running IDR stream with: 
+batch_size 1 
+start_batch 0 
+batches 6743 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-10 14:52:43,300 - INFO - Profiling batch 0
+2022-10-10 14:52:43,300 - INFO - Processing well A4 from LT0001_02, frames [50]
+2022-10-10 14:52:52,407 - INFO - well_movie_path: tmp2/downloads/LT0001_02/00004_01.ch5
+2022-10-10 14:52:55,808 - INFO - Saved corrected frames
+2022-10-10 14:53:00,572 - INFO - Saved nuclei locations
+2022-10-10 14:53:00,574 - INFO - Compiled index.csv file to tmp2/DP_project/inputs/metadata/index.csv
+2022-10-10 14:53:08,817 - INFO - Deep Profiler run done
+2022-10-10 14:53:09,044 - INFO - Batch features compiled with PyCytominer
+2022-10-10 14:53:09,142 - INFO - Stream run done!
+2022-10-10 14:54:00,060 - INFO - IDR stream initialized
+2022-10-10 14:54:00,087 - INFO - Aspera downloader initialized
+2022-10-10 14:54:02,806 - INFO - Basicpy preprocessor initialized
+2022-10-10 14:54:03,503 - INFO - CellPose segmentor initialized
+2022-10-10 14:54:03,554 - INFO - Copied Deep Profiler config and checkpoint files
+2022-10-10 14:54:03,603 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-10 14:54:03,604 - INFO - Profiling batch 0
+2022-10-10 14:54:03,604 - INFO - Processing well A4 from LT0001_02, frames [50]
+2022-10-10 14:54:14,697 - INFO - well_movie_path: tmp2/downloads/LT0001_02/00004_01.ch5
+2022-10-10 14:54:17,911 - INFO - Saved corrected frames
+2022-10-10 14:54:22,532 - INFO - Saved nuclei locations
+2022-10-10 14:54:22,532 - INFO - Processing well A15 from LT0001_02, frames [50]
+2022-10-10 14:54:31,858 - INFO - well_movie_path: tmp2/downloads/LT0001_02/00015_01.ch5
+2022-10-10 14:54:34,890 - INFO - Saved corrected frames
+2022-10-10 14:54:38,302 - INFO - Saved nuclei locations
+2022-10-10 14:54:38,302 - INFO - Processing well B2 from LT0001_02, frames [50]
+2022-10-10 14:54:47,107 - INFO - well_movie_path: tmp2/downloads/LT0001_02/00026_01.ch5
+2022-10-10 14:54:49,712 - INFO - Saved corrected frames
+2022-10-10 14:54:52,878 - INFO - Saved nuclei locations
+2022-10-10 14:54:52,879 - INFO - Compiled index.csv file to tmp2/DP_project/inputs/metadata/index.csv
+2022-10-10 14:55:02,464 - INFO - Deep Profiler run done
+2022-10-10 14:55:03,186 - INFO - Batch features compiled with PyCytominer
+2022-10-10 14:55:03,219 - INFO - Stream run done!
+2022-10-10 14:56:09,240 - INFO - IDR stream initialized
+2022-10-10 14:56:09,396 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-10 14:56:09,397 - INFO - Profiling batch 0
+2022-10-10 14:56:10,093 - INFO - Batch features compiled with PyCytominer
+2022-10-10 14:56:10,126 - INFO - Stream run done!
+2022-10-10 14:57:00,746 - INFO - IDR stream initialized
+2022-10-10 14:57:00,873 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-10 14:57:00,874 - INFO - Profiling batch 0
+2022-10-10 14:57:01,598 - INFO - Batch features compiled with PyCytominer
+2022-10-10 14:57:01,631 - INFO - Stream run done!
+2022-10-12 14:14:10,779 - INFO - IDR stream initialized
+2022-10-12 14:14:10,924 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-12 14:14:10,925 - INFO - Profiling batch 0
+2022-10-12 14:14:11,617 - INFO - Batch features compiled with PyCytominer
+2022-10-12 14:14:11,650 - INFO - Stream run done!
+2022-10-12 14:14:48,227 - INFO - IDR stream initialized
+2022-10-12 14:14:48,343 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-12 14:14:48,344 - INFO - Profiling batch 0
+2022-10-12 14:14:49,037 - INFO - Batch features compiled with PyCytominer
+2022-10-12 14:14:49,074 - INFO - Stream run done!
+2022-10-12 14:42:17,004 - INFO - IDR stream initialized
+2022-10-12 14:42:17,162 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-12 14:42:17,162 - INFO - Profiling batch 0
+2022-10-12 14:42:17,835 - INFO - Batch features compiled with PyCytominer
+2022-10-12 14:42:17,869 - INFO - Stream run done!
+2022-10-12 15:33:21,113 - INFO - IDR stream initialized
+2022-10-12 15:33:21,249 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-12 15:33:21,249 - INFO - Profiling batch 0
+2022-10-12 15:33:21,920 - INFO - Batch features compiled with PyCytominer
+2022-10-12 15:33:21,952 - INFO - Stream run done!
+2022-10-12 15:35:23,103 - INFO - IDR stream initialized
+2022-10-12 15:35:23,315 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-12 15:35:23,316 - INFO - Profiling batch 0
+2022-10-12 15:35:23,995 - INFO - Batch features compiled with PyCytominer
+2022-10-12 15:35:24,027 - INFO - Stream run done!
+2022-10-12 15:42:17,336 - INFO - IDR stream initialized
+2022-10-12 15:42:17,483 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-12 15:42:17,484 - INFO - Profiling batch 0
+2022-10-12 15:42:18,162 - INFO - Batch features compiled with PyCytominer
+2022-10-12 15:42:18,195 - INFO - Stream run done!
+2022-10-12 16:02:09,331 - INFO - IDR stream initialized
+2022-10-12 16:02:09,449 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-12 16:02:09,449 - INFO - Profiling batch 0
+2022-10-12 16:02:10,140 - INFO - Batch features compiled with PyCytominer
+2022-10-12 16:02:10,175 - INFO - Stream run done!
+2022-10-12 16:02:49,061 - INFO - IDR stream initialized
+2022-10-12 16:02:49,201 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-12 16:02:49,202 - INFO - Profiling batch 0
+2022-10-12 16:02:49,900 - INFO - Batch features compiled with PyCytominer
+2022-10-12 16:02:49,934 - INFO - Stream run done!
+2022-10-12 16:03:22,360 - INFO - IDR stream initialized
+2022-10-12 16:03:22,496 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-12 16:03:22,496 - INFO - Profiling batch 0
+2022-10-12 16:03:22,550 - INFO - Error while profiling batch 0:
+2022-10-12 16:03:22,551 - ERROR - 0
+2022-10-12 16:03:22,584 - INFO - Stream run done!
+2022-10-14 13:17:31,737 - INFO - IDR stream initialized
+2022-10-14 13:17:31,858 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-14 13:17:31,858 - INFO - Profiling batch 0
+2022-10-14 13:17:31,904 - INFO - Error while profiling batch 0:
+2022-10-14 13:17:31,904 - ERROR - 'tuple' object is not callable
+2022-10-14 13:17:31,937 - INFO - Stream run done!
+2022-10-14 13:18:43,517 - INFO - IDR stream initialized
+2022-10-14 13:18:43,644 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-14 13:18:43,645 - INFO - Profiling batch 0
+2022-10-14 13:18:43,689 - INFO - Error while profiling batch 0:
+2022-10-14 13:18:43,689 - ERROR - 'tuple' object is not callable
+2022-10-14 13:18:43,722 - INFO - Stream run done!
+2022-10-14 13:18:53,891 - INFO - IDR stream initialized
+2022-10-14 13:18:53,891 - INFO - IDR stream initialized
+2022-10-14 13:18:54,046 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-14 13:18:54,046 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-14 13:18:54,046 - INFO - Profiling batch 0
+2022-10-14 13:18:54,046 - INFO - Profiling batch 0
+2022-10-14 13:18:54,102 - INFO - Error while profiling batch 0:
+2022-10-14 13:18:54,102 - INFO - Error while profiling batch 0:
+2022-10-14 13:18:54,102 - ERROR - 'tuple' object is not callable
+2022-10-14 13:18:54,102 - ERROR - 'tuple' object is not callable
+2022-10-14 13:18:54,135 - INFO - Stream run done!
+2022-10-14 13:18:54,135 - INFO - Stream run done!
+2022-10-14 13:19:16,705 - INFO - IDR stream initialized
+2022-10-14 13:19:16,828 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-14 13:19:16,828 - INFO - Profiling batch 0
+2022-10-14 13:19:16,882 - INFO - Error while profiling batch 0:
+2022-10-14 13:19:16,882 - ERROR - 'tuple' object is not callable
+2022-10-14 13:19:16,917 - INFO - Stream run done!
+2022-10-14 13:20:55,057 - INFO - IDR stream initialized
+2022-10-14 13:20:55,255 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-14 13:20:55,255 - INFO - Profiling batch 0
+2022-10-14 13:20:55,316 - INFO - Error while profiling batch 0:
+2022-10-14 13:20:55,316 - ERROR - 0
+2022-10-14 13:20:55,351 - INFO - Stream run done!
+2022-10-14 13:21:10,479 - INFO - IDR stream initialized
+2022-10-14 13:21:10,617 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-14 13:21:10,618 - INFO - Profiling batch 0
+2022-10-14 13:21:10,673 - INFO - Error while profiling batch 0:
+2022-10-14 13:21:10,673 - ERROR - 0
+2022-10-14 13:21:10,707 - INFO - Stream run done!
+2022-10-14 13:26:18,681 - INFO - IDR stream initialized
+2022-10-14 13:26:18,849 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-14 13:26:18,849 - INFO - Profiling batch 0
+2022-10-14 13:26:18,903 - INFO - Error while profiling batch 0:
+2022-10-14 13:26:18,903 - ERROR - 0
+2022-10-14 13:26:18,955 - INFO - Stream run done!
+2022-10-14 13:28:08,686 - INFO - IDR stream initialized
+2022-10-14 13:28:08,860 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-14 13:28:08,861 - INFO - Profiling batch 0
+2022-10-14 13:28:08,908 - INFO - Error while profiling batch 0:
+2022-10-14 13:28:08,908 - ERROR - 0
+2022-10-14 13:28:08,941 - INFO - Stream run done!
+2022-10-14 13:28:41,421 - INFO - IDR stream initialized
+2022-10-14 13:28:41,560 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-14 13:28:41,561 - INFO - Profiling batch 0
+2022-10-14 13:28:41,619 - INFO - Error while profiling batch 0:
+2022-10-14 13:28:41,619 - ERROR - 0
+2022-10-14 13:28:41,653 - INFO - Stream run done!
+2022-10-14 13:29:26,188 - INFO - IDR stream initialized
+2022-10-14 13:29:26,341 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-14 13:29:26,341 - INFO - Profiling batch 0
+2022-10-14 13:29:27,034 - INFO - Batch features compiled with PyCytominer
+2022-10-14 13:29:27,067 - INFO - Stream run done!
+2022-10-14 13:30:25,154 - INFO - IDR stream initialized
+2022-10-14 13:30:25,286 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-14 13:30:25,287 - INFO - Profiling batch 0
+2022-10-14 13:30:26,015 - INFO - Batch features compiled with PyCytominer
+2022-10-14 13:30:26,049 - INFO - Stream run done!
+2022-10-14 13:34:11,239 - INFO - IDR stream initialized
+2022-10-14 13:34:11,345 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-14 13:34:11,345 - INFO - Profiling batch 0
+2022-10-14 13:34:11,497 - INFO - Object outlines added for batch
+2022-10-14 13:34:11,505 - INFO - Object outlines added for batch
+2022-10-14 13:34:11,512 - INFO - Object outlines added for batch
+2022-10-14 13:34:12,136 - INFO - Batch features compiled with PyCytominer
+2022-10-14 13:34:12,172 - INFO - Stream run done!
+2022-10-14 13:41:17,747 - INFO - IDR stream initialized
+2022-10-14 13:41:17,921 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-14 13:41:17,921 - INFO - Profiling batch 0
+2022-10-14 13:41:18,097 - INFO - Object outlines added for batch
+2022-10-14 13:41:18,735 - INFO - Batch features compiled with PyCytominer
+2022-10-14 13:41:18,768 - INFO - Stream run done!
+2022-10-14 13:44:22,371 - INFO - IDR stream initialized
+2022-10-14 13:44:22,545 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0] 
+extra metadata ['object_outlines']
+2022-10-14 13:44:22,545 - INFO - Profiling batch 0
+2022-10-14 13:44:22,609 - INFO - Object outlines added for batch
+2022-10-14 13:44:23,325 - INFO - Batch features compiled with PyCytominer
+2022-10-14 13:44:23,359 - INFO - Stream run done!
