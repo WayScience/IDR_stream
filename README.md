@@ -138,7 +138,7 @@ pip install -e .
 ## Example Usage
 
 Example usage of `idrstream` can be found at [example.ipynb](example.ipynb).
-This notebook was run as a python script ([example.py](example.py)) and hence has no output for the final cell.
+We ran this notebook as a python script ([example.py](example.py)) and hence the notebook has no output for the final cell.
 
 **Note**: You can use `idrstream` o extract object oulines as extra metadata by passing `extra_metadata=["object_outlines"]` during `idrstream.run_stream()`.
 Similarly, you can choose the desired batch numbers with `batch_nums=[#,#,#]`.
