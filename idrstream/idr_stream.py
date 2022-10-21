@@ -316,7 +316,7 @@ class IdrStream:
         self.logger.info("Temporary batch files cleared")
 
     def add_batch_object_outlines(
-        self, batch_single_cell_df: pd.DataFrame
+        self, batch_single_cell_df: pd.DataFrame, object_metadata_channel = "Metadata_DNA"
     ) -> pd.DataFrame:
         """
         add object outlines to single cell data for current batch
@@ -327,6 +327,8 @@ class IdrStream:
         ----------
         batch_single_cell_df : pd.DataFrame
             original batch single cell df
+        object_metadata_channel : str
+            DeepProfiler channel name (from index.csv) to get object outlines from
 
         Returns
         -------
@@ -338,29 +340,29 @@ class IdrStream:
         new_batch_single_cell_df = []
 
         # iterate over location files in order of plate map data in batch_single_cell_df
-        for DNA_image_path in batch_single_cell_df["Metadata_DNA"].unique():
+        for image_path in batch_single_cell_df[object_metadata_channel].unique():
             # split single cell dataframe into image dataframes to find object outlines for that image
-            DNA_image_single_cell_df = batch_single_cell_df.loc[
-                batch_single_cell_df["Metadata_DNA"] == DNA_image_path
+            image_single_cell_df = batch_single_cell_df.loc[
+                batch_single_cell_df[object_metadata_channel] == image_path
             ].reset_index(drop=True)
-            DNA_image_plate = DNA_image_single_cell_df["Metadata_Plate"].unique()[0]
-            DNA_image_well = DNA_image_single_cell_df["Metadata_Well"].unique()[0]
-            DNA_image_site = DNA_image_single_cell_df["Metadata_Site"].unique()[0]
+            image_plate = image_single_cell_df["Metadata_Plate"].unique()[0]
+            image_well = image_single_cell_df["Metadata_Well"].unique()[0]
+            image_site = image_single_cell_df["Metadata_Site"].unique()[0]
 
             # load object outlines for a particular image
-            DNA_image_locations_path = pathlib.Path(
-                f"{locations_save_path}/{DNA_image_plate}/{DNA_image_well}-{DNA_image_site}-Nuclei.csv"
+            image_locations_path = pathlib.Path(
+                f"{locations_save_path}/{image_plate}/{image_well}-{image_site}-Nuclei.csv"
             )
-            DNA_image_outline_data = pd.read_csv(DNA_image_locations_path)[
+            image_outline_data = pd.read_csv(image_locations_path)[
                 "object_outline"
             ].reset_index(drop=True)
             # insert object outlines to the single cell df
-            DNA_image_single_cell_df.insert(
-                loc=0, column="Object_Outline", value=DNA_image_outline_data
+            image_single_cell_df.insert(
+                loc=0, column="Object_Outline", value=image_outline_data
             )
 
             # add to full batch single cell df
-            new_batch_single_cell_df.append(DNA_image_single_cell_df)
+            new_batch_single_cell_df.append(image_single_cell_df)
 
         # compile and return new batch single cell df
         new_batch_single_cell_df = pd.concat(new_batch_single_cell_df).reset_index(
