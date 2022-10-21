@@ -5,5 +5,6 @@ __pycache__/
 # Example files
 example_files/asperaweb_id_dsa.openssh
 mitocheck_control_features
+tmp/
 # PyBaSiC
 idrstream/PyBaSiC/

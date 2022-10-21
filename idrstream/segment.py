@@ -50,7 +50,9 @@ class CellPoseSegmentor:
         print(">>> GPU activated? %d" % self.use_GPU)
         self.model_specs = model_specs
 
-    def get_object_locations(self, image: np.ndarray) -> pd.DataFrame:
+    def get_object_locations(
+        self, image: np.ndarray, extra_metadata: list = []
+    ) -> pd.DataFrame:
         """
         finds center coords of objects using specs from model_specs and return pandas array with objects coords
 
@@ -58,6 +60,8 @@ class CellPoseSegmentor:
         ----------
         image : np.ndarray
             image with objects to segment
+        extra_metadata : list, optional
+            list of extra metadata to include in final dataframe outputs (object_outlines, object_boxes, etc), by default []
 
         Returns
         -------
@@ -87,6 +91,8 @@ class CellPoseSegmentor:
                 "Location_Center_X": centroid[0],
                 "Location_Center_Y": centroid[1],
             }
+            if "object_outlines" in extra_metadata:
+                object_data["object_outline"] = outline
             objects_data.append(object_data)
 
         objects_data = pd.DataFrame(objects_data)
@@ -98,6 +104,7 @@ class CellPoseSegmentor:
         well_num: int,
         frames_save_path: pathlib.Path,
         frame_nums: list,
+        extra_metadata: list = [],
     ) -> list:
         """
         get object coords for each frame image from DP project format (plate/plate_well_frame.tif)
@@ -112,6 +119,8 @@ class CellPoseSegmentor:
             path to directory to load frames from
         frame_nums : list
             frame number to segment
+        extra_metadata : list, optional
+            list of extra metadata to include in final dataframe outputs (object_outlines, object_boxes, etc), by default []
 
         Returns
         -------
@@ -126,7 +135,7 @@ class CellPoseSegmentor:
             )
 
             frame = skimage.io.imread(frame_load_path)
-            frame_object_locations = self.get_object_locations(frame)
+            frame_object_locations = self.get_object_locations(frame, extra_metadata)
             frame_object_locations = frame_object_locations.rename(
                 columns={
                     "Location_Center_X": "Nuclei_Location_Center_X",
@@ -144,6 +153,7 @@ class CellPoseSegmentor:
         frames_save_path: pathlib.Path,
         frame_nums: list,
         objects_save_path: pathlib.Path,
+        extra_metadata: list = [],
     ):
         """
         save object coords for each image in DP project format (plate/well_num_frame_num-1-Nuclei.csv)
@@ -160,11 +170,13 @@ class CellPoseSegmentor:
             frame numbers to process images for
         objects_save_path : pathlib.Path
             path to directory to save nuclei locations to
+        extra_metadata : list, optional
+            list of extra metadata to include in final dataframe outputs (object_outlines, object_boxes, etc), by default []
         """
         objects_save_path.mkdir(parents=True, exist_ok=True)
 
         frame_objects_list = self.frames_to_objects(
-            plate, well_num, frames_save_path, frame_nums
+            plate, well_num, frames_save_path, frame_nums, extra_metadata
         )
         for index, frame_objects in enumerate(frame_objects_list):
             frame_num = frame_nums[index]
