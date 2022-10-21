@@ -354,7 +354,6 @@ class IdrStream:
             DNA_image_outline_data = pd.read_csv(DNA_image_locations_path)[
                 "object_outline"
             ].reset_index(drop=True)
-            print(DNA_image_outline_data)
             # insert object outlines to the single cell df
             DNA_image_single_cell_df.insert(
                 loc=0, column="Object_Outline", value=DNA_image_outline_data
