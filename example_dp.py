@@ -25,16 +25,18 @@ data_to_process
 # In[3]:
 
 
+stream_type = "DP"
 idr_id = "idr0013"
 tmp_dir = pathlib.Path("tmp/")
-final_data_dir = pathlib.Path("data/")
+final_data_dir = pathlib.Path("mitocheck_control_features/")
 try:
     shutil.rmtree(tmp_dir)
-    #shutil.rmtree(final_data_dir)
+    # shutil.rmtree(final_data_dir)
+    pass
 except:
     print("No files to remove")
 
-stream = IdrStream(idr_id, tmp_dir, final_data_dir, log='example_files/idr_stream.log')
+stream = IdrStream(stream_type, idr_id, tmp_dir, final_data_dir, log='idr_stream.log')
 
 
 # In[4]:
@@ -77,8 +79,8 @@ checkpoint_path = pathlib.Path("example_files/DP_files/efficientnet-b0_weights_t
 stream.copy_DP_files(config_path, checkpoint_path)
 
 
-# In[8]:
+# In[ ]:
 
 
-stream.run_stream(data_to_process, batch_size=10, start_batch=1)
+stream.run_stream(stream_type, data_to_process, batch_size=3, start_batch=0, batch_nums=[0])
 

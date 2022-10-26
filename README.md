@@ -23,7 +23,8 @@ More details can be found on the [IDR website](https://idr.openmicroscopy.org/ab
 BaSiCPy is the python implementation of the BaSiC method for illumination correction, introduced in [Peng, T et al., 2020](https://doi.org/10.1007/978-3-030-59722-1_17).
 - [CellPose](https://github.com/mouseland/cellpose) is used to segment nuclei from mitosis movies.
 CellPose was first introduced in [Stringer, C., Wang, T., Michaelos, M. et al., 2020](https://doi.org/10.1038/s41592-020-01018-x).
-- [DeepProfiler](https://github.com/cytomining/DeepProfiler) is used to extract features from mitosis movies. 
+- [DeepProfiler](https://github.com/cytomining/DeepProfiler) is an option to extract deep learning features from mitosis movies. 
+- [CellProfiler](https://github.com/CellProfiler/CellProfiler) is an option for segmentation and feature extraction from mitosis movies. 
 - [PyCytominer](https://github.com/cytomining/pycytominer) is used to compile DeepProfiler-extracted features with their metadata. 
 
 The stream processes image data in the following pipeline:
@@ -33,13 +34,16 @@ The stream processes image data in the following pipeline:
 The stream is set up as follows:
 
 1) Create the temporary final data directories (if they don't already exist).
-A Deep Profiler (DP) project folder is also created in the temporary directory.
+Depending on the type of project you plan to use, either a CellProfiler (CP) or Deep Profiler (DP) project folder is also created in the temporary directory.
 2) Initialize downloader.
 The Aspera downloader needs to be initialized with information about Aspera and the screens being downloaded (see example usage for more information).
 3) Initialize preprocessor.
 The ImageJ preprocessor needs to be initalized with information about ImageJ (see example usage for more information).
+
+**For Deep Profiler Project:**
+
 4) Initialize segmentor.
-The CellPose segmentor needs to be intialized with information about the CellPose model specifications (see example usage for more information).
+The CellPose segmentor needs to be initialized with information about the CellPose model specifications (see example usage for more information).
 5) Create the base DP project folders/files.
 Every DP batch run will use 2 files: config and checkpoint (examples in [example_files/DP_files](example_files/DP_files)).
 These files are copied to their necessary folders in the DP project and will not be deleted until the stream is complete.
@@ -50,7 +54,19 @@ A DP project is run for each batch and the locations and images for each DP run 
 The larger the batch size, the faster a stream will complete (DP will not need to be initialized as often).
 However, a larger batch size also corresponds to more intermediate files and more memory being allocated at once by DP (step 3) and PyCytominer (step 4).
 
-Once a stream is set up, it processes each batch as follows:
+**For CellProfiler Project:**
+
+4) Initialize cp_metadata.
+The CellProfiler metadata compiler needs to be initalized as to convert the `data_to_process.tsv` into a `.csv` file for CellProfiler to intake the metadata.
+5) Create the base CP project folders/files.
+Every CP batch run will use 1 file: `.cppipe` file (example in [example_files/CP_files](example_files/CP_files)).
+This file is copied to the necessary folders in the CP project (e.g. inputs/pipeline) and will not be deleted until the stream is complete.
+In other words, this is the only file that persists in the temporary directory for the entirety of a stream.
+6) Start the stream.
+The stream is given a batch size that corresponds to how many images the stream should process in each batch.
+A CP project is run for each batch and images for each CP run are saved as intermediate files.
+
+Once a stream is set up, it processes each batch as follows for a **DP project**:
 1) Download a movie to temporary directory (step 0).
 2) Find desired frame(s) and perform illumination correction.
 Save desired frame(s) in DP project (step 1).
@@ -60,9 +76,20 @@ Each DP run needs this file to understand the metadata (plate, well, pertubation
 Save `index.csv` file in DP project (step 2.5).
 5) Profile all images in batch with DeepProfiler.
 Features from this DP run are saved in DP project (step 3).
-6) Compile features from a batch and associate the metadata with features.
+6) Compile DP features from a batch and associate the metadata with features.
 Compiled features with metadata are saved to the final data directory (step 4).
 7) Delete all intermediate files from batch run and run next batch!
+
+The process for a **CP project** are as follows:
+1) Download a movie to temporary directory.
+2) Find desired frame(s) and perform illumination correction.
+Save desired frame(s) in CP project.
+3) Run CellProfiler processing (segmentation and feature extraction)
+CellProfiler will load the images, segment them using CellProfiler Cellpose plugin, and run feature extraction.
+CellProfiler will output multiple `.csv` file (e.g. Experiment, Image, and Nuclei), but only `Nuclei.csv` contains the features and the metadata that was generated from the `init_cp_metadata` function.
+4) Compile CP features from a batch 
+Compile CP features in a proper order and remove irrelevent metadata from the file.
+5) Delete all intermediate files from batch run and run next batch!
 
 ## Setup
 
@@ -123,6 +150,55 @@ git clone https://github.com/peng-lab/PyBaSiC.git
 For mitosis movie frames, we give PyBaSiC 2 frames before/after the desired frame (depending on position in movie) to perform illumination correction.
 We discuss different methods of illumination correction in [#1](https://github.com/WayScience/IDR_stream/issues/1).
 
+### Fiji:
+
+Download [Fiji](https://imagej.net/software/fiji/downloads) using the appropriate file for your OS.
+We recommend putting the `Fiji.app` file that comes from the install on your Desktop or in a place that you can easily find the path to.
+
+### CellProfiler:
+
+CellProfiler will be used for both segmentation and feature extraction.
+For segmentation, we recommend using the Cellpose plugin for CellProfiler. 
+Cellpose and CellProfiler are already installed from source within the conda environment from the `Necessary Packages` section.
+
+To run the CellProfiler Cellpose plugin, the steps are as follows:
+
+#### Step 1: Clone CellProfiler Github
+
+We recommend putting it into a folder on your Desktop called `GitHub` for better organization and tracking of the repo.
+
+```console
+# Make sure to `cd` into the directory that you want the repo in (e.g. \~/Desktop/Github)
+git clone https://github.com/CellProfiler/CellProfiler.git
+```
+
+#### Step 2: Download and install Cellpose plugin
+
+Download the `runcellpose.py` file from the [CellProfiler-Plugins repository](https://github.com/CellProfiler/CellProfiler-plugins/blob/master/runcellpose.py) and then move it into the CellProfiler repo (specifically the plugins folder within the modules folder).
+To download the plugin file into the correct folder, use the code below in terminal.
+
+```console
+# Download the cellpose plugin to the plugins directory
+wget https://raw.githubusercontent.com/CellProfiler/CellProfiler-plugins/21454fe331a5a62ae34ff1b2bbf128aa16873fb0/runcellpose.py  --directory-prefix CellProfiler/cellprofiler/modules/plugins
+```
+
+#### Step 3a: Activate the CellProfiler GUI
+
+Open the CellProfiler GUI by using:
+
+```
+# Make sure you have already activated the `cp4` environment
+cellprofiler
+```
+
+#### 3b: Change the path in the `Preferences` tab
+
+Go to "File -> Preferences". 
+
+From there, you can change the `CellProfiler plugins directory` to the path that you put the Cellpose plugin in (e.g. /home/jenna/Desktop/Github/CellProfiler/cellprofiler/modules/plugins).
+
+Close the GUI and reopen to confirm the path is correct.
+
 ### DeepProfiler Feature Extractor:
 
 Deep Profiler must be installed via Github.
@@ -137,13 +213,13 @@ pip install -e .
 
 ## Example Usage
 
-Example usage of `idrstream` can be found at [example.ipynb](example.ipynb).
-We ran this notebook as a python script ([example.py](example.py)) and hence the notebook has no output for the final cell.
+Example usage of `idrstream` can be found at [example_dp.ipynb](example_dp.ipynb) and [example_cp.ipynb](example_cp.ipynb).
+We ran this notebook as a python script ([example_dp.py](example_dp.py) and [example_cp.py](example_cp.py)) and hence the notebook has no output for the final cell.
 
-**Note**: You can use `idrstream` o extract object oulines as extra metadata by passing `extra_metadata=["object_outlines"]` during `idrstream.run_stream()`.
+**Note**: You can use `idrstream` to extract object oulines as extra metadata by passing `extra_metadata=["object_outlines"]` during `idrstream.run_stream()`.
 Similarly, you can choose the desired batch numbers with `batch_nums=[#,#,#]`.
 
-`example.ipynb` - All positive/negative control wells from Mitocheck mitosis movies (idr0013 - Screen A).
+`example_dp.ipynb` - All positive/negative control wells from Mitocheck mitosis movies (idr0013 - Screen A).
 Wells A1 are excluded because of irregular illumination (see [mitocheck data preprocessing](https://github.com/WayScience/mitocheck_data/tree/main/1.preprocess_data)).
 
 Stream info:
