@@ -84,7 +84,7 @@ The process for a **CP project** are as follows:
 1) Download a movie to temporary directory.
 2) Find desired frame(s) and perform illumination correction.
 Save desired frame(s) in CP project.
-3) Run CellProfiler processing (segmentation and feature extraction)
+3) Run CellProfiler processing (segmentation and feature extraction).
 CellProfiler will load the images, segment them using CellProfiler Cellpose plugin, and run feature extraction.
 CellProfiler will output multiple `.csv` file (e.g. Experiment, Image, and Nuclei), but only `Nuclei.csv` contains the features and the metadata that was generated from the `init_cp_metadata` function.
 4) Compile CP features from a batch 
@@ -158,7 +158,7 @@ We recommend putting the `Fiji.app` file that comes from the install on your Des
 ### CellProfiler:
 
 CellProfiler will be used for both segmentation and feature extraction.
-For segmentation, we recommend using the Cellpose plugin for CellProfiler. 
+For segmentation, we recommend using the Cellpose plugin for CellProfiler for projects centered around nuclei. 
 Cellpose and CellProfiler are already installed from source within the conda environment from the `Necessary Packages` section.
 
 To run the CellProfiler Cellpose plugin, the steps are as follows:
@@ -187,7 +187,7 @@ wget https://raw.githubusercontent.com/CellProfiler/CellProfiler-plugins/21454fe
 Open the CellProfiler GUI by using:
 
 ```
-# Make sure you have already activated the `cp4` environment
+# Make sure you have already activated the `idrstream` environment
 cellprofiler
 ```
 
