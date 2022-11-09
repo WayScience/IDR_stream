@@ -29,7 +29,7 @@ CellPose was first introduced in [Stringer, C., Wang, T., Michaelos, M. et al., 
 
 The stream processes image data in the following pipeline:
 
-![Stream Design](images/Stream_Design.png "Stream Design")
+![Stream Design](images/idrstream_design_cpanddp.png "Stream Design")
 
 The stream is set up as follows:
 
