@@ -13,24 +13,14 @@ import pandas as pd
 import shutil
 import logging
 
+from cellpose import core
+
 from idrstream.idr_stream import IdrStream
-
-
-# ## Load in `data_to_process.tsv` file
-
-# In[2]:
-
-
-data_to_process = pd.read_csv("example_files/data_to_process.tsv", sep="\t", index_col=0)
-# remove A1 wells because of irregular illumination
-data_to_process = data_to_process[data_to_process["Well"] != "A1"]
-data_to_process = data_to_process.reset_index(drop=True)
-data_to_process
 
 
 # ## Initialize idrstream
 
-# In[3]:
+# In[2]:
 
 
 stream_type = "CP"
@@ -47,9 +37,31 @@ except:
 stream = IdrStream(stream_type,idr_id, tmp_dir, final_data_dir, log='idr_stream.log')
 
 
-# ## Initialize Aspera downloader
+# ## Initialize CellProfiler metadata compiler
+
+# In[3]:
+
+
+data_to_process_tsv = pathlib.Path("example_files/data_to_process.tsv")
+
+data_to_process = stream.init_cp_metadata(data_to_process_tsv)
+
+
+# ## Load in metadata
 
 # In[4]:
+
+
+data_to_process = pd.read_csv("example_files/data_to_process.tsv", sep="\t")
+# remove A1 wells because of irregular illumination
+data_to_process = data_to_process[data_to_process["Well"] != "A1"]
+data_to_process = data_to_process.reset_index(drop=True)
+data_to_process
+
+
+# ## Initialize Aspera downloader
+
+# In[5]:
 
 
 # find the path in terminal using `ascli config ascp show`
@@ -63,20 +75,11 @@ stream.init_downloader(aspera_path, aspera_key_path, screens_path)
 
 # ## Initialize Fiji preprocessor
 
-# In[5]:
+# In[6]:
 
 
 fiji_path = pathlib.Path("/home/jenna/Desktop/test/Fiji.app")
 stream.init_preprocessor(fiji_path)
-
-
-# ## Initialize CellProfiler metadata compiler
-
-# In[6]:
-
-
-data_to_process_tsv = pathlib.Path("example_files/data_to_process.tsv")
-stream.init_cp_metadata(data_to_process_tsv)
 
 
 # ## Copy and create CellProfiler files/folders
@@ -84,14 +87,24 @@ stream.init_cp_metadata(data_to_process_tsv)
 # In[7]:
 
 
-cppipe_path = pathlib.Path("example_files/CP_files/mitocheck_idr_cp.cppipe")
-stream.copy_CP_files(cppipe_path)
+metadata_path = pathlib.Path("example_files/data_to_process.csv")
+stream.copy_CP_files(metadata_path)
+
+
+# ## Confirm that GPU is activated for Cellpose to run
+
+# In[8]:
+
+
+use_GPU = core.use_gpu()
+print(">>> GPU activated? %d" % use_GPU)
+# logger_setup()
 
 
 # ## Run idrstream batches
 
-# In[ ]:
+# In[9]:
 
 
-stream.run_stream(stream_type, data_to_process, batch_size=3, start_batch=0)
+stream.run_stream(stream_type, data_to_process, batch_size=3, start_batch=0, batch_nums=[0])
 

@@ -142,7 +142,7 @@ class IdrStream:
             path to config file to copy
         checkpoint_path : pathlib.Path
             path to checkpoint to copy
-    """
+        """
         config_save_path = pathlib.Path(
             f"{self.DP_project_path}/inputs/config/{config_path.name}"
         )
@@ -162,23 +162,16 @@ class IdrStream:
 
     def copy_CP_files(
         self,
-        cppipe_path: pathlib.Path,
+        metadata_path : pathlib.Path,
     ):
         """
         copy project files into temporary directory of the CellProfiler project
 
-        Parameters
-        ----------
-        cppipe_path : pathlib.Path
-            path to CellProfiler cppipe file to copy
         """
-        # copy cppipe file to CP project
-        cppipe_save_path = pathlib.Path(
-            f"{self.CP_project_path}/inputs/pipeline/{cppipe_path.name}"
-        )  # must end in .cppipe
-        cppipe_save_path.parents[0].mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(cppipe_path, cppipe_save_path)
-        self.CP_pipeline_path = cppipe_save_path
+        # make directory for the input of cellprofiler and copy metdata file into images folder
+        metadata_save_path = pathlib.Path(f"{self.CP_project_path}/inputs/images/{metadata_path.name}")
+        metadata_save_path.parents[0].mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(metadata_path, metadata_save_path)
 
         # make directory for the output of cellprofiler
         output_save_path = pathlib.Path(f"{self.CP_project_path}/outputs/features/")
@@ -293,7 +286,9 @@ class IdrStream:
                 frames_save_path = pathlib.Path(
                     f"{self.CP_project_path}/inputs/images/{plate}/"
                 )
-                self.CP_images_path = frames_save_path
+                self.CP_images_path = pathlib.Path(
+                    f"{self.CP_project_path}/inputs/images/"
+                )
 
                 self.preprocessor.save_corrected_frames(
                     plate, well_num, well_movie_path, frames_save_path, frame_nums
@@ -368,7 +363,12 @@ class IdrStream:
         """
         profile batch with CellProfiler (runs segmentation and feature extraction)
         """
-        command = f"cellprofiler -c -r -p {self.CP_pipeline_path} -o {self.CP_output_path} -i {self.CP_images_path}"
+        # need to specify plugin directory for CellProfiler to find the Cellpose plugin
+        plugins_directory = (
+            "/home/jenna/Desktop/Github/CellProfiler/cellprofiler/modules/plugins"
+        )
+        pipeline_path = "example_files/CP_files/mitocheck_idr_cp.cppipe"
+        command = f"cellprofiler -c -r -p {pipeline_path} -o {self.CP_output_path} -i {self.CP_images_path} --plugins-directory {plugins_directory}"
         os.system(command)
         self.logger.info("CellProfiler run done")
 
@@ -390,9 +390,14 @@ class IdrStream:
             segmention/feature extraction method (either DP or CP)
         """
         if stream_type == "CP":
+            # remove all of the plate folders (with images) from images folder 
             images = pathlib.Path(f"{self.CP_project_path}/inputs/images/")
+            for item in images.iterdir():
+                if item.is_dir():
+                    shutil.rmtree(item)
+            # remove features folders for next batch
             features = pathlib.Path(f"{self.CP_project_path}/outputs/features/")
-            paths_to_remove = [images, features]
+            shutil.rmtree(features)
 
         if stream_type == "DP":
             images = pathlib.Path(f"{self.DP_project_path}/inputs/images/")
@@ -416,7 +421,7 @@ class IdrStream:
                 path of final data folder
         """
         # load in the "Nuclei.csv" file that is created from the batch
-        nuclei_table = pathlib.Path("tmp2/CP_project/outputs/Nuclei.csv")
+        nuclei_table = pathlib.Path("tmp/CP_project/outputs/features/Nuclei.csv")
         cp_output = pd.read_csv(nuclei_table, dtype=object)
 
         # change 'Metadata_Well' column data format
@@ -497,6 +502,8 @@ class IdrStream:
         data_to_process: pd.DataFrame,
         batch_size: int = 10,
         start_batch: int = 0,
+        batch_nums="all",
+        extra_metadata=[],
     ):
         """
         extract features from IDR study given metadata of images to extract features from using a specific method (either DP or CP)
@@ -511,17 +518,27 @@ class IdrStream:
             number of images to process in one batch, by default 10
         start_batch : int, optional
             batch to start feature extraction from, by default 0
+        batch_nums : str, list, optional
+            list of batch numbers to extract features from, by default "all"
+        extra_metadata : str, list, optional
+            list of extra metadata to include in final dataframe outputs (object_outlines, object_boxes, etc), by default []
         """
         batches = math.ceil(data_to_process.shape[0] / batch_size)
         self.logger.info(
             f"Running IDR stream with: \nbatch_size {batch_size} \nstart_batch {start_batch} \nbatches {batches}"
         )
+        self.extra_metadata = extra_metadata
         # prepare, profile, compile, and delete intermediate files for each batch
         for batch_num in range(batches):
             batch_metadata = data_to_process.iloc[0:batch_size]
             data_to_process = data_to_process.iloc[batch_size:]
+
+            # skip batches before start batch and those not in batch nums
             if batch_num < start_batch:
                 continue
+            if batch_nums != "all":
+                if batch_num not in batch_nums:
+                    continue
 
             if stream_type == "CP":
                 # stream_type = "CP"
@@ -530,15 +547,12 @@ class IdrStream:
                     self.prepare_batch(
                         stream_type, batch_metadata
                     )  # put image and location data in CP-required locations
-                    self.compile_batch_index_csv(
-                        stream_type, batch_metadata
-                    )  # compile index csv for CellProfiler project for the specific batch
                     self.profile_batch_with_CP()  # profile batch with CellProfiler
-                    features_path = pathlib.Path(
+                    output_path = pathlib.Path(
                         f"{self.final_data_dir}/batch_{batch_num}.csv.gz"
                     )
                     self.compile_batch_CP_features(
-                        features_path
+                        output_path
                     )  # compile and save features with PyCytominer
                     self.clear_batch(
                         stream_type

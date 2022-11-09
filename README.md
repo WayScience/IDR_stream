@@ -95,10 +95,16 @@ Compile CP features in a proper order and remove irrelevent metadata from the fi
 
 ### Necessary Packages:
 
-The necessary packages for idrstream can be installed into a conda environment with the following:
+The necessary packages for idrstream **using DeepProfiler** can be installed into a conda environment with the following:
 ```sh
 # Run this command to create the conda environment for idrstream
-conda env create -f idrstream_env.yml
+conda env create -f idrstream_dp_env.yml
+```
+
+The necessary packages for idrstream **using CellProfiler** can be installed into a conda environment with the following:
+```sh
+# Run this command to create the conda environment for idrstream
+conda env create -f idrstream_cp_env.yml
 ```
 
 This environment must be activated before using `idrstream` with the following:
