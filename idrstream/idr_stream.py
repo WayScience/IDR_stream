@@ -162,14 +162,16 @@ class IdrStream:
 
     def copy_CP_files(
         self,
-        metadata_path : pathlib.Path,
+        metadata_path: pathlib.Path,
     ):
         """
         copy project files into temporary directory of the CellProfiler project
 
         """
         # make directory for the input of cellprofiler and copy metdata file into images folder
-        metadata_save_path = pathlib.Path(f"{self.CP_project_path}/inputs/images/{metadata_path.name}")
+        metadata_save_path = pathlib.Path(
+            f"{self.CP_project_path}/inputs/images/{metadata_path.name}"
+        )
         metadata_save_path.parents[0].mkdir(parents=True, exist_ok=True)
         shutil.copyfile(metadata_path, metadata_save_path)
 
@@ -390,7 +392,7 @@ class IdrStream:
             segmention/feature extraction method (either DP or CP)
         """
         if stream_type == "CP":
-            # remove all of the plate folders (with images) from images folder 
+            # remove all of the plate folders (with images) from images folder
             images = pathlib.Path(f"{self.CP_project_path}/inputs/images/")
             for item in images.iterdir():
                 if item.is_dir():
