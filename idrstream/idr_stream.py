@@ -42,8 +42,10 @@ class IdrStream:
 
     Methods
     -------
-    copy_project_files(stream_type, cppipe_path, config_path, checkpoint_path)
-        copy project files into temporary directory of the project (DP or CP)
+    copy_DP_files(cppipe_path, config_path, checkpoint_path)
+        copy project files into temporary directory of the DP project 
+    copy_CP_files(cppipe_path, config_path, checkpoint_path)
+        copy project files into temporary directory of the CP project
     init_downloader(aspera_path, aspera_key_path, screens_path)
         initialize aspera downloader
     init_preprocessor(fiji_path)
@@ -52,8 +54,8 @@ class IdrStream:
         initialize cellpose segmentor
     init_cellprofiler_metadata(data_to_process_tsv)
         initialize CellProfiler metadata creator
-    prepare_batch(stream_type, batch_metadata)
-        download data from a batch image and run further processes based on the stream_type
+    prepare_batch(batch_metadata)
+        download data from a batch image and run further processes
         image and location data are saved in DP project folder
         image data is saved in the CP project folder
     compile_DP_batch_index_csv(batch_metadata)
@@ -62,14 +64,14 @@ class IdrStream:
         profile batch with CellProfiler
     profile_batch_with_DP()
         profile batch with DeepProfiler
-    clear_batch(stream_type)
+    clear_batch()
         remove all intermediate files that are unecessary for next batch to run
     compile_batch_DP_features(output_path)
         compile single cell features into one dataframe and save as compressed csv to final output folder
     compile_batch_CP_features(output_path)
         compile single cell features from CellProfiler into one dataframe (to look like the output from DeepProfiler) and save as compressed csv
         to final output folder
-    run_stream(stream_type, data_to_process, batch_size, start_batch)
+    run_stream(data_to_process, batch_size, start_batch)
         extract features from IDR study given metadata of images to extract features from using a specific method (either DP or CP)
     """
 
@@ -100,12 +102,14 @@ class IdrStream:
         self.idr_id = idr_id
         self.tmp_dir = tmp_dir
 
-        if stream_type == "DP":
+        self.stream_type = stream_type
+
+        if self.stream_type == "DP":
             # DP project will be in tmp dir
             self.DP_project_path = pathlib.Path(f"{tmp_dir}/DP_project/")
             self.DP_project_path.mkdir(parents=True, exist_ok=True)
 
-        if stream_type == "CP":
+        if self.stream_type == "CP":
             # CP project will be in tmp dir
             self.CP_project_path = pathlib.Path(f"{tmp_dir}/CP_project/")
             self.CP_project_path.mkdir(parents=True, exist_ok=True)
@@ -249,16 +253,14 @@ class IdrStream:
         self.cp_metadata = cellprofiler_metadata.convert_tsv_to_csv(data_to_process_tsv)
         self.logger.info("CellProfiler metadata has been converted and saved")
 
-    def prepare_batch(self, stream_type: str, batch_metadata: pd.DataFrame):
+    def prepare_batch(self, batch_metadata: pd.DataFrame):
         """
-        download data from a batch image and run further processes based on the stream_type
+        download data from a batch image and run further processes
         image and location data are saved in DP project folder
         image data is saved in the CP project folder
 
         Parameters
         ----------
-        stream_type: str
-            segmention/feature extraction method (either DP or CP)
         batch_metadata : pd.DataFrame
             metadata of images to extract features from
         """
@@ -284,7 +286,7 @@ class IdrStream:
             # otherwise ImageJ tries to open to movie before it has been completely saved and it errors out
             time.sleep(0.3)
 
-            if stream_type == "CP":
+            if self.stream_type == "CP":
                 frames_save_path = pathlib.Path(
                     f"{self.CP_project_path}/inputs/images/{plate}/"
                 )
@@ -297,7 +299,7 @@ class IdrStream:
                 )
                 self.logger.info("Saved corrected frames")
 
-            if stream_type == "DP":
+            if self.stream_type == "DP":
                 frames_save_path = pathlib.Path(
                     f"{self.DP_project_path}/inputs/images/{plate}/"
                 )
@@ -382,16 +384,11 @@ class IdrStream:
         os.system(command)
         self.logger.info("Deep Profiler run done")
 
-    def clear_batch(self, stream_type: str):
+    def clear_batch(self):
         """
         remove all intermediate files that are unecessary for next batch to run
-
-        Parameters
-        ----------
-        stream_type: str
-            segmention/feature extraction method (either DP or CP)
         """
-        if stream_type == "CP":
+        if self.stream_type == "CP":
             # remove all of the plate folders (with images) from images folder
             images = pathlib.Path(f"{self.CP_project_path}/inputs/images/")
             for item in images.iterdir():
@@ -401,7 +398,7 @@ class IdrStream:
             features = pathlib.Path(f"{self.CP_project_path}/outputs/features/")
             shutil.rmtree(features)
 
-        if stream_type == "DP":
+        if self.stream_type == "DP":
             images = pathlib.Path(f"{self.DP_project_path}/inputs/images/")
             locations = pathlib.Path(f"{self.DP_project_path}/inputs/locations/")
             metadata = pathlib.Path(f"{self.DP_project_path}/inputs/metadata/")
@@ -500,7 +497,6 @@ class IdrStream:
 
     def run_stream(
         self,
-        stream_type: str,
         data_to_process: pd.DataFrame,
         batch_size: int = 10,
         start_batch: int = 0,
@@ -512,8 +508,6 @@ class IdrStream:
 
         Parameters
         ----------
-        stream_type: str
-            segmention/feature extraction method (either DP or CP)
         data_to_process : pd.DataFrame
             Metadata df with metadata of images to extract features from
         batch_size : int, optional
@@ -542,12 +536,12 @@ class IdrStream:
                 if batch_num not in batch_nums:
                     continue
 
-            if stream_type == "CP":
+            if self.stream_type == "CP":
                 # stream_type = "CP"
                 self.logger.info(f"Profiling batch {batch_num} with CellProfiler")
                 try:
                     self.prepare_batch(
-                        stream_type, batch_metadata
+                        batch_metadata
                     )  # put image and location data in CP-required locations
                     self.profile_batch_with_CP()  # profile batch with CellProfiler
                     output_path = pathlib.Path(
@@ -556,22 +550,20 @@ class IdrStream:
                     self.compile_batch_CP_features(
                         output_path
                     )  # compile and save features with PyCytominer
-                    self.clear_batch(
-                        stream_type
-                    )  # delete image/segmentation data for batch
+                    self.clear_batch() # delete image/segmentation data for batch
                 except Exception as e:
                     self.logger.info(f"Error while profiling batch {batch_num}:")
                     self.logger.error(e)
 
-            if stream_type == "DP":
+            if self.stream_type == "DP":
                 # stream_type = "DP"
                 self.logger.info(f"Profiling batch {batch_num} with DeepProfiler")
                 try:
                     self.prepare_batch(
-                        stream_type, batch_metadata
+                        batch_metadata
                     )  # put image and location data in DP-required locations
                     self.compile_batch_index_csv(
-                        stream_type, batch_metadata
+                        batch_metadata
                     )  # compile index csv for DeepProfiler project for the specific batch
                     self.profile_batch_with_DP()  # profile batch with Deep Profiler
                     features_path = pathlib.Path(
@@ -580,9 +572,7 @@ class IdrStream:
                     self.compile_batch_DP_features(
                         features_path
                     )  # compile and save features with PyCytominer
-                    self.clear_batch(
-                        stream_type
-                    )  # delete image/segmentation data for batch
+                    self.clear_batch()  # delete image/segmentation data for batch
                 except Exception as e:
                     self.logger.error(f"Error while profiling batch {batch_num}: {e}")
 
