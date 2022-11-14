@@ -168,7 +168,7 @@ class IdrStream:
         copy project files into temporary directory of the CellProfiler project
 
         """
-        # make directory for the input of cellprofiler and copy metdata file into images folder
+        # make directory for the input of cellprofiler and copy metadata file into images folder
         metadata_save_path = pathlib.Path(
             f"{self.CP_project_path}/inputs/images/{metadata_path.name}"
         )
@@ -314,7 +314,7 @@ class IdrStream:
                 )
                 self.logger.info("Saved nuclei locations")
 
-    def compile_DP_batch_index_csv(self, batch_metadata: pd.DataFrame):
+    def compile_batch_index_csv(self, batch_metadata: pd.DataFrame):
         """
         create index.csv file for batch, index.csv file is used by DeepProfiler to profile a batch
 
@@ -584,7 +584,6 @@ class IdrStream:
                         stream_type
                     )  # delete image/segmentation data for batch
                 except Exception as e:
-                    self.logger.info(f"Error while profiling batch {batch_num}:")
-                    self.logger.error(e)
+                    self.logger.error(f"Error while profiling batch {batch_num}: {e}")
 
         self.logger.info("Stream run done!")

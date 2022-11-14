@@ -11,7 +11,6 @@
 import pathlib
 import pandas as pd
 import shutil
-import logging
 
 from cellpose import core
 
@@ -29,6 +28,7 @@ tmp_dir = pathlib.Path("tmp/")
 final_data_dir = pathlib.Path("mitocheck_control_features/")
 try:
     shutil.rmtree(tmp_dir)
+    # uncomment the line below if you would like to remove the final data directory (e.g. all .csv.gz files)
     # shutil.rmtree(final_data_dir)
     pass
 except:
@@ -68,7 +68,6 @@ data_to_process
 aspera_path = pathlib.Path("/home/jenna/.aspera/ascli/sdk/ascp")
 aspera_key_path = pathlib.Path("example_files/asperaweb_id_dsa.openssh")
 screens_path = pathlib.Path("example_files/idr0013-screenA-plates.tsv")
-save_dir = pathlib.Path("data/")
 
 stream.init_downloader(aspera_path, aspera_key_path, screens_path)
 

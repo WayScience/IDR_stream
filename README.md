@@ -57,7 +57,7 @@ However, a larger batch size also corresponds to more intermediate files and mor
 **For CellProfiler Project:**
 
 4) Initialize cp_metadata.
-The CellProfiler metadata compiler needs to be initalized as to convert the `data_to_process.tsv` into a `.csv` file for CellProfiler to intake the metadata.
+The CellProfiler metadata compiler needs to be initialized as to convert the `data_to_process.tsv` into a `.csv` file for CellProfiler to intake the metadata.
 5) Create the base CP project folders/files.
 Every CP batch run will use 1 file: `.cppipe` file (example in [example_files/CP_files](example_files/CP_files)).
 This file is copied to the necessary folders in the CP project (e.g. inputs/pipeline) and will not be deleted until the stream is complete.
@@ -88,7 +88,7 @@ Save desired frame(s) in CP project.
 CellProfiler will load the images, segment them using CellProfiler Cellpose plugin, and run feature extraction.
 CellProfiler will output multiple `.csv` file (e.g. Experiment, Image, and Nuclei), but only `Nuclei.csv` contains the features and the metadata that was generated from the `init_cp_metadata` function.
 4) Compile CP features from a batch 
-Compile CP features in a proper order and remove irrelevent metadata from the file.
+Compile CP features in a proper order and remove irrelevant metadata from the file.
 5) Delete all intermediate files from batch run and run next batch!
 
 ## Setup
@@ -159,7 +159,7 @@ We discuss different methods of illumination correction in [#1](https://github.c
 ### Fiji:
 
 Download [Fiji](https://imagej.net/software/fiji/downloads) using the appropriate file for your OS.
-We recommend putting the `Fiji.app` file that comes from the install on your Desktop or in a place that you can easily find the path to.
+We recommend putting the Fiji application file (for Linux it is called `Fiji.app`) that comes from the install on your Desktop or in a place that you can easily find the path to.
 
 ### CellProfiler:
 
@@ -192,7 +192,7 @@ wget https://raw.githubusercontent.com/CellProfiler/CellProfiler-plugins/21454fe
 
 Open the CellProfiler GUI by using:
 
-```
+```console
 # Make sure you have already activated the `idrstream` environment
 cellprofiler
 ```
