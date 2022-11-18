@@ -101,7 +101,7 @@ class IdrStream:
         """
         self.idr_id = idr_id
         self.tmp_dir = tmp_dir
-
+        
         self.stream_type = stream_type
 
         if self.stream_type == "DP":

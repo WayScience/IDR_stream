@@ -23,8 +23,8 @@ More details can be found on the [IDR website](https://idr.openmicroscopy.org/ab
 BaSiCPy is the python implementation of the BaSiC method for illumination correction, introduced in [Peng, T et al., 2020](https://doi.org/10.1007/978-3-030-59722-1_17).
 - [CellPose](https://github.com/mouseland/cellpose) is used to segment nuclei from mitosis movies.
 CellPose was first introduced in [Stringer, C., Wang, T., Michaelos, M. et al., 2020](https://doi.org/10.1038/s41592-020-01018-x).
-- [DeepProfiler](https://github.com/cytomining/DeepProfiler) is an option to extract deep learning features from mitosis movies. 
-- [CellProfiler](https://github.com/CellProfiler/CellProfiler) is an option for segmentation and feature extraction from mitosis movies. 
+- [DeepProfiler](https://github.com/cytomining/DeepProfiler) can be used to extract deep learning features from mitosis movies. 
+- [CellProfiler](https://github.com/CellProfiler/CellProfiler) can be used for segmentation and feature extraction from mitosis movies. 
 - [PyCytominer](https://github.com/cytomining/pycytominer) is used to compile DeepProfiler-extracted features with their metadata. 
 
 The stream processes image data in the following pipeline:
@@ -201,7 +201,7 @@ cellprofiler
 
 Go to "File -> Preferences". 
 
-From there, you can change the `CellProfiler plugins directory` to the path that you put the Cellpose plugin in (e.g. /home/jenna/Desktop/Github/CellProfiler/cellprofiler/modules/plugins).
+From there, you can change the `CellProfiler plugins directory` to the path that you put the Cellpose plugin in (e.g. ~/Desktop/Github/CellProfiler/cellprofiler/modules/plugins).
 
 Close the GUI and reopen to confirm the path is correct.
 
