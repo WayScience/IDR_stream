@@ -8,7 +8,5 @@ mitocheck_control_features
 tmp/
 # PyBaSiC
 idrstream/PyBaSiC/
-# Juypter testing notebook
-edit_tsv_file.ipynb
 # ignore .cpproj files 
 mitocheck_idr_cp.cpproj
