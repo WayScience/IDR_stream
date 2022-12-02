@@ -3,8 +3,9 @@ This function will convert the `data_to_process.tsv` file into a .csv so that Ce
 metadata to the images from each batch. 
 """
 import pandas as pd
+import pathlib
 
-def convert_tsv_to_csv(data_to_process_tsv: str):
+def convert_tsv_to_csv(data_to_process_tsv: pathlib.Path, metadata_save_path: pathlib.Path):
     """ Convert `data_to_process.tsv` file into a .csv for CellProfiler to read in when processing the images
 
     Parameters
@@ -16,5 +17,5 @@ def convert_tsv_to_csv(data_to_process_tsv: str):
     data_to_process_csv = pd.read_csv(data_to_process_tsv,sep='\t')
     
     # converting tsv file into csv
-    data_to_process_csv.to_csv('example_files/data_to_process.csv',index=False)
+    data_to_process_csv.to_csv(metadata_save_path, index=False)
 

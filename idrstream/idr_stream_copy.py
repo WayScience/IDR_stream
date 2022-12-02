@@ -10,7 +10,8 @@ from pycytominer.cyto_utils import DeepProfiler_processing
 import idrstream.download as download
 import idrstream.preprocess as preprocess
 import idrstream.segment as segment
-import idrstream.cellprofiler_metadata as cellprofiler_metadata
+import idrstream.cellprofiler_functions as run_cp
+import idrstream.deepprofiler_functions as run_dp
 
 
 class IdrStream:
@@ -41,11 +42,13 @@ class IdrStream:
         BasicpyPreprocessor used to preprocess IDR data
     segmentor : CellPoseSegmentor
         CellPoseSegmentor used to segment IDR data
+    cellprofilerrun : CellProfilerRun
+        CellProfilerRun used to process each batch (perform segmentation and feature extraction)
 
     Methods
     -------
     copy_DP_files(cppipe_path, config_path, checkpoint_path)
-        copy project files into temporary directory of the DP project 
+        copy project files into temporary directory of the DP project
     copy_CP_files(cppipe_path, config_path, checkpoint_path)
         copy project files into temporary directory of the CP project
     init_downloader(aspera_path, aspera_key_path, screens_path)
@@ -54,8 +57,6 @@ class IdrStream:
         initialize basicpy preprocessor
     init_segmentor(model_specs)
         initialize cellpose segmentor
-    init_cellprofiler_metadata(data_to_process_tsv)
-        initialize CellProfiler metadata creator
     prepare_batch(batch_metadata)
         download data from a batch image and run further processes
         image and location data are saved in DP project folder
@@ -244,16 +245,55 @@ class IdrStream:
         self.segmentor = segment.CellPoseSegmentor(model_specs)
         self.logger.info("CellPose segmentor initialized")
 
-    def init_cp_metadata(self, data_to_process_tsv: pathlib.Path):
-        """initialize cellprofiler metadata compiler
+    def init_cellprofilerrun(
+        self,
+        CP_output_path: pathlib.Path,
+        CP_images_path: pathlib.Path,
+        pipeline_path: pathlib.Path,
+        plugins_directory: pathlib.Path,
+    ):
+        """ 
+        initalize CellProfiler run
 
         Parameters
         ----------
-        data_to_process : pd.DataFrame
-            metadata for CellProfiler to process
+        CP_output_path : pathlib.Path
+            path to where the .csv files outputted from each CellProfiler batch run will go
+        CP_images_path : pathlib.Path
+            path to the images for each batch
+        pipeline_path : pathlib.Path
+            path to CellProfiler pipeline to perform segmentation and feature extraction
+        plugins_directory : pathlib.Path
+            path to CellProfiler directory with Cellpose plugin
         """
-        cellprofiler_metadata.convert_tsv_to_csv(data_to_process_tsv)
-        self.logger.info("CellProfiler metadata has been converted and saved")
+        self.cellprofilerrun = run_cp.CellProfilerRun(
+            CP_output_path, CP_images_path, pipeline_path, plugins_directory
+        )
+
+    def init_cellprofilerrun(
+        self,
+        CP_output_path: pathlib.Path,
+        CP_images_path: pathlib.Path,
+        pipeline_path: pathlib.Path,
+        plugins_directory: pathlib.Path,
+    ):
+        """ 
+        initalize CellProfiler run
+
+        Parameters
+        ----------
+        CP_output_path : pathlib.Path
+            path to where the .csv files outputted from each CellProfiler batch run will go
+        CP_images_path : pathlib.Path
+            path to the images for each batch
+        pipeline_path : pathlib.Path
+            path to CellProfiler pipeline to perform segmentation and feature extraction
+        plugins_directory : pathlib.Path
+            path to CellProfiler directory with Cellpose plugin
+        """
+        self.cellprofilerrun = run_cp.CellProfilerRun(
+            CP_output_path, CP_images_path, pipeline_path, plugins_directory
+        )
 
     def prepare_batch(self, batch_metadata: pd.DataFrame):
         """
@@ -318,74 +358,6 @@ class IdrStream:
                 )
                 self.logger.info("Saved nuclei locations")
 
-    def compile_batch_index_csv(self, batch_metadata: pd.DataFrame):
-        """
-        create index.csv file for batch, index.csv file is used by DeepProfiler to profile a batch
-
-        Parameters
-        ----------
-        batch_metadata : pd.DataFrame
-            metadata of images to extract features from
-        """
-
-        index_csv_save_path = pathlib.Path(
-            f"{self.DP_project_path}/inputs/metadata/index.csv"
-        )
-        index_csv_save_path.parents[0].mkdir(parents=True, exist_ok=True)
-
-        index_csv_data = []
-
-        # path to deepprofiler project images folder
-        DP_images_path = pathlib.Path(f"{self.DP_project_path}/inputs/images/")
-
-        # iterate through images and append data relevant to DP index file
-        for index, row in batch_metadata.iterrows():
-            plate = row["Plate"]
-            well_num = row["Well Number"]
-            # load frames saved as "x,y,z" and convert to [x,y,z]
-            frame_nums = str(row["Frames"]).split(",")
-            frame_nums = [int(frame_num) for frame_num in frame_nums]
-            gene = row["Original Gene Target"]
-
-            for frame_num in frame_nums:
-                image_file_path = pathlib.Path(
-                    f"{DP_images_path}/{plate}/{plate}_{well_num}_{frame_num}.tif"
-                )
-                image_data = {
-                    "Metadata_Plate": plate,
-                    "Metadata_Well": f"{well_num}_{frame_num}",
-                    "Metadata_Site": 1,
-                    "Plate_Map_Name": f"{plate}_{well_num}",
-                    "DNA": image_file_path.relative_to(DP_images_path),
-                    "Gene": gene,
-                    "Gene_Replicate": 1,
-                }
-                index_csv_data.append(image_data)
-        index_csv_data = pd.DataFrame(index_csv_data)
-        index_csv_data.to_csv(index_csv_save_path, index=False)
-        self.logger.info(f"Compiled index.csv file to {index_csv_save_path}")
-
-    def profile_batch_with_CP(self):
-        """
-        profile batch with CellProfiler (runs segmentation and feature extraction)
-        """
-        # need to specify plugin directory for CellProfiler to find the Cellpose plugin
-        plugins_directory = (
-            "/home/jenna/Desktop/Github/CellProfiler/cellprofiler/modules/plugins"
-        )
-        pipeline_path = "example_files/CP_files/mitocheck_idr_cp.cppipe"
-        command = f"cellprofiler -c -r -p {pipeline_path} -o {self.CP_output_path} -i {self.CP_images_path} --plugins-directory {plugins_directory}"
-        os.system(command)
-        self.logger.info("CellProfiler run done")
-
-    def profile_batch_with_DP(self):
-        """
-        profile batch with DeepProfiler
-        """
-        command = f"python3 -m deepprofiler --gpu 0 --root {self.DP_project_path} --config {self.config_name} profile"
-        os.system(command)
-        self.logger.info("Deep Profiler run done")
-
     def clear_batch(self):
         """
         remove all intermediate files that are unecessary for next batch to run
@@ -411,91 +383,6 @@ class IdrStream:
                 shutil.rmtree(path)
 
             self.logger.info("Temporary batch files cleared")
-
-    def compile_batch_CP_features(self, output_path: pathlib.Path):
-        """
-        compile single cell features from CellProfiler into one dataframe (to look like the output from DeepProfiler) and save as compressed csv
-        to final output folder
-
-        Args:
-            output_path (pathlib.Path):
-                path of final data folder
-        """
-        # load in the "Nuclei.csv" file that is created from the batch
-        nuclei_table = pathlib.Path("tmp/CP_project/outputs/features/Nuclei.csv")
-        cp_output = pd.read_csv(nuclei_table, dtype=object)
-
-        # change 'Metadata_Well' column data format
-        cp_output.drop("Metadata_Well", inplace=True, axis=1)
-        cp_output["Metadata_Well"] = (
-            cp_output["Metadata_Well_Number"] + "_" + cp_output["Metadata_Frames"]
-        )
-
-        # list of all unnecessary columns in the outputted .csv file from CellProfiler
-        columns_to_drop = [
-            "Metadata_FileLocation",
-            "Metadata_Frame",
-            "Metadata_Series",
-            "Metadata_Control Type",
-            "ImageNumber",
-            "ObjectNumber",
-            "Metadata_Frames",
-            "Metadata_Well_Number",
-        ]
-
-        # remove unnecessary metadata columns
-        cp_output.drop(columns_to_drop, inplace=True, axis=1)
-
-        # change the name of 'Metadata_Orginal Gene Replicate' to 'Metadata_Gene'
-        cp_output = cp_output.rename(
-            columns={"Metadata_Original Gene Target": "Metadata_Gene"}
-        )
-
-        # list of the metadata in a specified order
-        metadata = [
-            "Location_Center_X",
-            "Location_Center_Y",
-            "Metadata_Plate",
-            "Metadata_Well",
-            "Metadata_Site",
-            "Metadata_Plate_Map_Name",
-            "Metadata_DNA",
-            "Metadata_Gene",
-            "Metadata_Gene_Replicate",
-        ]
-
-        # change the order of the metadata within the file
-        new_metadata_order = metadata + (cp_output.columns.drop(metadata).tolist())
-        cp_features_compiled = cp_output[new_metadata_order]
-
-        # save the compiled features into a compressed .csv file
-        cp_features_compiled.to_csv(
-            output_path, compression={"method": "gzip", "compresslevel": 1, "mtime": 1}
-        )
-
-        self.logger.info("Batch features compiled for CellProfiler features")
-
-    def compile_batch_DP_features(self, output_path: pathlib.Path):
-        """
-        compile single cell features from DeepProfiler into one dataframe and save as compressed csv to final output folder
-
-        Parameters
-        ----------
-        output_path : pathlib.Path
-            path of final data folder
-        """
-        index_file = pathlib.Path(f"{self.DP_project_path}/inputs/metadata/index.csv")
-        profile_dir = pathlib.Path(f"{self.DP_project_path}/outputs/results/features")
-        deep_data = DeepProfiler_processing.DeepProfilerData(
-            index_file, profile_dir, filename_delimiter="/"
-        )
-        # create and save single cell df with feature data and metadata
-        deep_single_cell = DeepProfiler_processing.SingleCellDeepProfiler(deep_data)
-        deep_single_cell.get_single_cells(output=True).to_csv(
-            output_path, compression={"method": "gzip", "compresslevel": 1, "mtime": 1}
-        )
-
-        self.logger.info("Batch features compiled with PyCytominer")
 
     def run_stream(
         self,
@@ -552,7 +439,7 @@ class IdrStream:
                     self.compile_batch_CP_features(
                         output_path
                     )  # compile and save features with PyCytominer
-                    self.clear_batch() # delete image/segmentation data for batch
+                    self.clear_batch()  # delete image/segmentation data for batch
                 except Exception as e:
                     self.logger.info(f"Error while profiling batch {batch_num}:")
                     self.logger.error(e)
