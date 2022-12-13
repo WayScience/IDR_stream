@@ -63,3 +63,8 @@ batches 2248
 2022-11-14 15:20:18,558 - INFO - CellProfiler run done
 2022-11-14 15:20:18,685 - INFO - Batch features compiled for CellProfiler features
 2022-11-14 15:20:18,732 - INFO - Stream run done!
+2022-12-13 11:46:59,681 - INFO - IDR stream initialized
+2022-12-13 11:47:21,697 - INFO - IDR stream initialized
+2022-12-13 11:47:36,147 - INFO - IDR stream initialized
+2022-12-13 11:47:59,133 - INFO - IDR stream initialized
+2022-12-13 11:48:05,485 - INFO - Aspera downloader initialized
