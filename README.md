@@ -109,8 +109,10 @@ conda env create -f idrstream_cp_env.yml
 
 This environment must be activated before using `idrstream` with the following:
 ```sh
-# Run this command to activate the conda environment for idrstream
-conda activate idrstream
+# Run this command to activate the conda environment for idrstream with Cellprofiler
+conda activate idrstream_cp
+# Run this command to activate the conda environment for idrstream with Deepprofiler
+conda activate idrstream_dp
 ```
 
 ### Aspera Downloader:

@@ -1,4 +1,4 @@
-name: idrstream
+name: idrstream_dp
 channels:
   - conda-forge
 dependencies:

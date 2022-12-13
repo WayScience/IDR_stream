@@ -1,3 +1,8 @@
+"""
+This file holds the DeepProfilerRun class with all of the functions to use DeepProfiler for feature extraction on a batch. These functions
+include copying the files into a DP project, creating an index.csv file, profile the batch with DeepProfiler, and compile the
+outputed features.
+"""
 import time
 import pandas as pd
 import pathlib
@@ -10,24 +15,18 @@ from pycytominer.cyto_utils import DeepProfiler_processing
 import idrstream.download as download
 import idrstream.preprocess as preprocess
 import idrstream.segment as segment
-import idrstream.cellprofiler_functions as run_cp
-import idrstream.deepprofiler_functions as run_dp
 
 
-class IdrStream:
+class DeepProfilerRun:
     """
-    This class holds all functions needs to stream feature extraction from IDR image data
+    This class holds all the functions needed to perform a DeepProfiler run
 
     Attributes
     ----------
-    stream_type: str
-        segmention/feature extraction method (either DP or CP)
     idr_id : str
         idr accession number for the desired IDR study
     tmp_dir : pathlib.Path
         path to directory to use for intermediate files
-    CP_project_path:
-        path to directory of CellProfiler project
     DP_project_path : pathlib.Path
         path to directory of DeepProfiler project
     final_data_dir : pathlib.Path
@@ -42,15 +41,11 @@ class IdrStream:
         BasicpyPreprocessor used to preprocess IDR data
     segmentor : CellPoseSegmentor
         CellPoseSegmentor used to segment IDR data
-    cellprofilerrun : CellProfilerRun
-        CellProfilerRun used to process each batch (perform segmentation and feature extraction)
 
     Methods
     -------
     copy_DP_files(cppipe_path, config_path, checkpoint_path)
         copy project files into temporary directory of the DP project
-    copy_CP_files(cppipe_path, config_path, checkpoint_path)
-        copy project files into temporary directory of the CP project
     init_downloader(aspera_path, aspera_key_path, screens_path)
         initialize aspera downloader
     init_preprocessor(fiji_path)
@@ -60,39 +55,30 @@ class IdrStream:
     prepare_batch(batch_metadata)
         download data from a batch image and run further processes
         image and location data are saved in DP project folder
-        image data is saved in the CP project folder
-    compile_DP_batch_index_csv(batch_metadata)
+    compile_batch_index_csv(batch_metadata)
         create index.csv file for batch, index.csv file is used by DeepProfiler to profile a batch
-    profile_batch_with_CP()
-        profile batch with CellProfiler
     profile_batch_with_DP()
         profile batch with DeepProfiler
-    clear_batch()
-        remove all intermediate files that are unecessary for next batch to run
     compile_batch_DP_features(output_path)
         compile single cell features into one dataframe and save as compressed csv to final output folder
-    compile_batch_CP_features(output_path)
-        compile single cell features from CellProfiler into one dataframe (to look like the output from DeepProfiler) and save as compressed csv
-        to final output folder
-    run_stream(data_to_process, batch_size, start_batch)
-        extract features from IDR study given metadata of images to extract features from using a specific method (either DP or CP)
+    clear_batch()
+        remove all intermediate files that are unecessary for next batch to run
+    run_dp_stream(data_to_process, batch_size, start_batch)
+        extract features from IDR study given metadata of images to extract features from DeepProfiler
     """
 
     def __init__(
         self,
-        stream_type: str,
         idr_id: str,
         tmp_dir: pathlib.Path,
         final_data_dir: pathlib.Path,
         log="",
     ):
         """
-        __init__ function for IdrStream class
+        __init__ function for the DeepProfilerRun class
 
         Parameters
         ----------
-        stream_type: str
-            segmention/feature extraction method (either DP or CP)
         idr_id : str
             idr accession number for the desired IDR study
         tmp_dir : pathlib.Path
@@ -105,17 +91,8 @@ class IdrStream:
         self.idr_id = idr_id
         self.tmp_dir = tmp_dir
 
-        self.stream_type = stream_type
-
-        if self.stream_type == "DP":
-            # DP project will be in tmp dir
-            self.DP_project_path = pathlib.Path(f"{tmp_dir}/DP_project/")
-            self.DP_project_path.mkdir(parents=True, exist_ok=True)
-
-        if self.stream_type == "CP":
-            # CP project will be in tmp dir
-            self.CP_project_path = pathlib.Path(f"{tmp_dir}/CP_project/")
-            self.CP_project_path.mkdir(parents=True, exist_ok=True)
+        self.DP_project_path = pathlib.Path(f"{tmp_dir}/DP_project/")
+        self.DP_project_path.mkdir(parents=True, exist_ok=True)
 
         self.final_data_dir = final_data_dir
         self.final_data_dir.mkdir(parents=True, exist_ok=True)
@@ -166,29 +143,7 @@ class IdrStream:
         self.checkpoint_name = checkpoint_path.name
 
         self.logger.info("Copied Deep Profiler config and checkpoint files")
-
-    def copy_CP_files(
-        self,
-        metadata_path: pathlib.Path,
-    ):
-        """
-        copy project files into temporary directory of the CellProfiler project
-
-        """
-        # make directory for the input of cellprofiler and copy metadata file into images folder
-        metadata_save_path = pathlib.Path(
-            f"{self.CP_project_path}/inputs/images/{metadata_path.name}"
-        )
-        metadata_save_path.parents[0].mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(metadata_path, metadata_save_path)
-
-        # make directory for the output of cellprofiler
-        output_save_path = pathlib.Path(f"{self.CP_project_path}/outputs/features/")
-        output_save_path.mkdir(parents=True, exist_ok=True)
-        self.CP_output_path = output_save_path
-
-        self.logger.info("Copied CellProfiler cppipe file")
-
+    
     def init_downloader(
         self,
         aspera_path: pathlib.Path,
@@ -244,62 +199,11 @@ class IdrStream:
         """
         self.segmentor = segment.CellPoseSegmentor(model_specs)
         self.logger.info("CellPose segmentor initialized")
-
-    def init_cellprofilerrun(
-        self,
-        CP_output_path: pathlib.Path,
-        CP_images_path: pathlib.Path,
-        pipeline_path: pathlib.Path,
-        plugins_directory: pathlib.Path,
-    ):
-        """ 
-        initalize CellProfiler run
-
-        Parameters
-        ----------
-        CP_output_path : pathlib.Path
-            path to where the .csv files outputted from each CellProfiler batch run will go
-        CP_images_path : pathlib.Path
-            path to the images for each batch
-        pipeline_path : pathlib.Path
-            path to CellProfiler pipeline to perform segmentation and feature extraction
-        plugins_directory : pathlib.Path
-            path to CellProfiler directory with Cellpose plugin
-        """
-        self.cellprofilerrun = run_cp.CellProfilerRun(
-            CP_output_path, CP_images_path, pipeline_path, plugins_directory
-        )
-
-    def init_cellprofilerrun(
-        self,
-        CP_output_path: pathlib.Path,
-        CP_images_path: pathlib.Path,
-        pipeline_path: pathlib.Path,
-        plugins_directory: pathlib.Path,
-    ):
-        """ 
-        initalize CellProfiler run
-
-        Parameters
-        ----------
-        CP_output_path : pathlib.Path
-            path to where the .csv files outputted from each CellProfiler batch run will go
-        CP_images_path : pathlib.Path
-            path to the images for each batch
-        pipeline_path : pathlib.Path
-            path to CellProfiler pipeline to perform segmentation and feature extraction
-        plugins_directory : pathlib.Path
-            path to CellProfiler directory with Cellpose plugin
-        """
-        self.cellprofilerrun = run_cp.CellProfilerRun(
-            CP_output_path, CP_images_path, pipeline_path, plugins_directory
-        )
-
+    
     def prepare_batch(self, batch_metadata: pd.DataFrame):
         """
         download data from a batch image and run further processes
         image and location data are saved in DP project folder
-        image data is saved in the CP project folder
 
         Parameters
         ----------
@@ -328,63 +232,117 @@ class IdrStream:
             # otherwise ImageJ tries to open to movie before it has been completely saved and it errors out
             time.sleep(0.3)
 
-            if self.stream_type == "CP":
-                frames_save_path = pathlib.Path(
-                    f"{self.CP_project_path}/inputs/images/{plate}/"
-                )
-                self.CP_images_path = pathlib.Path(
-                    f"{self.CP_project_path}/inputs/images/"
-                )
+            frames_save_path = pathlib.Path(
+                f"{self.DP_project_path}/inputs/images/{plate}/"
+            )
+            self.preprocessor.save_corrected_frames(
+                plate, well_num, well_movie_path, frames_save_path, frame_nums
+            )
+            self.logger.info("Saved corrected frames")
 
-                self.preprocessor.save_corrected_frames(
-                    plate, well_num, well_movie_path, frames_save_path, frame_nums
-                )
-                self.logger.info("Saved corrected frames")
+            objects_save_path = pathlib.Path(
+                f"{self.DP_project_path}/inputs/locations/{plate}/"
+            )
+            self.segmentor.save_nuclei_locations(
+                plate, well_num, frames_save_path, frame_nums, objects_save_path
+            )
+            self.logger.info("Saved nuclei locations")
 
-            if self.stream_type == "DP":
-                frames_save_path = pathlib.Path(
-                    f"{self.DP_project_path}/inputs/images/{plate}/"
-                )
-                self.preprocessor.save_corrected_frames(
-                    plate, well_num, well_movie_path, frames_save_path, frame_nums
-                )
-                self.logger.info("Saved corrected frames")
+    def compile_batch_index_csv(self, batch_metadata: pd.DataFrame):
+        """
+        create index.csv file for batch, index.csv file is used by DeepProfiler to profile a batch
 
-                objects_save_path = pathlib.Path(
-                    f"{self.DP_project_path}/inputs/locations/{plate}/"
+        Parameters
+        ----------
+        batch_metadata : pd.DataFrame
+            metadata of images to extract features from
+        """
+
+        index_csv_save_path = pathlib.Path(
+            f"{self.DP_project_path}/inputs/metadata/index.csv"
+        )
+        index_csv_save_path.parents[0].mkdir(parents=True, exist_ok=True)
+
+        index_csv_data = []
+
+        # path to deepprofiler project images folder
+        DP_images_path = pathlib.Path(f"{self.DP_project_path}/inputs/images/")
+
+        # iterate through images and append data relevant to DP index file
+        for index, row in batch_metadata.iterrows():
+            plate = row["Plate"]
+            well_num = row["Well Number"]
+            # load frames saved as "x,y,z" and convert to [x,y,z]
+            frame_nums = str(row["Frames"]).split(",")
+            frame_nums = [int(frame_num) for frame_num in frame_nums]
+            gene = row["Original Gene Target"]
+
+            for frame_num in frame_nums:
+                image_file_path = pathlib.Path(
+                    f"{DP_images_path}/{plate}/{plate}_{well_num}_{frame_num}.tif"
                 )
-                self.segmentor.save_nuclei_locations(
-                    plate, well_num, frames_save_path, frame_nums, objects_save_path
-                )
-                self.logger.info("Saved nuclei locations")
+                image_data = {
+                    "Metadata_Plate": plate,
+                    "Metadata_Well": f"{well_num}_{frame_num}",
+                    "Metadata_Site": 1,
+                    "Plate_Map_Name": f"{plate}_{well_num}",
+                    "DNA": image_file_path.relative_to(DP_images_path),
+                    "Gene": gene,
+                    "Gene_Replicate": 1,
+                }
+                index_csv_data.append(image_data)
+        index_csv_data = pd.DataFrame(index_csv_data)
+        index_csv_data.to_csv(index_csv_save_path, index=False)
+        # How would logging work?
+        # self.logger.info(f"Compiled index.csv file to {index_csv_save_path}")
+
+    def profile_batch_with_DP(self):
+        """
+        profile batch with DeepProfiler
+        """
+        command = f"python3 -m deepprofiler --gpu 0 --root {self.DP_project_path} --config {self.config_name} profile"
+        os.system(command)
+        # How would logging work?
+        # self.logger.info("Deep Profiler run done")
+
+    def compile_batch_DP_features(self, output_path: pathlib.Path):
+        """
+        compile single cell features from DeepProfiler into one dataframe and save as compressed csv to final output folder
+
+        Parameters
+        ----------
+        output_path : pathlib.Path
+            path of final data folder
+        """
+        index_file = pathlib.Path(f"{self.DP_project_path}/inputs/metadata/index.csv")
+        profile_dir = pathlib.Path(f"{self.DP_project_path}/outputs/results/features")
+        deep_data = DeepProfiler_processing.DeepProfilerData(
+            index_file, profile_dir, filename_delimiter="/"
+        )
+        # create and save single cell df with feature data and metadata
+        deep_single_cell = DeepProfiler_processing.SingleCellDeepProfiler(deep_data)
+        deep_single_cell.get_single_cells(output=True).to_csv(
+            output_path, compression={"method": "gzip", "compresslevel": 1, "mtime": 1}
+        )
+
+        self.logger.info("Batch features compiled with PyCytominer")
 
     def clear_batch(self):
         """
         remove all intermediate files that are unecessary for next batch to run
         """
-        if self.stream_type == "CP":
-            # remove all of the plate folders (with images) from images folder
-            images = pathlib.Path(f"{self.CP_project_path}/inputs/images/")
-            for item in images.iterdir():
-                if item.is_dir():
-                    shutil.rmtree(item)
-            # remove features folders for next batch
-            features = pathlib.Path(f"{self.CP_project_path}/outputs/features/")
-            shutil.rmtree(features)
+        images = pathlib.Path(f"{self.DP_project_path}/inputs/images/")
+        locations = pathlib.Path(f"{self.DP_project_path}/inputs/locations/")
+        metadata = pathlib.Path(f"{self.DP_project_path}/inputs/metadata/")
+        features = pathlib.Path(f"{self.DP_project_path}/outputs/results/features/")
+        paths_to_remove = [images, locations, metadata, features]
 
-        if self.stream_type == "DP":
-            images = pathlib.Path(f"{self.DP_project_path}/inputs/images/")
-            locations = pathlib.Path(f"{self.DP_project_path}/inputs/locations/")
-            metadata = pathlib.Path(f"{self.DP_project_path}/inputs/metadata/")
-            features = pathlib.Path(f"{self.DP_project_path}/outputs/results/features/")
-            paths_to_remove = [images, locations, metadata, features]
+        for path in paths_to_remove:
+            shutil.rmtree(path)
 
-            for path in paths_to_remove:
-                shutil.rmtree(path)
-
-            self.logger.info("Temporary batch files cleared")
-
-    def run_stream(
+        self.logger.info("Temporary batch files cleared")
+    
+    def run_dp_stream(
         self,
         data_to_process: pd.DataFrame,
         batch_size: int = 10,
@@ -393,7 +351,7 @@ class IdrStream:
         extra_metadata=[],
     ):
         """
-        extract features from IDR study given metadata of images to extract features from using a specific method (either DP or CP)
+        extract features from IDR study given metadata of images to extract features from DeepProfiler
 
         Parameters
         ----------
@@ -425,44 +383,23 @@ class IdrStream:
                 if batch_num not in batch_nums:
                     continue
 
-            if self.stream_type == "CP":
-                # stream_type = "CP"
-                self.logger.info(f"Profiling batch {batch_num} with CellProfiler")
-                try:
-                    self.prepare_batch(
-                        batch_metadata
-                    )  # put image and location data in CP-required locations
-                    self.profile_batch_with_CP()  # profile batch with CellProfiler
-                    output_path = pathlib.Path(
-                        f"{self.final_data_dir}/batch_{batch_num}.csv.gz"
-                    )
-                    self.compile_batch_CP_features(
-                        output_path
-                    )  # compile and save features with PyCytominer
-                    self.clear_batch()  # delete image/segmentation data for batch
-                except Exception as e:
-                    self.logger.info(f"Error while profiling batch {batch_num}:")
-                    self.logger.error(e)
-
-            if self.stream_type == "DP":
-                # stream_type = "DP"
-                self.logger.info(f"Profiling batch {batch_num} with DeepProfiler")
-                try:
-                    self.prepare_batch(
-                        batch_metadata
-                    )  # put image and location data in DP-required locations
-                    self.compile_batch_index_csv(
-                        batch_metadata
-                    )  # compile index csv for DeepProfiler project for the specific batch
-                    self.profile_batch_with_DP()  # profile batch with Deep Profiler
-                    features_path = pathlib.Path(
-                        f"{self.final_data_dir}/batch_{batch_num}.csv.gz"
-                    )
-                    self.compile_batch_DP_features(
-                        features_path
-                    )  # compile and save features with PyCytominer
-                    self.clear_batch()  # delete image/segmentation data for batch
-                except Exception as e:
-                    self.logger.error(f"Error while profiling batch {batch_num}: {e}")
+            self.logger.info(f"Profiling batch {batch_num} with DeepProfiler")
+            try:
+                self.prepare_batch(
+                    batch_metadata
+                )  # put image and location data in DP-required locations
+                self.compile_batch_index_csv(
+                    batch_metadata
+                )  # compile index csv for DeepProfiler project for the specific batch
+                self.profile_batch_with_DP()  # profile batch with Deep Profiler
+                features_path = pathlib.Path(
+                    f"{self.final_data_dir}/batch_{batch_num}.csv.gz"
+                )
+                self.compile_batch_DP_features(
+                    features_path
+                )  # compile and save features with PyCytominer
+                self.clear_batch()  # delete image/segmentation data for batch
+            except Exception as e:
+                self.logger.error(f"Error while profiling batch {batch_num}: {e}")
 
         self.logger.info("Stream run done!")
