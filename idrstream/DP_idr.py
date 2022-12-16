@@ -364,7 +364,7 @@ class DeepProfilerRun:
         batch_nums : str, list, optional
             list of batch numbers to extract features from, by default "all"
         extra_metadata : str, list, optional
-            list of extra metadata to include in final dataframe outputs (object_outlines, object_boxes, etc), by default []
+            list of extra metadata to include in final dataframe outputs (object_outlines, object_boxes, etc), by default [])
         """
         batches = math.ceil(data_to_process.shape[0] / batch_size)
         self.logger.info(

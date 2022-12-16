@@ -144,7 +144,7 @@ class CellProfilerRun:
         output_save_path.mkdir(parents=True, exist_ok=True)
         self.CP_output_path = output_save_path
 
-        self.logger.info("Copied CellProfiler cppipe file")       
+        self.logger.info("Copied metadata file for CellProfiler run to use")       
 
     def init_downloader(
         self,
@@ -263,7 +263,7 @@ class CellProfilerRun:
             path of final data folder
         """
         # load in the "Nuclei.csv" file that is created from the batch
-        nuclei_table = pathlib.Path("tmp/CP_project/outputs/features/Nuclei.csv")
+        nuclei_table = pathlib.Path(f"{self.tmp_dir}/CP_project/outputs/features/Nuclei.csv")
         cp_output = pd.read_csv(nuclei_table, dtype=object)
 
         # change 'Metadata_Well' column data format

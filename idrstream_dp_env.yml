@@ -10,5 +10,6 @@ dependencies:
   - conda-forge::scikit-image=0.19.3
   - conda-forge::pyimagej=1.2.1
   - conda-forge::pip=22.1.2
+  - conda-forge::numpy=1.23.3
   - pip:
     - git+https://github.com/cytomining/pycytominer

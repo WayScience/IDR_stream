@@ -1,0 +1,25 @@
+2022-12-16 13:17:38,818 - INFO - IDR stream initialized
+2022-12-16 13:17:38,848 - INFO - Aspera downloader initialized
+2022-12-16 13:17:42,267 - INFO - Basicpy preprocessor initialized
+2022-12-16 13:17:43,038 - INFO - CellPose segmentor initialized
+2022-12-16 13:17:43,077 - INFO - Copied Deep Profiler config and checkpoint files
+2022-12-16 13:17:43,100 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248
+2022-12-16 13:17:43,100 - INFO - Profiling batch 0 with DeepProfiler
+2022-12-16 13:17:43,101 - INFO - Processing well A4 from LT0001_02, frames [50]
+2022-12-16 13:17:52,573 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00004_01.ch5
+2022-12-16 13:17:56,769 - INFO - Saved corrected frames
+2022-12-16 13:18:02,070 - INFO - Saved nuclei locations
+2022-12-16 13:18:02,070 - INFO - Processing well A15 from LT0001_02, frames [50]
+2022-12-16 13:18:10,566 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00015_01.ch5
+2022-12-16 13:18:14,858 - INFO - Saved corrected frames
+2022-12-16 13:18:18,744 - INFO - Saved nuclei locations
+2022-12-16 13:18:18,745 - INFO - Processing well B2 from LT0001_02, frames [50]
+2022-12-16 13:18:26,985 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00026_01.ch5
+2022-12-16 13:18:30,618 - INFO - Saved corrected frames
+2022-12-16 13:18:34,296 - INFO - Saved nuclei locations
+2022-12-16 13:18:45,940 - INFO - Batch features compiled with PyCytominer
+2022-12-16 13:18:45,942 - INFO - Temporary batch files cleared
+2022-12-16 13:18:45,985 - INFO - Stream run done!

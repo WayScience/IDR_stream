@@ -14,7 +14,9 @@ import shutil
 
 from cellpose import core
 
-from idrstream.idr_stream import IdrStream
+import sys
+sys.path.append("../")
+from idrstream.CP_idr import CellProfilerRun
 
 
 # ## Initialize idrstream
@@ -22,10 +24,12 @@ from idrstream.idr_stream import IdrStream
 # In[2]:
 
 
-stream_type = "CP"
+pipeline_path = pathlib.Path("../example_files/CP_files/mitocheck_idr_cp.cppipe")
+# need to fill in on fig
+plugins_directory = pathlib.Path("/home/jenna/Desktop/Github/CellProfiler/cellprofiler/modules/plugins")
 idr_id = "idr0013"
-tmp_dir = pathlib.Path("tmp/")
-final_data_dir = pathlib.Path("mitocheck_control_features/")
+tmp_dir = pathlib.Path("../tmp/")
+final_data_dir = pathlib.Path("../mitocheck_control_features/CP_features")
 try:
     shutil.rmtree(tmp_dir)
     # uncomment the line below if you would like to remove the final data directory (e.g. all .csv.gz files)
@@ -34,7 +38,7 @@ try:
 except:
     print("No files to remove")
 
-stream = IdrStream(stream_type,idr_id, tmp_dir, final_data_dir, log='idr_stream.log')
+stream = CellProfilerRun(pipeline_path, plugins_directory, idr_id, tmp_dir, final_data_dir, log='cp_idrstream.log')
 
 
 # ## Initialize CellProfiler metadata compiler
@@ -42,9 +46,10 @@ stream = IdrStream(stream_type,idr_id, tmp_dir, final_data_dir, log='idr_stream.
 # In[3]:
 
 
-data_to_process_tsv = pathlib.Path("example_files/data_to_process.tsv")
+data_to_process_tsv = pathlib.Path("../example_files/data_to_process.tsv")
+metadata_save_path = pathlib.Path("../example_files/data_to_process.csv")
 
-data_to_process = stream.init_cp_metadata(data_to_process_tsv)
+data_to_process = stream.convert_tsv_to_csv(data_to_process_tsv, metadata_save_path)
 
 
 # ## Load in metadata
@@ -52,10 +57,7 @@ data_to_process = stream.init_cp_metadata(data_to_process_tsv)
 # In[4]:
 
 
-data_to_process = pd.read_csv("example_files/data_to_process.tsv", sep="\t")
-# remove A1 wells because of irregular illumination
-data_to_process = data_to_process[data_to_process["Well"] != "A1"]
-data_to_process = data_to_process.reset_index(drop=True)
+data_to_process = pd.read_csv("../example_files/data_to_process.tsv", sep="\t")
 data_to_process
 
 
@@ -66,8 +68,8 @@ data_to_process
 
 # find the path in terminal using `ascli config ascp show`
 aspera_path = pathlib.Path("/home/jenna/.aspera/ascli/sdk/ascp")
-aspera_key_path = pathlib.Path("example_files/asperaweb_id_dsa.openssh")
-screens_path = pathlib.Path("example_files/idr0013-screenA-plates.tsv")
+aspera_key_path = pathlib.Path("../example_files/asperaweb_id_dsa.openssh")
+screens_path = pathlib.Path("../example_files/idr0013-screenA-plates.tsv")
 
 stream.init_downloader(aspera_path, aspera_key_path, screens_path)
 
@@ -86,7 +88,7 @@ stream.init_preprocessor(fiji_path)
 # In[7]:
 
 
-metadata_path = pathlib.Path("example_files/data_to_process.csv")
+metadata_path = pathlib.Path("../example_files/data_to_process.csv")
 stream.copy_CP_files(metadata_path)
 
 
@@ -105,5 +107,5 @@ print(">>> GPU activated? %d" % use_GPU)
 # In[9]:
 
 
-stream.run_stream(stream_type, data_to_process, batch_size=3, start_batch=0, batch_nums=[0])
+stream.run_cp_stream(data_to_process, batch_size=3, start_batch=0, batch_nums=[0])
 

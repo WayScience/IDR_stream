@@ -91,7 +91,9 @@ CellProfiler will output multiple `.csv` file (e.g. Experiment, Image, and Nucle
 Compile CP features in a proper order and remove irrelevant metadata from the file.
 5) Delete all intermediate files from batch run and run next batch!
 
-## Setup
+**Note:** Do not run both CP and DP projects at the same time due to both utilizing Cellpose and GPU (can not use GPU with two different runs).
+
+# Setup
 
 ### Necessary Packages:
 
@@ -138,7 +140,7 @@ In order to run ascp without a password do the following:
 
 Download and configure [Aspera public key](https://idr.openmicroscopy.org/about/img/aspera/asperaweb_id_dsa.openssh).
 
-### ImageJ:
+### ImageJ/Fiji:
 
 PyImageJ needs to use be initialized with [FIJI](https://imagej.net/software/fiji/) to be able to read downloaded mitosis movies (CH5 files).
 Download FIJI from the [downloads page](https://imagej.net/software/fiji/downloads) and setup Fiji.app.
@@ -158,12 +160,7 @@ git clone https://github.com/peng-lab/PyBaSiC.git
 For mitosis movie frames, we give PyBaSiC 2 frames before/after the desired frame (depending on position in movie) to perform illumination correction.
 We discuss different methods of illumination correction in [#1](https://github.com/WayScience/IDR_stream/issues/1).
 
-### Fiji:
-
-Download [Fiji](https://imagej.net/software/fiji/downloads) using the appropriate file for your OS.
-We recommend putting the Fiji application file (for Linux it is called `Fiji.app`) that comes from the install on your Desktop or in a place that you can easily find the path to.
-
-### CellProfiler:
+# CellProfiler Project Setup:
 
 CellProfiler will be used for both segmentation and feature extraction.
 For segmentation, we recommend using the Cellpose plugin for CellProfiler for projects centered around nuclei. 
@@ -207,7 +204,7 @@ From there, you can change the `CellProfiler plugins directory` to the path that
 
 Close the GUI and reopen to confirm the path is correct.
 
-### DeepProfiler Feature Extractor:
+# DeepProfiler Project Setup:
 
 Deep Profiler must be installed via Github.
 Commit [`2fb3ed3`](https://github.com/cytomining/DeepProfiler/commit/2fb3ed3027cded6676b7e409687322ef67491ec7) was used while developing `idrstream`.
@@ -216,6 +213,7 @@ Install the repository into `idrstream/` with:
 cd idrstream/
 git clone https://github.com/cytomining/DeepProfiler.git
 cd DeepProfiler/
+# make sure that the conda environment `idrstream_dp` is activated
 pip install -e .
 ```
 
