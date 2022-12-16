@@ -1,24 +1,69 @@
-2022-12-16 10:49:18,461 - INFO - IDR stream initialized
-2022-12-16 10:51:34,626 - INFO - IDR stream initialized
-2022-12-16 10:51:34,688 - INFO - CellProfiler metadata has been converted and saved
-2022-12-16 10:51:34,754 - INFO - Aspera downloader initialized
-2022-12-16 10:51:38,468 - INFO - Basicpy preprocessor initialized
-2022-12-16 10:51:38,505 - INFO - Copied metadata file for CellProfiler run to use
-2022-12-16 10:51:39,518 - INFO - Running IDR stream with: 
+2022-12-16 12:58:27,312 - INFO - IDR stream initialized
+2022-12-16 12:58:27,375 - INFO - CellProfiler metadata has been converted and saved
+2022-12-16 12:58:27,441 - INFO - Aspera downloader initialized
+2022-12-16 12:58:30,497 - INFO - Basicpy preprocessor initialized
+2022-12-16 12:58:30,530 - INFO - Copied metadata file for CellProfiler run to use
+2022-12-16 12:58:31,499 - INFO - Running IDR stream with: 
 batch_size 3 
 start_batch 0 
 batches 2248
-2022-12-16 10:51:39,519 - INFO - Profiling batch 0 with CellProfiler
-2022-12-16 10:51:39,519 - INFO - Processing well A4 from LT0001_02, frames [50]
-2022-12-16 10:51:58,678 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00004_01.ch5
-2022-12-16 10:52:03,277 - INFO - Saved corrected frames
-2022-12-16 10:52:03,277 - INFO - Processing well A15 from LT0001_02, frames [50]
-2022-12-16 10:52:14,472 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00015_01.ch5
-2022-12-16 10:52:19,135 - INFO - Saved corrected frames
-2022-12-16 10:52:19,135 - INFO - Processing well B2 from LT0001_02, frames [50]
-2022-12-16 10:52:40,957 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00026_01.ch5
-2022-12-16 10:52:44,737 - INFO - Saved corrected frames
-2022-12-16 10:53:17,007 - INFO - CellProfiler run done
-2022-12-16 10:53:17,008 - INFO - Error while profiling batch 0:
-2022-12-16 10:53:17,008 - ERROR - [Errno 2] No such file or directory: 'tmp/CP_project/outputs/features/Nuclei.csv'
-2022-12-16 10:53:17,051 - INFO - Stream run done!
+2022-12-16 12:58:31,499 - INFO - Profiling batch 0 with CellProfiler
+2022-12-16 12:58:31,499 - INFO - Processing well A4 from LT0001_02, frames [50]
+2022-12-16 12:58:40,502 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00004_01.ch5
+2022-12-16 12:58:44,578 - INFO - Saved corrected frames
+2022-12-16 12:58:44,578 - INFO - Processing well A15 from LT0001_02, frames [50]
+2022-12-16 12:59:10,976 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00015_01.ch5
+2022-12-16 12:59:14,894 - INFO - Saved corrected frames
+2022-12-16 12:59:14,894 - INFO - Processing well B2 from LT0001_02, frames [50]
+2022-12-16 12:59:35,979 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00026_01.ch5
+2022-12-16 12:59:39,246 - INFO - Saved corrected frames
+2022-12-16 13:00:07,421 - INFO - CellProfiler run done
+2022-12-16 13:00:07,422 - INFO - Error while profiling batch 0:
+2022-12-16 13:00:07,422 - ERROR - [Errno 2] No such file or directory: 'tmp/CP_project/outputs/features/Nuclei.csv'
+2022-12-16 13:00:07,466 - INFO - Stream run done!
+2022-12-16 13:07:19,374 - INFO - IDR stream initialized
+2022-12-16 13:07:19,438 - INFO - CellProfiler metadata has been converted and saved
+2022-12-16 13:07:19,509 - INFO - Aspera downloader initialized
+2022-12-16 13:07:22,945 - INFO - Basicpy preprocessor initialized
+2022-12-16 13:07:22,964 - INFO - Copied metadata file for CellProfiler run to use
+2022-12-16 13:07:23,815 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248
+2022-12-16 13:07:23,815 - INFO - Profiling batch 0 with CellProfiler
+2022-12-16 13:07:23,816 - INFO - Processing well A4 from LT0001_02, frames [50]
+2022-12-16 13:07:33,064 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00004_01.ch5
+2022-12-16 13:07:38,039 - INFO - Saved corrected frames
+2022-12-16 13:07:38,039 - INFO - Processing well A15 from LT0001_02, frames [50]
+2022-12-16 13:07:50,170 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00015_01.ch5
+2022-12-16 13:07:54,248 - INFO - Saved corrected frames
+2022-12-16 13:07:54,248 - INFO - Processing well B2 from LT0001_02, frames [50]
+2022-12-16 13:08:07,876 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00026_01.ch5
+2022-12-16 13:08:11,356 - INFO - Saved corrected frames
+2022-12-16 13:08:39,174 - INFO - CellProfiler run done
+2022-12-16 13:08:39,293 - INFO - Batch features compiled for CellProfiler features
+2022-12-16 13:08:39,296 - INFO - Temporary batch files cleared
+2022-12-16 13:08:39,340 - INFO - Stream run done!
+2022-12-16 13:15:33,360 - INFO - IDR stream initialized
+2022-12-16 13:15:33,411 - INFO - CellProfiler metadata has been converted and saved
+2022-12-16 13:15:33,469 - INFO - Aspera downloader initialized
+2022-12-16 13:15:36,475 - INFO - Basicpy preprocessor initialized
+2022-12-16 13:15:36,493 - INFO - Copied metadata file for CellProfiler run to use
+2022-12-16 13:15:37,314 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248
+2022-12-16 13:15:37,315 - INFO - Profiling batch 0 with CellProfiler
+2022-12-16 13:15:37,316 - INFO - Processing well A4 from LT0001_02, frames [50]
+2022-12-16 13:15:46,060 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00004_01.ch5
+2022-12-16 13:15:50,293 - INFO - Saved corrected frames
+2022-12-16 13:15:50,293 - INFO - Processing well A15 from LT0001_02, frames [50]
+2022-12-16 13:16:01,561 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00015_01.ch5
+2022-12-16 13:16:05,508 - INFO - Saved corrected frames
+2022-12-16 13:16:05,508 - INFO - Processing well B2 from LT0001_02, frames [50]
+2022-12-16 13:16:13,619 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00026_01.ch5
+2022-12-16 13:16:16,794 - INFO - Saved corrected frames
+2022-12-16 13:16:44,717 - INFO - CellProfiler run done
+2022-12-16 13:16:44,841 - INFO - Batch features compiled for CellProfiler features
+2022-12-16 13:16:44,843 - INFO - Temporary batch files cleared
+2022-12-16 13:16:44,885 - INFO - Stream run done!
