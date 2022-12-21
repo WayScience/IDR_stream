@@ -9,7 +9,13 @@ mitocheck_control_features
 tmp/
 
 # PyBaSiC
-idrstream/PyBaSiC/
+idrstream/PyBaSiC
+
+# DeepProfiler
+idrstream/DeepProfiler
 
 # ignore .cpproj files 
 mitocheck_idr_cp.cpproj
+
+# ignore keys
+*.openssh

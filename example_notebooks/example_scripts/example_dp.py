@@ -25,12 +25,11 @@ data_to_process
 
 
 idr_id = "idr0013"
-tmp_dir = pathlib.Path("tmp/")
-final_data_dir = pathlib.Path("mitocheck_control_features/DP_features")
+tmp_dir = pathlib.Path("../tmp/")
+final_data_dir = pathlib.Path("../mitocheck_control_features/DP_features")
 try:
     shutil.rmtree(tmp_dir)
     # shutil.rmtree(final_data_dir)
-    pass
 except:
     print("No files to remove")
 
