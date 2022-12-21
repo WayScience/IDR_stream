@@ -1,10 +1,21 @@
 # Jupyter Notebook files
 .ipynb_checkpoints
+
 # Python files
 __pycache__/
+
 # Example files
-example_files/asperaweb_id_dsa.openssh
 mitocheck_control_features
 tmp/
+
 # PyBaSiC
-idrstream/PyBaSiC/
+idrstream/PyBaSiC
+
+# DeepProfiler
+idrstream/DeepProfiler
+
+# ignore .cpproj files 
+mitocheck_idr_cp.cpproj
+
+# ignore keys
+*.openssh

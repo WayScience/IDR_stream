@@ -1,0 +1,172 @@
+CellProfiler Pipeline: http://www.cellprofiler.org
+Version:5
+DateRevision:424
+GitHash:
+ModuleCount:13
+HasImagePlaneDetails:False
+
+Images:[module_num:1|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['To begin creating your project, use the Images module to compile a list of files and/or folders that you want to analyze. You can also specify a set of rules to include only the desired files in your selected folders.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    :
+    Filter images?:Images only
+    Select the rule criteria:and (extension does isimage) (directory doesnot containregexp "[\\\\/]\\.")
+
+Metadata:[module_num:2|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:['The Metadata module optionally allows you to extract information describing your images (i.e, metadata) which will be stored along with your measurements. This information can be contained in the file name and/or location, or in an external file.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Extract metadata?:Yes
+    Metadata data type:Text
+    Metadata types:{}
+    Extraction method count:2
+    Metadata extraction method:Extract from file/folder names
+    Metadata source:File name
+    Regular expression to extract from file name:(?P<Plate>LT[0-9]{4}_[0-9][0-9])_(?P<Well_Number>[0-9]{1,3})_(?P<Frames>50)
+    Regular expression to extract from folder name:(?P<Date>[0-9]{4}_[0-9]{2}_[0-9]{2})$
+    Extract metadata from:All images
+    Select the filtering criteria:and (file does contain "")
+    Metadata file location:Default Output Folder sub-folder|Desktop/Github/IDR_stream/example_files
+    Match file and image metadata:[{'CSV Metadata': 'Well Number', 'Image Metadata': 'Series'}]
+    Use case insensitive matching?:No
+    Metadata file name:data_to_process.csv
+    Does cached metadata exist?:No
+    Metadata extraction method:Import from file
+    Metadata source:File name
+    Regular expression to extract from file name:(?P<Plate>LT[0-9]{4}_[0-9][0-9])_(?P<Well_Number>[0-9]{1,3})_(?P<Frames>50)
+    Regular expression to extract from folder name:(?P<Date>[0-9]{4}_[0-9]{2}_[0-9]{2})$
+    Extract metadata from:All images
+    Select the filtering criteria:and (file does contain "")
+    Metadata file location:Default Input Folder|Desktop/Github/IDR_stream/example_files
+    Match file and image metadata:[{'CSV Metadata': 'Well Number', 'Image Metadata': 'Well_Number'}, {'CSV Metadata': 'Plate', 'Image Metadata': 'Plate'}, {'CSV Metadata': 'Frames', 'Image Metadata': 'Frames'}]
+    Use case insensitive matching?:No
+    Metadata file name:data_to_process.csv
+    Does cached metadata exist?:No
+
+NamesAndTypes:[module_num:3|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:['The NamesAndTypes module allows you to assign a meaningful name to each image by which other modules will refer to it.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Assign a name to:All images
+    Select the image type:Grayscale image
+    Name to assign these images:DNA
+    Match metadata:[]
+    Image set matching method:Order
+    Set intensity range from:Image metadata
+    Assignments count:1
+    Single images count:0
+    Maximum intensity:255.0
+    Process as 3D?:No
+    Relative pixel spacing in X:1.0
+    Relative pixel spacing in Y:1.0
+    Relative pixel spacing in Z:1.0
+    Select the rule criteria:and (file does contain "")
+    Name to assign these images:DNA
+    Name to assign these objects:Cell
+    Select the image type:Grayscale image
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+
+Groups:[module_num:4|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['The Groups module optionally allows you to split your list of images into image subsets (groups) which will be processed independently of each other. Examples of groupings include screening batches, microtiter plates, time-lapse movies, etc.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Do you want to group your images?:No
+    grouping metadata count:1
+    Metadata category:None
+
+RunCellpose:[module_num:5|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:DNA
+    Expected object diameter:0
+    Detection mode:cyto
+    Name the output object:Nuclei
+    Use GPU:Yes
+    Use averaging:Yes
+    Supply nuclei image as well?:No
+    Select the nuclei image:None
+    Save probability image?:No
+    Name the probability image:Probabilities
+    Location of the pre-trained model file:Elsewhere...|
+    Pre-trained model file name:cyto_0
+    Flow threshold:0.8
+    Cell probability threshold:0.0
+    GPU memory share for each worker:0.1
+    Stitch Threshold:0.0
+    Use 3D:No
+    Minimum size:-1
+    Use Omnipose for mask reconstruction:No
+    Invert images:No
+    Remove objects that are touching the edge?:Yes
+
+MeasureGranularity:[module_num:6|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:DNA
+    Measure within objects?:Yes
+    Select objects to measure:Nuclei
+    Subsampling factor for granularity measurements:0.25
+    Subsampling factor for background reduction:0.25
+    Radius of structuring element:10
+    Range of the granular spectrum:16
+
+MeasureObjectIntensity:[module_num:7|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:DNA
+    Select objects to measure:Nuclei
+
+MeasureImageIntensity:[module_num:8|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:DNA
+    Measure the intensity only from areas enclosed by objects?:Yes
+    Select input object sets:Nuclei
+    Calculate custom percentiles:No
+    Specify percentiles to measure:10,90
+
+MeasureObjectNeighbors:[module_num:9|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select objects to measure:Nuclei
+    Select neighboring objects to measure:Nuclei
+    Method to determine neighbors:Adjacent
+    Neighbor distance:5
+    Consider objects discarded for touching image border?:Yes
+    Retain the image of objects colored by numbers of neighbors?:No
+    Name the output image:ObjectNeighborCount
+    Select colormap:Blues
+    Retain the image of objects colored by percent of touching pixels?:No
+    Name the output image:PercentTouching
+    Select colormap:Oranges
+
+MeasureObjectIntensityDistribution:[module_num:10|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:DNA
+    Hidden:1
+    Hidden:1
+    Hidden:0
+    Calculate intensity Zernikes?:None
+    Maximum zernike moment:9
+    Select objects to measure:Nuclei
+    Object to use as center?:These objects
+    Select objects to use as centers:None
+    Scale the bins?:Yes
+    Number of bins:4
+    Maximum radius:100
+
+MeasureObjectSizeShape:[module_num:11|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select object sets to measure:Nuclei
+    Calculate the Zernike features?:Yes
+    Calculate the advanced features?:No
+
+MeasureTexture:[module_num:12|svn_version:'Unknown'|variable_revision_number:7|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:DNA
+    Select objects to measure:Nuclei
+    Enter how many gray levels to measure the texture at:256
+    Hidden:1
+    Measure whole images or objects?:Objects
+    Texture scale to measure:3
+
+ExportToSpreadsheet:[module_num:13|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the column delimiter:Comma (",")
+    Add image metadata columns to your object data file?:Yes
+    Add image file and folder names to your object data file?:No
+    Select the measurements to export:Yes
+    Calculate the per-image mean values for object measurements?:No
+    Calculate the per-image median values for object measurements?:No
+    Calculate the per-image standard deviation values for object measurements?:No
+    Output file location:Default Output Folder|Desktop/Github/IDR_stream
+    Create a GenePattern GCT file?:No
+    Select source of sample row name:Metadata
+    Select the image to use as the identifier:None
+    Select the metadata to use as the identifier:None
+    Export all measurement types?:Yes
+    Press button to select measurements:Nuclei|Location_CenterMassIntensity_Y_DNA,Nuclei|Location_CenterMassIntensity_Z_DNA,Nuclei|Location_CenterMassIntensity_X_DNA,Nuclei|Location_MaxIntensity_Y_DNA,Nuclei|Location_MaxIntensity_X_DNA,Nuclei|Location_MaxIntensity_Z_DNA,Nuclei|Location_Center_Z,Nuclei|Location_Center_Y,Nuclei|Location_Center_X,Nuclei|AreaShape_Zernike_4_4,Nuclei|AreaShape_Zernike_4_0,Nuclei|AreaShape_Zernike_4_2,Nuclei|AreaShape_Zernike_6_6,Nuclei|AreaShape_Zernike_6_4,Nuclei|AreaShape_Zernike_6_0,Nuclei|AreaShape_Zernike_6_2,Nuclei|AreaShape_Zernike_3_1,Nuclei|AreaShape_Zernike_3_3,Nuclei|AreaShape_Zernike_8_6,Nuclei|AreaShape_Zernike_8_8,Nuclei|AreaShape_Zernike_8_4,Nuclei|AreaShape_Zernike_8_2,Nuclei|AreaShape_Zernike_8_0,Nuclei|AreaShape_Zernike_5_1,Nuclei|AreaShape_Zernike_5_3,Nuclei|AreaShape_Zernike_5_5,Nuclei|AreaShape_Zernike_7_1,Nuclei|AreaShape_Zernike_7_7,Nuclei|AreaShape_Zernike_7_5,Nuclei|AreaShape_Zernike_7_3,Nuclei|AreaShape_Zernike_2_0,Nuclei|AreaShape_Zernike_2_2,Nuclei|AreaShape_Zernike_1_1,Nuclei|AreaShape_Zernike_9_1,Nuclei|AreaShape_Zernike_9_5,Nuclei|AreaShape_Zernike_9_7,Nuclei|AreaShape_Zernike_9_9,Nuclei|AreaShape_Zernike_9_3,Nuclei|AreaShape_Zernike_0_0,Nuclei|AreaShape_ConvexArea,Nuclei|AreaShape_Eccentricity,Nuclei|AreaShape_MinFeretDiameter,Nuclei|AreaShape_BoundingBoxArea,Nuclei|AreaShape_MaxFeretDiameter,Nuclei|AreaShape_Center_Y,Nuclei|AreaShape_Center_X,Nuclei|AreaShape_Perimeter,Nuclei|AreaShape_Area,Nuclei|AreaShape_MajorAxisLength,Nuclei|AreaShape_Solidity,Nuclei|AreaShape_BoundingBoxMaximum_Y,Nuclei|AreaShape_BoundingBoxMaximum_X,Nuclei|AreaShape_MinorAxisLength,Nuclei|AreaShape_Compactness,Nuclei|AreaShape_MaximumRadius,Nuclei|AreaShape_BoundingBoxMinimum_X,Nuclei|AreaShape_BoundingBoxMinimum_Y,Nuclei|AreaShape_Orientation,Nuclei|AreaShape_MedianRadius,Nuclei|AreaShape_Extent,Nuclei|AreaShape_FormFactor,Nuclei|AreaShape_EquivalentDiameter,Nuclei|AreaShape_MeanRadius,Nuclei|AreaShape_EulerNumber,Nuclei|Granularity_2_DNA,Nuclei|Granularity_4_DNA,Nuclei|Granularity_6_DNA,Nuclei|Granularity_10_DNA,Nuclei|Granularity_12_DNA,Nuclei|Granularity_15_DNA,Nuclei|Granularity_5_DNA,Nuclei|Granularity_13_DNA,Nuclei|Granularity_7_DNA,Nuclei|Granularity_11_DNA,Nuclei|Granularity_1_DNA,Nuclei|Granularity_16_DNA,Nuclei|Granularity_8_DNA,Nuclei|Granularity_3_DNA,Nuclei|Granularity_14_DNA,Nuclei|Granularity_9_DNA,Nuclei|RadialDistribution_FracAtD_DNA_2of4,Nuclei|RadialDistribution_FracAtD_DNA_3of4,Nuclei|RadialDistribution_FracAtD_DNA_4of4,Nuclei|RadialDistribution_FracAtD_DNA_1of4,Nuclei|RadialDistribution_MeanFrac_DNA_4of4,Nuclei|RadialDistribution_MeanFrac_DNA_2of4,Nuclei|RadialDistribution_MeanFrac_DNA_3of4,Nuclei|RadialDistribution_MeanFrac_DNA_1of4,Nuclei|RadialDistribution_RadialCV_DNA_1of4,Nuclei|RadialDistribution_RadialCV_DNA_4of4,Nuclei|RadialDistribution_RadialCV_DNA_3of4,Nuclei|RadialDistribution_RadialCV_DNA_2of4,Nuclei|Texture_InfoMeas2_DNA_3_03_256,Nuclei|Texture_InfoMeas2_DNA_3_02_256,Nuclei|Texture_InfoMeas2_DNA_3_00_256,Nuclei|Texture_InfoMeas2_DNA_3_01_256,Nuclei|Texture_InverseDifferenceMoment_DNA_3_02_256,Nuclei|Texture_InverseDifferenceMoment_DNA_3_00_256,Nuclei|Texture_InverseDifferenceMoment_DNA_3_01_256,Nuclei|Texture_InverseDifferenceMoment_DNA_3_03_256,Nuclei|Texture_InfoMeas1_DNA_3_03_256,Nuclei|Texture_InfoMeas1_DNA_3_01_256,Nuclei|Texture_InfoMeas1_DNA_3_02_256,Nuclei|Texture_InfoMeas1_DNA_3_00_256,Nuclei|Texture_Correlation_DNA_3_03_256,Nuclei|Texture_Correlation_DNA_3_02_256,Nuclei|Texture_Correlation_DNA_3_01_256,Nuclei|Texture_Correlation_DNA_3_00_256,Nuclei|Texture_Variance_DNA_3_00_256,Nuclei|Texture_Variance_DNA_3_03_256,Nuclei|Texture_Variance_DNA_3_02_256,Nuclei|Texture_Variance_DNA_3_01_256,Nuclei|Texture_DifferenceVariance_DNA_3_00_256,Nuclei|Texture_DifferenceVariance_DNA_3_01_256,Nuclei|Texture_DifferenceVariance_DNA_3_02_256,Nuclei|Texture_DifferenceVariance_DNA_3_03_256,Nuclei|Texture_SumEntropy_DNA_3_03_256,Nuclei|Texture_SumEntropy_DNA_3_01_256,Nuclei|Texture_SumEntropy_DNA_3_02_256,Nuclei|Texture_SumEntropy_DNA_3_00_256,Nuclei|Texture_DifferenceEntropy_DNA_3_00_256,Nuclei|Texture_DifferenceEntropy_DNA_3_01_256,Nuclei|Texture_DifferenceEntropy_DNA_3_02_256,Nuclei|Texture_DifferenceEntropy_DNA_3_03_256,Nuclei|Texture_Contrast_DNA_3_03_256,Nuclei|Texture_Contrast_DNA_3_02_256,Nuclei|Texture_Contrast_DNA_3_01_256,Nuclei|Texture_Contrast_DNA_3_00_256,Nuclei|Texture_AngularSecondMoment_DNA_3_02_256,Nuclei|Texture_AngularSecondMoment_DNA_3_01_256,Nuclei|Texture_AngularSecondMoment_DNA_3_00_256,Nuclei|Texture_AngularSecondMoment_DNA_3_03_256,Nuclei|Texture_Entropy_DNA_3_03_256,Nuclei|Texture_Entropy_DNA_3_01_256,Nuclei|Texture_Entropy_DNA_3_00_256,Nuclei|Texture_Entropy_DNA_3_02_256,Nuclei|Texture_SumAverage_DNA_3_01_256,Nuclei|Texture_SumAverage_DNA_3_03_256,Nuclei|Texture_SumAverage_DNA_3_02_256,Nuclei|Texture_SumAverage_DNA_3_00_256,Nuclei|Texture_SumVariance_DNA_3_03_256,Nuclei|Texture_SumVariance_DNA_3_02_256,Nuclei|Texture_SumVariance_DNA_3_01_256,Nuclei|Texture_SumVariance_DNA_3_00_256,Nuclei|Intensity_MedianIntensity_DNA,Nuclei|Intensity_MinIntensityEdge_DNA,Nuclei|Intensity_UpperQuartileIntensity_DNA,Nuclei|Intensity_IntegratedIntensity_DNA,Nuclei|Intensity_IntegratedIntensityEdge_DNA,Nuclei|Intensity_MaxIntensityEdge_DNA,Nuclei|Intensity_MeanIntensityEdge_DNA,Nuclei|Intensity_MADIntensity_DNA,Nuclei|Intensity_LowerQuartileIntensity_DNA,Nuclei|Intensity_MinIntensity_DNA,Nuclei|Intensity_MeanIntensity_DNA,Nuclei|Intensity_StdIntensityEdge_DNA,Nuclei|Intensity_MaxIntensity_DNA,Nuclei|Intensity_MassDisplacement_DNA,Nuclei|Intensity_StdIntensity_DNA,Nuclei|Neighbors_NumberOfNeighbors_Adjacent,Nuclei|Neighbors_SecondClosestObjectNumber_Adjacent,Nuclei|Neighbors_SecondClosestDistance_Adjacent,Nuclei|Neighbors_AngleBetweenNeighbors_Adjacent,Nuclei|Neighbors_FirstClosestDistance_Adjacent,Nuclei|Neighbors_FirstClosestObjectNumber_Adjacent,Nuclei|Neighbors_PercentTouching_Adjacent,Nuclei|Number_Object_Number,Image|Intensity_MADIntensity_DNA_Nuclei,Image|Intensity_UpperQuartileIntensity_DNA_Nuclei,Image|Intensity_MeanIntensity_DNA_Nuclei,Image|Intensity_MinIntensity_DNA_Nuclei,Image|Intensity_MaxIntensity_DNA_Nuclei,Image|Intensity_MedianIntensity_DNA_Nuclei,Image|Intensity_LowerQuartileIntensity_DNA_Nuclei,Image|Intensity_StdIntensity_DNA_Nuclei,Image|Intensity_TotalArea_DNA_Nuclei,Image|Intensity_TotalIntensity_DNA_Nuclei,Image|Intensity_PercentMaximal_DNA_Nuclei,Image|ModuleError_08MeasureImageIntensity,Image|ModuleError_01Images,Image|ModuleError_06MeasureGranularity,Image|ModuleError_04Groups,Image|ModuleError_02Metadata,Image|ModuleError_07MeasureObjectIntensity,Image|ModuleError_03NamesAndTypes,Image|ModuleError_11MeasureObjectSizeShape,Image|ModuleError_12MeasureTexture,Image|ModuleError_05RunCellpose,Image|ModuleError_09MeasureObjectNeighbors,Image|ModuleError_10MeasureObjectIntensityDistribution,Image|Granularity_11_DNA,Image|Granularity_9_DNA,Image|Granularity_10_DNA,Image|Granularity_15_DNA,Image|Granularity_8_DNA,Image|Granularity_1_DNA,Image|Granularity_4_DNA,Image|Granularity_13_DNA,Image|Granularity_7_DNA,Image|Granularity_2_DNA,Image|Granularity_12_DNA,Image|Granularity_14_DNA,Image|Granularity_3_DNA,Image|Granularity_16_DNA,Image|Granularity_5_DNA,Image|Granularity_6_DNA,Image|Group_Index,Image|Group_Length,Image|Group_Number,Image|ExecutionTime_01Images,Image|ExecutionTime_11MeasureObjectSizeShape,Image|ExecutionTime_12MeasureTexture,Image|ExecutionTime_08MeasureImageIntensity,Image|ExecutionTime_10MeasureObjectIntensityDistribution,Image|ExecutionTime_07MeasureObjectIntensity,Image|ExecutionTime_02Metadata,Image|ExecutionTime_04Groups,Image|ExecutionTime_05RunCellpose,Image|ExecutionTime_06MeasureGranularity,Image|ExecutionTime_03NamesAndTypes,Image|ExecutionTime_09MeasureObjectNeighbors,Image|Metadata_Plate,Image|Metadata_FileLocation,Image|Metadata_Frame,Image|Metadata_Well_Number,Image|Metadata_Series,Image|Metadata_Frames,Image|URL_DNA,Image|Series_DNA,Image|Scaling_DNA,Image|FileName_DNA,Image|Frame_DNA,Image|MD5Digest_DNA,Image|PathName_DNA,Image|Width_DNA,Image|Count_Nuclei,Image|Height_DNA,Experiment|Pipeline_Pipeline,Experiment|Modification_Timestamp,Experiment|CellProfiler_Version,Experiment|Run_Timestamp
+    Representation of Nan/Inf:NaN
+    Add a prefix to file names?:No
+    Filename prefix:MyExpt_
+    Overwrite existing files without warning?:No
+    Data to export:Do not use
+    Combine these object measurements with those of the previous object?:No
+    File name:DATA.csv
+    Use the object name for the file name?:Yes
