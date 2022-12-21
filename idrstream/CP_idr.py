@@ -1,7 +1,7 @@
 """
 This file holds the CellProfilerRun class with all of the functions to use CellProfiler for segmentation and feature extraction on a batch. These functions
 include converting the data_to_process.tsv file in a csv for CellProfiler to use as metadata, profile the batch with CellProfiler, and compile the
-Nuclei.csv outputed features.
+Nuclei.csv outputted features.
 """
 import pandas as pd
 import os
@@ -61,7 +61,7 @@ class CellProfilerRun:
         compile single cell features from CellProfiler into one dataframe (to look like the output from DeepProfiler) and save as compressed csv 
         to final output folder
     clear_batch()
-        remove all intermediate files that are unecessary for next batch to run
+        remove all intermediate files that are unnecessary for next batch to run
     run_cp_stream(data_to_process, batch_size, start_batch)
         extract features from IDR study given metadata of images to segment and extract features from CellProfiler
     """
@@ -202,8 +202,7 @@ class CellProfilerRun:
 
     def prepare_batch(self, batch_metadata: pd.DataFrame):
         """
-        download data from a batch image and run further processes
-        image data is saved in the CP project folder
+        download data from a batch image and image data is saved in the CP project folder
 
         Parameters
         ----------
@@ -211,7 +210,7 @@ class CellProfilerRun:
             metadata of images to extract features from
         """
         # iterate through image metadatas and download, preprocess, and segment each frame into the batch project
-        for index, row in batch_metadata.iterrows():
+        for _, row in batch_metadata.iterrows():
             plate = row["Plate"]
             well = row["Well"]
             well_num = row["Well Number"]
@@ -335,8 +334,8 @@ class CellProfilerRun:
         data_to_process: pd.DataFrame,
         batch_size: int = 10,
         start_batch: int = 0,
-        batch_nums="all",
-        extra_metadata=[],
+        batch_nums: str = "all",
+        extra_metadata: list = [],
     ):
         """
         extract features from IDR study given metadata of images to extract features from using a specific method

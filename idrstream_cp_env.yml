@@ -12,8 +12,8 @@ dependencies:
 - conda-forge::pyimagej=1.2.1
 - conda-forge::pip=22.1.2
 - conda-forge::numpy=1.23.3
-- conda-forge::matplotlib
-- conda-forge::pandas
+- conda-forge::matplotlib=3.6.1
+- conda-forge::pandas=1.4.2
 - conda-forge::openjdk
 - conda-forge::scikit-learn
 - conda-forge::mahotas

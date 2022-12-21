@@ -24,7 +24,7 @@ BaSiCPy is the python implementation of the BaSiC method for illumination correc
 - [CellPose](https://github.com/mouseland/cellpose) is used to segment nuclei from mitosis movies.
 CellPose was first introduced in [Stringer, C., Wang, T., Michaelos, M. et al., 2020](https://doi.org/10.1038/s41592-020-01018-x).
 - [DeepProfiler](https://github.com/cytomining/DeepProfiler) can be used to extract deep learning features from mitosis movies. 
-- [CellProfiler](https://github.com/CellProfiler/CellProfiler) can be used for segmentation and feature extraction from mitosis movies. 
+- [CellProfiler](https://github.com/CellProfiler/CellProfiler) can be used for segmentation and traditional feature extraction from mitosis movies. 
 - [PyCytominer](https://github.com/cytomining/pycytominer) is used to compile DeepProfiler-extracted features with their metadata. 
 
 The stream processes image data in the following pipeline:
@@ -57,7 +57,8 @@ However, a larger batch size also corresponds to more intermediate files and mor
 **For CellProfiler Project:**
 
 4) Initialize cp_metadata.
-The CellProfiler metadata compiler needs to be initialized as to convert the `data_to_process.tsv` into a `.csv` file for CellProfiler to intake the metadata.
+`idrstream.CellProfilerRun().convert_tsv_to_csv()` needs to be used to initialize metadata for CellProfiler use.
+Check [example_cp.ipynb](example_notebooks/example_cp.ipynb) for more info.
 5) Create the base CP project folders/files.
 Every CP batch run will use 1 file: `.cppipe` file (example in [example_files/CP_files](example_files/CP_files)).
 This file is copied to the necessary folders in the CP project (e.g. inputs/pipeline) and will not be deleted until the stream is complete.
@@ -91,7 +92,8 @@ CellProfiler will output multiple `.csv` file (e.g. Experiment, Image, and Nucle
 Compile CP features in a proper order and remove irrelevant metadata from the file.
 5) Delete all intermediate files from batch run and run next batch!
 
-**Note:** Do not run both CP and DP projects at the same time due to both utilizing Cellpose and GPU (can not use GPU with two different runs).
+**Note:** Do not run more than one instance of an `idrstream` at once! 
+Doing so will cause issues with multiple instances of CellPose trying to utilize the same GPU resources.
 
 # Setup
 
@@ -173,7 +175,7 @@ To run the CellProfiler Cellpose plugin, the steps are as follows:
 We recommend putting it into a folder on your Desktop called `GitHub` for better organization and tracking of the repo.
 
 ```console
-# Make sure to `cd` into the directory that you want the repo in (e.g. \~/Desktop/Github)
+# Make sure to `cd` into the directory that you want the repo in (e.g. ~/Desktop/Github)
 git clone https://github.com/CellProfiler/CellProfiler.git
 ```
 
@@ -192,7 +194,9 @@ wget https://raw.githubusercontent.com/CellProfiler/CellProfiler-plugins/21454fe
 Open the CellProfiler GUI by using:
 
 ```console
-# Make sure you have already activated the `idrstream` environment
+# Activate the `idrstream_cp` environment
+conda activate idrstream_cp
+# Open CellProfiler GUI
 cellprofiler
 ```
 
@@ -219,10 +223,10 @@ pip install -e .
 
 ## Example Usage
 
-Example usage of `idrstream` can be found at [example_dp.ipynb](example_dp.ipynb) and [example_cp.ipynb](example_cp.ipynb).
-We ran this notebook as a python script ([example_dp.py](example_dp.py) and [example_cp.py](example_cp.py)) and hence the notebook has no output for the final cell.
+Example usage of `idrstream` can be found at [example_dp.ipynb](example_notebooks/example_dp.ipynb) and [example_cp.ipynb](example_notebooks/example_cp.ipynb).
+The converted python scripts for these notebooks and their logs can be found at ([example_dp.py](example_scripts/example_dp.py) and [example_cp.py](example_scripts/example_cp.py)).
 
-**Note**: You can use `idrstream` to extract object oulines as extra metadata by passing `extra_metadata=["object_outlines"]` during `idrstream.run_stream()`.
+**Note**: You can use `idrstream` to extract object outlines as extra metadata by passing `extra_metadata=["object_outlines"]` during `idrstream.run_stream()`.
 Similarly, you can choose the desired batch numbers with `batch_nums=[#,#,#]`.
 
 `example_dp.ipynb` - All positive/negative control wells from Mitocheck mitosis movies (idr0013 - Screen A).

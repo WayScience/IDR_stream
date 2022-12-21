@@ -1,7 +1,7 @@
 """
 This file holds the DeepProfilerRun class with all of the functions to use DeepProfiler for feature extraction on a batch. These functions
 include copying the files into a DP project, creating an index.csv file, profile the batch with DeepProfiler, and compile the
-outputed features.
+outputted features.
 """
 import time
 import pandas as pd
@@ -202,8 +202,7 @@ class DeepProfilerRun:
     
     def prepare_batch(self, batch_metadata: pd.DataFrame):
         """
-        download data from a batch image and run further processes
-        image and location data are saved in DP project folder
+        download data from a batch image and the images and location data are saved in DP project folder
 
         Parameters
         ----------
@@ -211,7 +210,7 @@ class DeepProfilerRun:
             metadata of images to extract features from
         """
         # iterate through image metadatas and download, preprocess, and segment each frame into the batch project
-        for index, row in batch_metadata.iterrows():
+        for _, row in batch_metadata.iterrows():
             plate = row["Plate"]
             well = row["Well"]
             well_num = row["Well Number"]
@@ -228,8 +227,8 @@ class DeepProfilerRun:
             )
             self.logger.info(f"well_movie_path: {well_movie_path}")
 
-            # give time for movie to fully save before trying to open it
-            # otherwise ImageJ tries to open to movie before it has been completely saved and it errors out
+            # Aspera downloader called in self.downloader.download_image can take extra time to finalize download depending on network speed.
+            # This gives time for movie to fully save before trying to open it
             time.sleep(0.3)
 
             frames_save_path = pathlib.Path(
@@ -293,8 +292,8 @@ class DeepProfilerRun:
                 index_csv_data.append(image_data)
         index_csv_data = pd.DataFrame(index_csv_data)
         index_csv_data.to_csv(index_csv_save_path, index=False)
-        # How would logging work?
-        # self.logger.info(f"Compiled index.csv file to {index_csv_save_path}")
+
+        self.logger.info(f"Compiled index.csv file to {index_csv_save_path}")
 
     def profile_batch_with_DP(self):
         """
@@ -302,8 +301,8 @@ class DeepProfilerRun:
         """
         command = f"python3 -m deepprofiler --gpu 0 --root {self.DP_project_path} --config {self.config_name} profile"
         os.system(command)
-        # How would logging work?
-        # self.logger.info("Deep Profiler run done")
+
+        self.logger.info("Deep Profiler run done")
 
     def compile_batch_DP_features(self, output_path: pathlib.Path):
         """
@@ -329,7 +328,7 @@ class DeepProfilerRun:
 
     def clear_batch(self):
         """
-        remove all intermediate files that are unecessary for next batch to run
+        remove all intermediate files that are unnecessary for next batch to run
         """
         images = pathlib.Path(f"{self.DP_project_path}/inputs/images/")
         locations = pathlib.Path(f"{self.DP_project_path}/inputs/locations/")
