@@ -190,7 +190,7 @@ To download the plugin file into the correct folder, use the code below in termi
 
 ```console
 # Download the cellpose plugin to the plugins directory
-wget https://raw.githubusercontent.com/CellProfiler/CellProfiler-plugins/21454fe331a5a62ae34ff1b2bbf128aa16873fb0/runcellpose.py  --directory-prefix CellProfiler/cellprofiler/modules/plugins
+wget https://raw.githubusercontent.com/CellProfiler/CellProfiler-plugins/master/runcellpose.py  --directory-prefix CellProfiler/cellprofiler/modules/plugins
 ```
 
 #### Step 3a: Activate the CellProfiler GUI
