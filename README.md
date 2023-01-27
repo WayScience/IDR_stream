@@ -125,6 +125,14 @@ conda activate idrstream_dp
 
 Install Aspera high-speed transfer client as described at https://github.com/IBM/aspera-cli#installation.
 We used the direct installation method.
+On Ubuntu, the direct installation method is as follows:
+
+1) Install Ruby on Ubuntu: `sudo apt install ruby-full`
+2) Confirm Ruby install: `ruby --version`
+3) Install aspera-cli gem: `gem install aspera-cli`
+4) Upgrade aspera-cli gem to latest version: `gem update aspera-cli`
+5) Install acsp: `ascli conf ascp install`
+6) Confirm install and locate acsp (for step 1a): `ascli config ascp show`
 
 ##### Step 1a: Allow Aspera to run without password
 
@@ -216,15 +224,23 @@ Close the GUI and reopen to confirm the path is correct.
 
 # DeepProfiler Project Setup:
 
-Deep Profiler must be installed via Github.
+DeepProfiler must be installed via Github.
 Commit [`2fb3ed3`](https://github.com/cytomining/DeepProfiler/commit/2fb3ed3027cded6676b7e409687322ef67491ec7) was used while developing `idrstream`.
 Install the repository into `idrstream/` with:
 ```sh
+# make sure that the conda environment `idrstream_dp` is activated
+conda activate idrstream_dp
 cd idrstream/
 git clone https://github.com/cytomining/DeepProfiler.git
 cd DeepProfiler/
-# make sure that the conda environment `idrstream_dp` is activated
 pip install -e .
+```
+
+Installing this version of DeepProfiler will downgrade numpy to the wrong version, so it is necessary to reinstall numpy with:
+```sh
+# make sure that the conda environment `idrstream_dp` is activated
+conda activate idrstream_dp
+pip install numpy==1.23.3
 ```
 
 ## Example Usage
