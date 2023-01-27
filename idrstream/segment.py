@@ -69,17 +69,19 @@ class CellPoseSegmentor:
             dataframe with object center coords
         """
         objects_data = []
-
-        cellpose_model = models.Cellpose(
+        
+        cellpose_model = models.CellposeModel(
             gpu=self.use_GPU, model_type=self.model_specs["model_type"]
         )
-        masks, flows, styles, diams = cellpose_model.eval(
+        
+        masks, flows, *_ = cellpose_model.eval(
             image,
             diameter=self.model_specs["diameter"],
             channels=self.model_specs["channels"],
             flow_threshold=self.model_specs["flow_threshold"],
             cellprob_threshold=self.model_specs["cellprob_threshold"],
         )
+        
         # remove cell masks if they are on the edge
         if self.model_specs["remove_edge_masks"]:
             masks = utils.remove_edge_masks(masks)
