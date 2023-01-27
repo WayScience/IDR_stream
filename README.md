@@ -100,18 +100,21 @@ Doing so will cause issues with multiple instances of CellPose trying to utilize
 ### Necessary Packages:
 
 The necessary packages for idrstream **using DeepProfiler** can be installed into a conda environment with the following:
+
 ```console
 # Run this command to create the conda environment for idrstream
 conda env create -f idrstream_dp_env.yml
 ```
 
 The necessary packages for idrstream **using CellProfiler** can be installed into a conda environment with the following:
+
 ```console
 # Run this command to create the conda environment for idrstream
 conda env create -f idrstream_cp_env.yml
 ```
 
 This environment must be activated before using `idrstream` with the following:
+
 ```console
 # Run this command to activate the conda environment for idrstream with Cellprofiler
 conda activate idrstream_cp
@@ -227,6 +230,7 @@ Close the GUI and reopen to confirm the path is correct.
 DeepProfiler must be installed via Github.
 Commit [`2fb3ed3`](https://github.com/cytomining/DeepProfiler/commit/2fb3ed3027cded6676b7e409687322ef67491ec7) was used while developing `idrstream`.
 Install the repository into `idrstream/` with:
+
 ```console
 # make sure that the conda environment `idrstream_dp` is activated
 conda activate idrstream_dp
@@ -237,6 +241,7 @@ pip install -e .
 ```
 
 Installing this version of DeepProfiler will downgrade numpy to the wrong version, so it is necessary to reinstall numpy with:
+
 ```console
 # make sure that the conda environment `idrstream_dp` is activated
 conda activate idrstream_dp
