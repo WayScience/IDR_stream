@@ -156,6 +156,8 @@ Clone the repository into `idrstream/` with:
 ```sh
 cd idrstream/
 git clone https://github.com/peng-lab/PyBaSiC.git
+cd PyBaSiC/
+git checkout f3fcf1987db47c4a29506d240d0f69f117c82d2b
 ```
 
 **Note:** The version of PyBaSic we use needs at least 3 images to perform illumination correction.
