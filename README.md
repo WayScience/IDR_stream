@@ -126,7 +126,7 @@ conda activate idrstream_dp
 
 #### Step 1: Install Aspera
 
-Install Aspera high-speed transfer client as described at https://github.com/IBM/aspera-cli#installation.
+Install Aspera high-speed transfer client as described at <https://github.com/IBM/aspera-cli#installation>.
 We used the direct installation method.
 On Ubuntu, the direct installation method is as follows:
 
