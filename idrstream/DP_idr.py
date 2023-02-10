@@ -349,9 +349,9 @@ class DeepProfilerRun:
             shutil.rmtree(path)
 
         self.logger.info("Temporary batch files cleared")
-        
+
     def add_batch_object_outlines(
-        self, batch_single_cell_df: pd.DataFrame, object_metadata_channel = "Metadata_DNA"
+        self, batch_single_cell_df: pd.DataFrame, object_metadata_channel="Metadata_DNA"
     ) -> pd.DataFrame:
         """
         add object outlines to single cell data for current batch
@@ -429,7 +429,7 @@ class DeepProfilerRun:
             list of extra metadata to include in final dataframe outputs (object_outlines, object_boxes, etc), by default [])
         """
         start_time = time.time()
-        
+
         batches = math.ceil(data_to_process.shape[0] / batch_size)
         self.logger.info(
             f"Running IDR stream with: \nbatch_size {batch_size} \nstart_batch {start_batch} \nbatches {batches} \nbatch nums {batch_nums} \nextra metadata {extra_metadata}"
@@ -460,12 +460,12 @@ class DeepProfilerRun:
                     f"{self.final_data_dir}/batch_{batch_num}.csv.gz"
                 )
                 # compile and save features with PyCytominer
-                self.compile_batch_DP_features(features_path)  
+                self.compile_batch_DP_features(features_path)
                 # delete image/segmentation data for batch
-                self.clear_batch()  
+                self.clear_batch()
             except Exception as e:
                 self.logger.error(f"Error while profiling batch {batch_num}: {e}")
 
         end_time = time.time()
-        total_time = end_time-start_time
+        total_time = end_time - start_time
         self.logger.info(f"Stream run done in {total_time} seconds!")
