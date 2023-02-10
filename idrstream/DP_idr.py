@@ -359,12 +359,14 @@ class DeepProfilerRun:
         add object outlines to single cell data for current batch
         necessary because we compile original single cell df with pycytominer
         but pycytominer cannot append additional metadata (like object outlines)
+        
         Parameters
         ----------
         batch_single_cell_df : pd.DataFrame
             original batch single cell df
         object_metadata_channel : str
             DeepProfiler channel name (from index.csv) to get object outlines from
+        
         Returns
         -------
         pd.DataFrame
