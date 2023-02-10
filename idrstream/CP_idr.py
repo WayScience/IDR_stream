@@ -225,7 +225,7 @@ class CellProfilerRun:
             well_movie_path = self.downloader.download_image(
                 plate, well_num, download_save_path
             )
-            self.logger.info(f"well_movie_path: {well_movie_path}")
+            self.logger.info(f"Movie downloaded to: {well_movie_path}")
 
             # give time for movie to fully save before trying to open it
             # otherwise ImageJ tries to open to movie before it has been completely saved and it errors out
@@ -270,6 +270,9 @@ class CellProfilerRun:
         cp_output["Metadata_Well"] = (
             cp_output["Metadata_Well_Number"] + "_" + cp_output["Metadata_Frames"]
         )
+        
+        # drop unecessary unamed column
+        cp_output.drop("Metadata_Unnamed: 0", inplace=True, axis=1)
 
         # list of all unnecessary columns in the outputted .csv file from CellProfiler
         columns_to_drop = [
