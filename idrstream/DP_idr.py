@@ -143,7 +143,7 @@ class DeepProfilerRun:
         self.checkpoint_name = checkpoint_path.name
 
         self.logger.info("Copied Deep Profiler config and checkpoint files")
-    
+
     def init_downloader(
         self,
         aspera_path: pathlib.Path,
@@ -199,7 +199,7 @@ class DeepProfilerRun:
         """
         self.segmentor = segment.CellPoseSegmentor(model_specs)
         self.logger.info("CellPose segmentor initialized")
-    
+
     def prepare_batch(self, batch_metadata: pd.DataFrame):
         """
         download data from a batch image and the images and location data are saved in DP project folder
@@ -225,7 +225,7 @@ class DeepProfilerRun:
             well_movie_path = self.downloader.download_image(
                 plate, well_num, download_save_path
             )
-            self.logger.info(f"well_movie_path: {well_movie_path}")
+            self.logger.info(f"Movie downloaded to {well_movie_path}")
 
             # Aspera downloader called in self.downloader.download_image can take extra time to finalize download depending on network speed.
             # This gives time for movie to fully save before trying to open it
@@ -243,7 +243,12 @@ class DeepProfilerRun:
                 f"{self.DP_project_path}/inputs/locations/{plate}/"
             )
             self.segmentor.save_nuclei_locations(
-                plate, well_num, frames_save_path, frame_nums, objects_save_path
+                plate,
+                well_num,
+                frames_save_path,
+                frame_nums,
+                objects_save_path,
+                self.extra_metadata,
             )
             self.logger.info("Saved nuclei locations")
 
@@ -320,11 +325,15 @@ class DeepProfilerRun:
         )
         # create and save single cell df with feature data and metadata
         deep_single_cell = DeepProfiler_processing.SingleCellDeepProfiler(deep_data)
-        deep_single_cell.get_single_cells(output=True).to_csv(
+        deep_single_cell_df = deep_single_cell.get_single_cells(output=True)
+        self.logger.info("Batch features compiled with PyCytominer")
+        if "object_outlines" in self.extra_metadata:
+            deep_single_cell_df = self.add_batch_object_outlines(deep_single_cell_df)
+        deep_single_cell_df.to_csv(
             output_path, compression={"method": "gzip", "compresslevel": 1, "mtime": 1}
         )
 
-        self.logger.info("Batch features compiled with PyCytominer")
+        self.logger.info(f"Saved compiled batch features to {output_path}")
 
     def clear_batch(self):
         """
@@ -340,7 +349,61 @@ class DeepProfilerRun:
             shutil.rmtree(path)
 
         self.logger.info("Temporary batch files cleared")
-    
+        
+    def add_batch_object_outlines(
+        self, batch_single_cell_df: pd.DataFrame, object_metadata_channel = "Metadata_DNA"
+    ) -> pd.DataFrame:
+        """
+        add object outlines to single cell data for current batch
+        necessary because we compile original single cell df with pycytominer
+        but pycytominer cannot append additional metadata (like object outlines)
+        Parameters
+        ----------
+        batch_single_cell_df : pd.DataFrame
+            original batch single cell df
+        object_metadata_channel : str
+            DeepProfiler channel name (from index.csv) to get object outlines from
+        Returns
+        -------
+        pd.DataFrame
+            new batch single cell df with object outlines appended
+        """
+
+        locations_save_path = pathlib.Path(f"{self.DP_project_path}/inputs/locations/")
+        new_batch_single_cell_df = []
+
+        # iterate over location files in order of plate map data in batch_single_cell_df
+        for image_path in batch_single_cell_df[object_metadata_channel].unique():
+            # split single cell dataframe into image dataframes to find object outlines for that image
+            image_single_cell_df = batch_single_cell_df.loc[
+                batch_single_cell_df[object_metadata_channel] == image_path
+            ].reset_index(drop=True)
+            image_plate = image_single_cell_df["Metadata_Plate"].unique()[0]
+            image_well = image_single_cell_df["Metadata_Well"].unique()[0]
+            image_site = image_single_cell_df["Metadata_Site"].unique()[0]
+
+            # load object outlines for a particular image
+            image_locations_path = pathlib.Path(
+                f"{locations_save_path}/{image_plate}/{image_well}-{image_site}-Nuclei.csv"
+            )
+            image_outline_data = pd.read_csv(image_locations_path)[
+                "object_outline"
+            ].reset_index(drop=True)
+            # insert object outlines to the single cell df
+            image_single_cell_df.insert(
+                loc=0, column="Object_Outline", value=image_outline_data
+            )
+
+            # add to full batch single cell df
+            new_batch_single_cell_df.append(image_single_cell_df)
+
+        # compile and return new batch single cell df
+        new_batch_single_cell_df = pd.concat(new_batch_single_cell_df).reset_index(
+            drop=True
+        )
+        self.logger.info("Object outlines added for batch")
+        return new_batch_single_cell_df
+
     def run_dp_stream(
         self,
         data_to_process: pd.DataFrame,
@@ -367,7 +430,7 @@ class DeepProfilerRun:
         """
         batches = math.ceil(data_to_process.shape[0] / batch_size)
         self.logger.info(
-            f"Running IDR stream with: \nbatch_size {batch_size} \nstart_batch {start_batch} \nbatches {batches}"
+            f"Running IDR stream with: \nbatch_size {batch_size} \nstart_batch {start_batch} \nbatches {batches} \nbatch nums {batch_nums} \nextra metadata {extra_metadata}"
         )
         self.extra_metadata = extra_metadata
         # prepare, profile, compile, and delete intermediate files for each batch
@@ -394,10 +457,10 @@ class DeepProfilerRun:
                 features_path = pathlib.Path(
                     f"{self.final_data_dir}/batch_{batch_num}.csv.gz"
                 )
-                self.compile_batch_DP_features(
-                    features_path
-                )  # compile and save features with PyCytominer
-                self.clear_batch()  # delete image/segmentation data for batch
+                # compile and save features with PyCytominer
+                self.compile_batch_DP_features(features_path)  
+                # delete image/segmentation data for batch
+                self.clear_batch()  
             except Exception as e:
                 self.logger.error(f"Error while profiling batch {batch_num}: {e}")
 

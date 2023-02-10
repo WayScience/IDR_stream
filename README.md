@@ -253,7 +253,7 @@ pip install numpy==1.23.3
 Example usage of `idrstream` can be found at [example_dp.ipynb](example_notebooks/example_dp.ipynb) and [example_cp.ipynb](example_notebooks/example_cp.ipynb).
 The converted python scripts for these notebooks and their logs can be found at ([example_dp.py](example_scripts/example_dp.py) and [example_cp.py](example_scripts/example_cp.py)).
 
-**Note**: You can use `idrstream` to extract object outlines as extra metadata by passing `extra_metadata=["object_outlines"]` during `idrstream.run_stream()`.
+**Note**: You can use `idrstream_dp` to extract object outlines as extra metadata by passing `extra_metadata=["object_outlines"]` during `idrstream_dp.run_stream()`.
 Similarly, you can choose the desired batch numbers with `batch_nums=[#,#,#]`.
 
 `example_dp.ipynb` - All positive/negative control wells from Mitocheck mitosis movies (idr0013 - Screen A).
