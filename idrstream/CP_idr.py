@@ -353,6 +353,8 @@ class CellProfilerRun:
         extra_metadata : str, list, optional
             list of extra metadata to include in final dataframe outputs (object_outlines, object_boxes, etc), by default []
         """
+        start_time = time.time()
+        
         batches = math.ceil(data_to_process.shape[0] / batch_size)
         self.logger.info(
             f"Running IDR stream with: \nbatch_size {batch_size} \nstart_batch {start_batch} \nbatches {batches}"
@@ -387,4 +389,6 @@ class CellProfilerRun:
                 self.logger.info(f"Error while profiling batch {batch_num}:")
                 self.logger.error(e)
 
-        self.logger.info("Stream run done!")
+        end_time = time.time()
+        total_time = end_time-start_time
+        self.logger.info(f"Stream run done in {total_time} seconds!")
