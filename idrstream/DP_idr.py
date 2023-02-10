@@ -351,7 +351,7 @@ class DeepProfilerRun:
         self.logger.info("Temporary batch files cleared")
 
     def add_batch_object_outlines(
-        self, batch_single_cell_df: pd.DataFrame, object_metadata_channel="Metadata_DNA"
+        self, batch_single_cell_df: pd.DataFrame, object_metadata_channel: str ="Metadata_DNA"
     ) -> pd.DataFrame:
         """
         add object outlines to single cell data for current batch
@@ -378,17 +378,15 @@ class DeepProfilerRun:
             image_single_cell_df = batch_single_cell_df.loc[
                 batch_single_cell_df[object_metadata_channel] == image_path
             ].reset_index(drop=True)
-            image_plate = image_single_cell_df["Metadata_Plate"].unique()[0]
-            image_well = image_single_cell_df["Metadata_Well"].unique()[0]
-            image_site = image_single_cell_df["Metadata_Site"].unique()[0]
+            image_plate = image_single_cell_df["Metadata_Plate"].iloc[0]
+            image_well = image_single_cell_df["Metadata_Well"].iloc[0]
+            image_site = image_single_cell_df["Metadata_Site"].iloc[0]
 
             # load object outlines for a particular image
             image_locations_path = pathlib.Path(
                 f"{locations_save_path}/{image_plate}/{image_well}-{image_site}-Nuclei.csv"
             )
-            image_outline_data = pd.read_csv(image_locations_path)[
-                "object_outline"
-            ].reset_index(drop=True)
+            image_outline_data = pd.read_csv(image_locations_path, usecols=["object_outline"], squeeze=True).reset_index(drop=True)
             # insert object outlines to the single cell df
             image_single_cell_df.insert(
                 loc=0, column="Object_Outline", value=image_outline_data

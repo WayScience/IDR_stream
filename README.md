@@ -201,6 +201,10 @@ git clone https://github.com/CellProfiler/CellProfiler.git
 When using CellProiler IDR_stream, `CP_idr.CellProfilerRun()` must be given the path to the directory with [runcellpose.py](idrstream/CP_Plugins/runcellpose.py).
 This can be done by setting `plugins_directory="relative/path/to/idrstream/CP_Plugins/"` (see [example_cp.ipynb](example_notebooks/example_cp.ipynb) for an example).
 
+The version of CellPose plugin on the CellProfiler repository (available [here](https://github.com/CellProfiler/CellProfiler-plugins/blob/master/runcellpose.py)) uses a different method of instantiating CellPose that can result in different segmentations from the DP version of IDR_stream.
+The plugin version in this repository uses the same method of instantiating CellPose as the DP version of IDR_stream.
+We believe that the method used by the CellProfiler team is out of date (see [CellProfiler PR #178](https://github.com/CellProfiler/CellProfiler-plugins/pull/178) for more information).
+
 #### Step 3a: Activate the CellProfiler GUI
 
 Open the CellProfiler GUI by using:

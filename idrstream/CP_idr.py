@@ -267,13 +267,10 @@ class CellProfilerRun:
         cp_output = pd.read_csv(nuclei_table, dtype=object)
 
         # change 'Metadata_Well' column data format
-        cp_output.drop("Metadata_Well", inplace=True, axis=1)
+        cp_output = cp_output.drop("Metadata_Well", axis=1)
         cp_output["Metadata_Well"] = (
             cp_output["Metadata_Well_Number"] + "_" + cp_output["Metadata_Frames"]
         )
-
-        # drop unecessary unamed column
-        cp_output.drop("Metadata_Unnamed: 0", inplace=True, axis=1)
 
         # list of all unnecessary columns in the outputted .csv file from CellProfiler
         columns_to_drop = [
@@ -285,10 +282,11 @@ class CellProfilerRun:
             "ObjectNumber",
             "Metadata_Frames",
             "Metadata_Well_Number",
+            "Metadata_Unnamed: 0",
         ]
 
         # remove unnecessary metadata columns
-        cp_output.drop(columns_to_drop, inplace=True, axis=1)
+        cp_output = cp_output.drop(columns_to_drop, axis=1)
 
         # change the name of 'Metadata_Orginal Gene Replicate' to 'Metadata_Gene'
         cp_output = cp_output.rename(
