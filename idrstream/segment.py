@@ -70,7 +70,7 @@ class CellPoseSegmentor:
         """
         objects_data = []
         
-        cellpose_model = models.CellposeModel(
+        cellpose_model = models.Cellpose(
             gpu=self.use_GPU, model_type=self.model_specs["model_type"]
         )
         
