@@ -196,15 +196,10 @@ We recommend putting it into a folder on your Desktop called `GitHub` for better
 git clone https://github.com/CellProfiler/CellProfiler.git
 ```
 
-#### Step 2: Download and install Cellpose plugin
+#### Step 2: Cellpose plugin
 
-Download the `runcellpose.py` file from the [CellProfiler-Plugins repository](https://github.com/CellProfiler/CellProfiler-plugins/blob/master/runcellpose.py) and then move it into the CellProfiler repo (specifically the plugins folder within the modules folder).
-To download the plugin file into the correct folder, use the code below in terminal.
-
-```console
-# Download the cellpose plugin to the plugins directory
-wget https://raw.githubusercontent.com/CellProfiler/CellProfiler-plugins/master/runcellpose.py  --directory-prefix CellProfiler/cellprofiler/modules/plugins
-```
+When using CellProiler IDR_stream, `CP_idr.CellProfilerRun()` must be given the path to the directory with [runcellpose.py](idrstream/CP_Plugins/runcellpose.py).
+This can be done by setting `plugins_directory="relative/path/to/idrstream/CP_Plugins/"` (see [example_cp.ipynb](example_notebooks/example_cp.ipynb) for an example).
 
 #### Step 3a: Activate the CellProfiler GUI
 
