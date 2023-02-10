@@ -14,6 +14,7 @@ import logging
 import idrstream.download as download
 import idrstream.preprocess as preprocess
 
+
 class CellProfilerRun:
     """
     This class holds all the functions needed to perform a CellProfiler run (segmentation and feature
@@ -58,7 +59,7 @@ class CellProfilerRun:
     profile_batch_with_CP()
         profile batch with CellProfiler (runs segmentation and feature extraction)
     compile_batch_CP_features(output_path)
-        compile single cell features from CellProfiler into one dataframe (to look like the output from DeepProfiler) and save as compressed csv 
+        compile single cell features from CellProfiler into one dataframe (to look like the output from DeepProfiler) and save as compressed csv
         to final output folder
     clear_batch()
         remove all intermediate files that are unnecessary for next batch to run
@@ -144,7 +145,7 @@ class CellProfilerRun:
         output_save_path.mkdir(parents=True, exist_ok=True)
         self.CP_output_path = output_save_path
 
-        self.logger.info("Copied metadata file for CellProfiler run to use")       
+        self.logger.info("Copied metadata file for CellProfiler run to use")
 
     def init_downloader(
         self,
@@ -225,7 +226,7 @@ class CellProfilerRun:
             well_movie_path = self.downloader.download_image(
                 plate, well_num, download_save_path
             )
-            self.logger.info(f"well_movie_path: {well_movie_path}")
+            self.logger.info(f"Movie downloaded to: {well_movie_path}")
 
             # give time for movie to fully save before trying to open it
             # otherwise ImageJ tries to open to movie before it has been completely saved and it errors out
@@ -234,9 +235,7 @@ class CellProfilerRun:
             frames_save_path = pathlib.Path(
                 f"{self.CP_project_path}/inputs/images/{plate}/"
             )
-            self.CP_images_path = pathlib.Path(
-                f"{self.CP_project_path}/inputs/images/"
-            )
+            self.CP_images_path = pathlib.Path(f"{self.CP_project_path}/inputs/images/")
             self.preprocessor.save_corrected_frames(
                 plate, well_num, well_movie_path, frames_save_path, frame_nums
             )
@@ -262,11 +261,13 @@ class CellProfilerRun:
             path of final data folder
         """
         # load in the "Nuclei.csv" file that is created from the batch
-        nuclei_table = pathlib.Path(f"{self.tmp_dir}/CP_project/outputs/features/Nuclei.csv")
+        nuclei_table = pathlib.Path(
+            f"{self.tmp_dir}/CP_project/outputs/features/Nuclei.csv"
+        )
         cp_output = pd.read_csv(nuclei_table, dtype=object)
 
         # change 'Metadata_Well' column data format
-        cp_output.drop("Metadata_Well", inplace=True, axis=1)
+        cp_output = cp_output.drop("Metadata_Well", axis=1)
         cp_output["Metadata_Well"] = (
             cp_output["Metadata_Well_Number"] + "_" + cp_output["Metadata_Frames"]
         )
@@ -281,10 +282,11 @@ class CellProfilerRun:
             "ObjectNumber",
             "Metadata_Frames",
             "Metadata_Well_Number",
+            "Metadata_Unnamed: 0",
         ]
 
         # remove unnecessary metadata columns
-        cp_output.drop(columns_to_drop, inplace=True, axis=1)
+        cp_output = cp_output.drop(columns_to_drop, axis=1)
 
         # change the name of 'Metadata_Orginal Gene Replicate' to 'Metadata_Gene'
         cp_output = cp_output.rename(
@@ -353,6 +355,8 @@ class CellProfilerRun:
         extra_metadata : str, list, optional
             list of extra metadata to include in final dataframe outputs (object_outlines, object_boxes, etc), by default []
         """
+        start_time = time.time()
+
         batches = math.ceil(data_to_process.shape[0] / batch_size)
         self.logger.info(
             f"Running IDR stream with: \nbatch_size {batch_size} \nstart_batch {start_batch} \nbatches {batches}"
@@ -382,9 +386,11 @@ class CellProfilerRun:
                 self.compile_batch_CP_features(
                     output_path
                 )  # compile and save features with PyCytominer
-                self.clear_batch() # delete image/segmentation data for batch
+                self.clear_batch()  # delete image/segmentation data for batch
             except Exception as e:
                 self.logger.info(f"Error while profiling batch {batch_num}:")
                 self.logger.error(e)
 
-        self.logger.info("Stream run done!")
+        end_time = time.time()
+        total_time = end_time - start_time
+        self.logger.info(f"Stream run done in {total_time} seconds!")

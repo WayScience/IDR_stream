@@ -196,15 +196,14 @@ We recommend putting it into a folder on your Desktop called `GitHub` for better
 git clone https://github.com/CellProfiler/CellProfiler.git
 ```
 
-#### Step 2: Download and install Cellpose plugin
+#### Step 2: Cellpose plugin
 
-Download the `runcellpose.py` file from the [CellProfiler-Plugins repository](https://github.com/CellProfiler/CellProfiler-plugins/blob/master/runcellpose.py) and then move it into the CellProfiler repo (specifically the plugins folder within the modules folder).
-To download the plugin file into the correct folder, use the code below in terminal.
+When using CellProiler IDR_stream, `CP_idr.CellProfilerRun()` must be given the path to the directory with [runcellpose.py](idrstream/CP_Plugins/runcellpose.py).
+This can be done by setting `plugins_directory="relative/path/to/idrstream/CP_Plugins/"` (see [example_cp.ipynb](example_notebooks/example_cp.ipynb) for an example).
 
-```console
-# Download the cellpose plugin to the plugins directory
-wget https://raw.githubusercontent.com/CellProfiler/CellProfiler-plugins/master/runcellpose.py  --directory-prefix CellProfiler/cellprofiler/modules/plugins
-```
+The version of CellPose plugin on the CellProfiler repository (available [here](https://github.com/CellProfiler/CellProfiler-plugins/blob/master/runcellpose.py)) uses a different method of instantiating CellPose that can result in different segmentations from the DP version of IDR_stream.
+The plugin version in this repository uses the same method of instantiating CellPose as the DP version of IDR_stream.
+We believe that the method used by the CellProfiler team is out of date (see [CellProfiler PR #178](https://github.com/CellProfiler/CellProfiler-plugins/pull/178) for more information).
 
 #### Step 3a: Activate the CellProfiler GUI
 
@@ -253,7 +252,7 @@ pip install numpy==1.23.3
 Example usage of `idrstream` can be found at [example_dp.ipynb](example_notebooks/example_dp.ipynb) and [example_cp.ipynb](example_notebooks/example_cp.ipynb).
 The converted python scripts for these notebooks and their logs can be found at ([example_dp.py](example_scripts/example_dp.py) and [example_cp.py](example_scripts/example_cp.py)).
 
-**Note**: You can use `idrstream` to extract object outlines as extra metadata by passing `extra_metadata=["object_outlines"]` during `idrstream.run_stream()`.
+**Note**: You can use `idrstream_dp` to extract object outlines as extra metadata by passing `extra_metadata=["object_outlines"]` during `idrstream_dp.run_stream()`.
 Similarly, you can choose the desired batch numbers with `batch_nums=[#,#,#]`.
 
 `example_dp.ipynb` - All positive/negative control wells from Mitocheck mitosis movies (idr0013 - Screen A).
