@@ -32,6 +32,9 @@ def merge_CP_DP_batch_data(
     IndexError
         cp and dp dataframes have different number of rows (cells)
     """
+    # covert x and y coordiantes to integers
+    cp_batch_data[["Location_Center_X", "Location_Center_Y"]] = cp_batch_data[["Location_Center_X", "Location_Center_Y"]].astype(int)
+    dp_batch_data[["Location_Center_X", "Location_Center_Y"]] = dp_batch_data[["Location_Center_X", "Location_Center_Y"]].astype(int)
 
     # check batch data have same number of rows (cells)
     # if batch data have different number of cells, raise an error because they must not have close segmentations
@@ -39,6 +42,7 @@ def merge_CP_DP_batch_data(
         raise IndexError("Batch data have different number of rows (cells)!")
 
     # hide warning for pandas chained assignment
+    # this hides the warnings produced by main necessary chained assingments with pandas (can't use .iloc[] for some operations) 
     pd.options.mode.chained_assignment = None
 
     # get cp and dp column names
@@ -59,6 +63,9 @@ def merge_CP_DP_batch_data(
         columns={col: f"DP__{col}" for col in dp_columns}
     )
 
+    # Raise an error if Metadata_DNA not in cp_batch_data
+    if "Metadata_DNA" not in cp_batch_data.columns:
+        raise IndexError("Metadata_DNA not found in CP batch data!")
     # get each image path because cells within the same image are trying to be associated
     image_paths = cp_batch_data["Metadata_DNA"].unique()
 
@@ -74,14 +81,14 @@ def merge_CP_DP_batch_data(
         # create a location column with x and y coordinates as tuple
         cp_image_data["Full_Location"] = list(
             zip(
-                cp_image_data["Location_Center_X"].astype(int),
-                cp_image_data["Location_Center_Y"].astype(int),
+                cp_image_data["Location_Center_X"],
+                cp_image_data["Location_Center_Y"],
             )
         )
         dp_image_data["Full_Location"] = list(
             zip(
-                dp_image_data["Location_Center_X"].astype(int),
-                dp_image_data["Location_Center_Y"].astype(int),
+                dp_image_data["Location_Center_X"],
+                dp_image_data["Location_Center_Y"],
             )
         )
 
