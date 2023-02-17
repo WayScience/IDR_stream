@@ -113,7 +113,7 @@ def merge_CP_DP_batch_data(
     return pd.concat(compiled_merged_data).reset_index(drop=True)
 
 
-def merge_CP_DP_run_data(
+def save_merged_CP_DP_run(
     cp_data_dir_path: pathlib.Path,
     dp_data_dir_path: pathlib.Path,
     merged_data_dir_path: pathlib.Path,
