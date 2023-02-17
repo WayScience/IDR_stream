@@ -85,7 +85,7 @@ def merge_CP_DP_batch_data(
             )
         )
 
-        # make location for dp match the closest cp location (distance minimuzed with hypotenuse)
+        # make location for dp match the closest cp location (distance minimized with hypotenuse)
         dp_image_data["Full_Location"] = dp_image_data["Full_Location"].map(
             lambda dp_coord: min(
                 cp_image_data["Full_Location"],
