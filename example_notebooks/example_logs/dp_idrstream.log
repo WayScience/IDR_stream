@@ -1,31 +1,61 @@
-2023-02-10 14:44:38,474 - INFO - IDR stream initialized
-2023-02-10 14:44:38,504 - INFO - Aspera downloader initialized
-2023-02-10 14:44:41,056 - INFO - Basicpy preprocessor initialized
-2023-02-10 14:44:41,831 - INFO - CellPose segmentor initialized
-2023-02-10 14:44:41,882 - INFO - Copied Deep Profiler config and checkpoint files
-2023-02-10 14:44:41,910 - INFO - Running IDR stream with: 
+2023-02-17 04:31:22,348 - INFO - IDR stream initialized
+2023-02-17 04:31:22,382 - INFO - Aspera downloader initialized
+2023-02-17 04:31:25,012 - INFO - Basicpy preprocessor initialized
+2023-02-17 04:31:25,707 - INFO - CellPose segmentor initialized
+2023-02-17 04:31:25,753 - INFO - Copied Deep Profiler config and checkpoint files
+2023-02-17 04:31:25,776 - INFO - Running IDR stream with: 
 batch_size 3 
 start_batch 0 
-batches 2248 
-batch nums [0] 
-extra metadata ['object_outlines']
-2023-02-10 14:44:41,911 - INFO - Profiling batch 0 with DeepProfiler
-2023-02-10 14:44:41,911 - INFO - Processing well A4 from LT0001_02, frames [50]
-2023-02-10 14:44:48,194 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00004_01.ch5
-2023-02-10 14:44:51,776 - INFO - Saved corrected frames
-2023-02-10 14:44:56,751 - INFO - Saved nuclei locations
-2023-02-10 14:44:56,751 - INFO - Processing well A15 from LT0001_02, frames [50]
-2023-02-10 14:45:03,176 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00015_01.ch5
-2023-02-10 14:45:07,038 - INFO - Saved corrected frames
-2023-02-10 14:45:10,443 - INFO - Saved nuclei locations
-2023-02-10 14:45:10,443 - INFO - Processing well B2 from LT0001_02, frames [50]
-2023-02-10 14:45:16,662 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00026_01.ch5
-2023-02-10 14:45:19,986 - INFO - Saved corrected frames
-2023-02-10 14:45:23,211 - INFO - Saved nuclei locations
-2023-02-10 14:45:23,212 - INFO - Compiled index.csv file to ../tmp/DP_project/inputs/metadata/index.csv
-2023-02-10 14:45:32,597 - INFO - Deep Profiler run done
-2023-02-10 14:45:32,635 - INFO - Batch features compiled with PyCytominer
-2023-02-10 14:45:32,753 - INFO - Object outlines added for batch
-2023-02-10 14:45:33,397 - INFO - Saved compiled batch features to ../mitocheck_control_features/DP_features/batch_0.csv.gz
-2023-02-10 14:45:33,398 - INFO - Temporary batch files cleared
-2023-02-10 14:45:33,430 - INFO - Stream run done in 51.51972222328186 seconds!
+batches 2248
+2023-02-17 04:31:25,776 - INFO - Profiling batch 0 with DeepProfiler
+2023-02-17 04:31:25,777 - INFO - Processing well A4 from LT0001_02, frames [50]
+2023-02-17 04:31:32,411 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00004_01.ch5
+2023-02-17 04:31:35,951 - INFO - Saved corrected frames
+2023-02-17 04:31:40,545 - INFO - Saved nuclei locations
+2023-02-17 04:31:40,545 - INFO - Processing well A15 from LT0001_02, frames [50]
+2023-02-17 04:31:47,122 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00015_01.ch5
+2023-02-17 04:31:50,848 - INFO - Saved corrected frames
+2023-02-17 04:31:54,258 - INFO - Saved nuclei locations
+2023-02-17 04:31:54,259 - INFO - Processing well B2 from LT0001_02, frames [50]
+2023-02-17 04:32:00,617 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00026_01.ch5
+2023-02-17 04:32:03,793 - INFO - Saved corrected frames
+2023-02-17 04:32:06,931 - INFO - Saved nuclei locations
+2023-02-17 04:32:06,932 - INFO - Compiled index.csv file to ../tmp/DP_project/inputs/metadata/index.csv
+2023-02-17 04:32:16,464 - INFO - Deep Profiler run done
+2023-02-17 04:32:17,104 - INFO - Batch features compiled with PyCytominer
+2023-02-17 04:32:17,106 - INFO - Temporary batch files cleared
+2023-02-17 04:32:17,106 - INFO - Profiling batch 1 with DeepProfiler
+2023-02-17 04:32:17,106 - INFO - Processing well C1 from LT0001_02, frames [50]
+2023-02-17 04:32:23,422 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00049_01.ch5
+2023-02-17 04:32:26,327 - INFO - Saved corrected frames
+2023-02-17 04:32:29,504 - INFO - Saved nuclei locations
+2023-02-17 04:32:29,504 - INFO - Processing well C4 from LT0001_02, frames [50]
+2023-02-17 04:32:36,380 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00052_01.ch5
+2023-02-17 04:32:39,654 - INFO - Saved corrected frames
+2023-02-17 04:32:42,535 - INFO - Saved nuclei locations
+2023-02-17 04:32:42,535 - INFO - Processing well C15 from LT0001_02, frames [50]
+2023-02-17 04:32:48,643 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00063_01.ch5
+2023-02-17 04:32:51,870 - INFO - Saved corrected frames
+2023-02-17 04:32:54,611 - INFO - Saved nuclei locations
+2023-02-17 04:32:54,612 - INFO - Compiled index.csv file to ../tmp/DP_project/inputs/metadata/index.csv
+2023-02-17 04:33:03,382 - INFO - Deep Profiler run done
+2023-02-17 04:33:03,868 - INFO - Batch features compiled with PyCytominer
+2023-02-17 04:33:03,870 - INFO - Temporary batch files cleared
+2023-02-17 04:33:03,870 - INFO - Profiling batch 2 with DeepProfiler
+2023-02-17 04:33:03,870 - INFO - Processing well D2 from LT0001_02, frames [50]
+2023-02-17 04:33:10,424 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00074_01.ch5
+2023-02-17 04:33:13,654 - INFO - Saved corrected frames
+2023-02-17 04:33:17,010 - INFO - Saved nuclei locations
+2023-02-17 04:33:17,010 - INFO - Processing well M16 from LT0001_02, frames [50]
+2023-02-17 04:33:23,084 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00304_01.ch5
+2023-02-17 04:33:25,530 - INFO - Saved corrected frames
+2023-02-17 04:33:28,342 - INFO - Saved nuclei locations
+2023-02-17 04:33:28,343 - INFO - Processing well N3 from LT0001_02, frames [50]
+2023-02-17 04:33:34,281 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00315_01.ch5
+2023-02-17 04:33:36,743 - INFO - Saved corrected frames
+2023-02-17 04:33:39,607 - INFO - Saved nuclei locations
+2023-02-17 04:33:39,608 - INFO - Compiled index.csv file to ../tmp/DP_project/inputs/metadata/index.csv
+2023-02-17 04:33:48,638 - INFO - Deep Profiler run done
+2023-02-17 04:33:49,103 - INFO - Batch features compiled with PyCytominer
+2023-02-17 04:33:49,104 - INFO - Temporary batch files cleared
+2023-02-17 04:33:49,137 - INFO - Stream run done!

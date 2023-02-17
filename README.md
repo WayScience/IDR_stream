@@ -292,3 +292,14 @@ In future maybe implement wait or check to see if downloaded file has been compl
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
 ```
+
+# Utilities
+
+## Merge CP and DP Data:
+
+After extracting CP and DP features with `IDR_stream`, one can combine these two sets of extracted features into one dataset that contains cell metadata (plate, well, frame, coordinates, etc), CP features, and DP features with the following tools:
+
+- `merge_CP_DP.merge_CP_DP_batch_data(cp_batch_data, dp_batch_data)`: Combines two datasets that each have metadata and their respective features into one dataframe with cell metadata, CP features, and DP features.
+- `merge_CP_DP.merge_CP_DP_run_datamerge_CP_DP_run_data(cp_data_dir_path, dp_data_dir_path, merged_data_dir_path)`: Combines each batch from CP and DP `IDR_stream` runs into batches that have cell metadata, CP features, and DP features.
+
+Example usage of the merge utilities can found be in [example_merge.ipynb](example_notebooks/example_merge.ipynb).
