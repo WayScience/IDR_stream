@@ -26,7 +26,7 @@ from idrstream.CP_idr import CellProfilerRun
 
 pipeline_path = pathlib.Path("example_files/CP_files/mitocheck_idr_cp.cppipe")
 # need to fill in on fig
-plugins_directory = pathlib.Path("/home/roshankern/Desktop/CellProfiler/cellprofiler/modules/plugins")
+plugins_directory = pathlib.Path("../idrstream/CP_Plugins")
 idr_id = "idr0013"
 tmp_dir = pathlib.Path("../tmp/")
 final_data_dir = pathlib.Path("../example_extracted_features/CP_features")
@@ -66,7 +66,7 @@ data_to_process
 
 
 # find the path in terminal using `ascli config ascp show`
-aspera_path = pathlib.Path("/home/roshankern/.aspera/ascli/sdk/ascp")
+aspera_path = pathlib.Path("~/.aspera/ascli/sdk/ascp")
 aspera_key_path = pathlib.Path("example_files/asperaweb_id_dsa.openssh")
 screens_path = pathlib.Path("example_files/idr0013-screenA-plates.tsv")
 
@@ -78,7 +78,7 @@ stream.init_downloader(aspera_path, aspera_key_path, screens_path)
 # In[6]:
 
 
-fiji_path = pathlib.Path("/home/roshankern/Desktop/Fiji.app")
+fiji_path = pathlib.Path("~/Desktop/Fiji.app")
 stream.init_preprocessor(fiji_path)
 
 
