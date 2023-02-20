@@ -8,6 +8,31 @@ import pathlib
 import math
 
 
+def full_loc_map(dp_coord: tuple, cp_image_data_locations: pd.Series) -> tuple:
+    """
+    helper function for merge_CP_DP_batch_data
+    get cp_coord from cp_image_data_locations that is closest to dp_coord
+
+    Parameters
+    ----------
+    dp_coord : tuple
+        dp coord to find closest cp coord for
+    cp_image_data_locations : pd.Series
+        series of cp coords to get closest one from
+
+    Returns
+    -------
+    tuple
+        closest cp_coord to given dp_coord
+    """
+    return min(
+        cp_image_data_locations,
+        key=lambda cp_coord: math.hypot(
+            cp_coord[0] - dp_coord[0], cp_coord[1] - dp_coord[1]
+        ),
+    )
+
+
 def merge_CP_DP_batch_data(
     cp_batch_data: pd.DataFrame, dp_batch_data: pd.DataFrame
 ) -> pd.DataFrame:
@@ -33,8 +58,12 @@ def merge_CP_DP_batch_data(
         cp and dp dataframes have different number of rows (cells)
     """
     # covert x and y coordiantes to integers
-    cp_batch_data[["Location_Center_X", "Location_Center_Y"]] = cp_batch_data[["Location_Center_X", "Location_Center_Y"]].astype(int)
-    dp_batch_data[["Location_Center_X", "Location_Center_Y"]] = dp_batch_data[["Location_Center_X", "Location_Center_Y"]].astype(int)
+    cp_batch_data[["Location_Center_X", "Location_Center_Y"]] = cp_batch_data[
+        ["Location_Center_X", "Location_Center_Y"]
+    ].astype(int)
+    dp_batch_data[["Location_Center_X", "Location_Center_Y"]] = dp_batch_data[
+        ["Location_Center_X", "Location_Center_Y"]
+    ].astype(int)
 
     # check batch data have same number of rows (cells)
     # if batch data have different number of cells, raise an error because they must not have close segmentations
@@ -42,7 +71,7 @@ def merge_CP_DP_batch_data(
         raise IndexError("Batch data have different number of rows (cells)!")
 
     # hide warning for pandas chained assignment
-    # this hides the warnings produced by main necessary chained assingments with pandas (can't use .iloc[] for some operations) 
+    # this hides the warnings produced by main necessary chained assingments with pandas (can't use .iloc[] for some operations)
     pd.options.mode.chained_assignment = None
 
     # get cp and dp column names
@@ -94,12 +123,7 @@ def merge_CP_DP_batch_data(
 
         # make location for dp match the closest cp location (distance minimized with hypotenuse)
         dp_image_data["Full_Location"] = dp_image_data["Full_Location"].map(
-            lambda dp_coord: min(
-                cp_image_data["Full_Location"],
-                key=lambda cp_coord: math.hypot(
-                    cp_coord[0] - dp_coord[0], cp_coord[1] - dp_coord[1]
-                ),
-            )
+            lambda dp_coord: full_loc_map(dp_coord, cp_image_data["Full_Location"])
         )
 
         # drop metadata columns from DP before merge
