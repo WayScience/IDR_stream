@@ -35,7 +35,7 @@ def full_loc_map(dp_coord: tuple, cp_image_data_locations: pd.Series) -> tuple:
 
 
 def merge_CP_DP_batch_data(
-    cp_batch_data: pd.DataFrame, dp_batch_data: pd.DataFrame, add_cell_uuid: bool=True
+    cp_batch_data: pd.DataFrame, dp_batch_data: pd.DataFrame, add_cell_uuid: bool = True
 ) -> pd.DataFrame:
     """
     merge dataframes for IDR_stream output with CP and DP features
@@ -145,12 +145,12 @@ def merge_CP_DP_batch_data(
 
     # compile merged data into one dataframe with concat and reset index for compiled dataframe
     compiled_merged_data = pd.concat(compiled_merged_data).reset_index(drop=True)
-    
+
     # add cell uuid to merged data to give each cell a unique identifier
     if add_cell_uuid:
         cell_uuids = [uuid.uuid4() for _ in range(compiled_merged_data.shape[0])]
-        compiled_merged_data.insert(loc=0, column='Cell_UUID', value=cell_uuids)
-    
+        compiled_merged_data.insert(loc=0, column="Cell_UUID", value=cell_uuids)
+
     return compiled_merged_data
 
 
