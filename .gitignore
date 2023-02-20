@@ -5,7 +5,7 @@
 __pycache__/
 
 # Example files
-mitocheck_control_features
+example_extracted_features
 tmp/
 
 # PyBaSiC
