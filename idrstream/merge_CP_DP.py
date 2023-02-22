@@ -6,6 +6,7 @@ As the IDR_stream output follows the pycytominer output format, these merge func
 import pandas as pd
 import pathlib
 import math
+import uuid
 
 
 def full_loc_map(dp_coord: tuple, cp_image_data_locations: pd.Series) -> tuple:
@@ -34,7 +35,7 @@ def full_loc_map(dp_coord: tuple, cp_image_data_locations: pd.Series) -> tuple:
 
 
 def merge_CP_DP_batch_data(
-    cp_batch_data: pd.DataFrame, dp_batch_data: pd.DataFrame
+    cp_batch_data: pd.DataFrame, dp_batch_data: pd.DataFrame, add_cell_uuid: bool = True
 ) -> pd.DataFrame:
     """
     merge dataframes for IDR_stream output with CP and DP features
@@ -46,6 +47,8 @@ def merge_CP_DP_batch_data(
         idrstream_cp batch output
     dp_batch_data : pd.DataFrame
         idrstream_dp batch output
+    add_cell_uuid : bool
+        whether or not to add a uuid for each cell to the final merged dataframe
 
     Returns
     -------
@@ -141,7 +144,14 @@ def merge_CP_DP_batch_data(
     pd.options.mode.chained_assignment = "warn"
 
     # compile merged data into one dataframe with concat and reset index for compiled dataframe
-    return pd.concat(compiled_merged_data).reset_index(drop=True)
+    compiled_merged_data = pd.concat(compiled_merged_data).reset_index(drop=True)
+
+    # add cell uuid to merged data to give each cell a unique identifier
+    if add_cell_uuid:
+        cell_uuids = [uuid.uuid4() for _ in range(compiled_merged_data.shape[0])]
+        compiled_merged_data.insert(loc=0, column="Cell_UUID", value=cell_uuids)
+
+    return compiled_merged_data
 
 
 def save_merged_CP_DP_run(
