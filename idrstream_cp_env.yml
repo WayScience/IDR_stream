@@ -24,6 +24,6 @@ dependencies:
 - conda-forge::sentry-sdk=0.18.0
 - pip:
   - cellprofiler==4.2.4
-  - cellpose==2.1.0
   - cellpose[gui]
   - git+https://github.com/cytomining/pycytominer
+  - cellpose==2.1.0

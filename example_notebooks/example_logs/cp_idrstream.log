@@ -1,23 +1,49 @@
-2022-12-16 13:15:33,360 - INFO - IDR stream initialized
-2022-12-16 13:15:33,411 - INFO - CellProfiler metadata has been converted and saved
-2022-12-16 13:15:33,469 - INFO - Aspera downloader initialized
-2022-12-16 13:15:36,475 - INFO - Basicpy preprocessor initialized
-2022-12-16 13:15:36,493 - INFO - Copied metadata file for CellProfiler run to use
-2022-12-16 13:15:37,314 - INFO - Running IDR stream with: 
+2023-02-17 04:34:04,184 - INFO - IDR stream initialized
+2023-02-17 04:34:04,240 - INFO - CellProfiler metadata has been converted and saved
+2023-02-17 04:34:04,301 - INFO - Aspera downloader initialized
+2023-02-17 04:34:07,424 - INFO - Basicpy preprocessor initialized
+2023-02-17 04:34:07,453 - INFO - Copied metadata file for CellProfiler run to use
+2023-02-17 04:34:08,374 - INFO - Running IDR stream with: 
 batch_size 3 
 start_batch 0 
 batches 2248
-2022-12-16 13:15:37,315 - INFO - Profiling batch 0 with CellProfiler
-2022-12-16 13:15:37,316 - INFO - Processing well A4 from LT0001_02, frames [50]
-2022-12-16 13:15:46,060 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00004_01.ch5
-2022-12-16 13:15:50,293 - INFO - Saved corrected frames
-2022-12-16 13:15:50,293 - INFO - Processing well A15 from LT0001_02, frames [50]
-2022-12-16 13:16:01,561 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00015_01.ch5
-2022-12-16 13:16:05,508 - INFO - Saved corrected frames
-2022-12-16 13:16:05,508 - INFO - Processing well B2 from LT0001_02, frames [50]
-2022-12-16 13:16:13,619 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00026_01.ch5
-2022-12-16 13:16:16,794 - INFO - Saved corrected frames
-2022-12-16 13:16:44,717 - INFO - CellProfiler run done
-2022-12-16 13:16:44,841 - INFO - Batch features compiled for CellProfiler features
-2022-12-16 13:16:44,843 - INFO - Temporary batch files cleared
-2022-12-16 13:16:44,885 - INFO - Stream run done!
+2023-02-17 04:34:08,375 - INFO - Profiling batch 0 with CellProfiler
+2023-02-17 04:34:08,375 - INFO - Processing well A4 from LT0001_02, frames [50]
+2023-02-17 04:34:14,702 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00004_01.ch5
+2023-02-17 04:34:19,406 - INFO - Saved corrected frames
+2023-02-17 04:34:19,406 - INFO - Processing well A15 from LT0001_02, frames [50]
+2023-02-17 04:34:25,825 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00015_01.ch5
+2023-02-17 04:34:30,235 - INFO - Saved corrected frames
+2023-02-17 04:34:30,235 - INFO - Processing well B2 from LT0001_02, frames [50]
+2023-02-17 04:34:36,744 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00026_01.ch5
+2023-02-17 04:34:40,305 - INFO - Saved corrected frames
+2023-02-17 04:35:04,526 - INFO - CellProfiler run done
+2023-02-17 04:35:04,628 - INFO - Batch features compiled for CellProfiler features
+2023-02-17 04:35:04,630 - INFO - Temporary batch files cleared
+2023-02-17 04:35:04,630 - INFO - Profiling batch 1 with CellProfiler
+2023-02-17 04:35:04,631 - INFO - Processing well C1 from LT0001_02, frames [50]
+2023-02-17 04:35:10,964 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00049_01.ch5
+2023-02-17 04:35:14,507 - INFO - Saved corrected frames
+2023-02-17 04:35:14,507 - INFO - Processing well C4 from LT0001_02, frames [50]
+2023-02-17 04:35:22,691 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00052_01.ch5
+2023-02-17 04:35:26,605 - INFO - Saved corrected frames
+2023-02-17 04:35:26,605 - INFO - Processing well C15 from LT0001_02, frames [50]
+2023-02-17 04:35:32,491 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00063_01.ch5
+2023-02-17 04:35:36,075 - INFO - Saved corrected frames
+2023-02-17 04:35:59,787 - INFO - CellProfiler run done
+2023-02-17 04:35:59,874 - INFO - Batch features compiled for CellProfiler features
+2023-02-17 04:35:59,877 - INFO - Temporary batch files cleared
+2023-02-17 04:35:59,877 - INFO - Profiling batch 2 with CellProfiler
+2023-02-17 04:35:59,877 - INFO - Processing well D2 from LT0001_02, frames [50]
+2023-02-17 04:36:06,486 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00074_01.ch5
+2023-02-17 04:36:10,340 - INFO - Saved corrected frames
+2023-02-17 04:36:10,340 - INFO - Processing well M16 from LT0001_02, frames [50]
+2023-02-17 04:36:16,528 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00304_01.ch5
+2023-02-17 04:36:19,203 - INFO - Saved corrected frames
+2023-02-17 04:36:19,203 - INFO - Processing well N3 from LT0001_02, frames [50]
+2023-02-17 04:36:25,238 - INFO - well_movie_path: ../tmp/downloads/LT0001_02/00315_01.ch5
+2023-02-17 04:36:27,711 - INFO - Saved corrected frames
+2023-02-17 04:36:51,316 - INFO - CellProfiler run done
+2023-02-17 04:36:51,389 - INFO - Batch features compiled for CellProfiler features
+2023-02-17 04:36:51,391 - INFO - Temporary batch files cleared
+2023-02-17 04:36:51,427 - INFO - Stream run done!

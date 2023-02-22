@@ -100,19 +100,22 @@ Doing so will cause issues with multiple instances of CellPose trying to utilize
 ### Necessary Packages:
 
 The necessary packages for idrstream **using DeepProfiler** can be installed into a conda environment with the following:
-```sh
+
+```console
 # Run this command to create the conda environment for idrstream
 conda env create -f idrstream_dp_env.yml
 ```
 
 The necessary packages for idrstream **using CellProfiler** can be installed into a conda environment with the following:
-```sh
+
+```console
 # Run this command to create the conda environment for idrstream
 conda env create -f idrstream_cp_env.yml
 ```
 
 This environment must be activated before using `idrstream` with the following:
-```sh
+
+```console
 # Run this command to activate the conda environment for idrstream with Cellprofiler
 conda activate idrstream_cp
 # Run this command to activate the conda environment for idrstream with Deepprofiler
@@ -123,8 +126,16 @@ conda activate idrstream_dp
 
 #### Step 1: Install Aspera
 
-Install Aspera high-speed transfer client as described at https://github.com/IBM/aspera-cli#installation.
+Install Aspera high-speed transfer client as described at <https://github.com/IBM/aspera-cli#installation>.
 We used the direct installation method.
+On Ubuntu, the direct installation method is as follows:
+
+1) Install Ruby on Ubuntu: `sudo apt install ruby-full`
+2) Confirm Ruby install: `ruby --version`
+3) Install aspera-cli gem: `gem install aspera-cli`
+4) Upgrade aspera-cli gem to latest version: `gem update aspera-cli`
+5) Install acsp: `ascli conf ascp install`
+6) Confirm install and locate acsp (for step 1a): `ascli config ascp show`
 
 ##### Step 1a: Allow Aspera to run without password
 
@@ -153,9 +164,11 @@ PyBaisc is currently under development and cannot be installed with `pip`.
 This is overcome by using a locally-downloaded version of PyBasic.
 Clone the repository into `idrstream/` with:
 
-```sh
+```console
 cd idrstream/
 git clone https://github.com/peng-lab/PyBaSiC.git
+cd PyBaSiC/
+git checkout f3fcf1987db47c4a29506d240d0f69f117c82d2b
 ```
 
 **Note:** The version of PyBaSic we use needs at least 3 images to perform illumination correction.
@@ -183,15 +196,14 @@ We recommend putting it into a folder on your Desktop called `GitHub` for better
 git clone https://github.com/CellProfiler/CellProfiler.git
 ```
 
-#### Step 2: Download and install Cellpose plugin
+#### Step 2: Cellpose plugin
 
-Download the `runcellpose.py` file from the [CellProfiler-Plugins repository](https://github.com/CellProfiler/CellProfiler-plugins/blob/master/runcellpose.py) and then move it into the CellProfiler repo (specifically the plugins folder within the modules folder).
-To download the plugin file into the correct folder, use the code below in terminal.
+When using CellProiler IDR_stream, `CP_idr.CellProfilerRun()` must be given the path to the directory with [runcellpose.py](idrstream/CP_Plugins/runcellpose.py).
+This can be done by setting `plugins_directory="relative/path/to/idrstream/CP_Plugins/"` (see [example_cp.ipynb](example_notebooks/example_cp.ipynb) for an example).
 
-```console
-# Download the cellpose plugin to the plugins directory
-wget https://raw.githubusercontent.com/CellProfiler/CellProfiler-plugins/master/runcellpose.py  --directory-prefix CellProfiler/cellprofiler/modules/plugins
-```
+The version of CellPose plugin on the CellProfiler repository (available [here](https://github.com/CellProfiler/CellProfiler-plugins/blob/master/runcellpose.py)) uses a different method of instantiating CellPose that can result in different segmentations from the DP version of IDR_stream.
+The plugin version in this repository uses the same method of instantiating CellPose as the DP version of IDR_stream.
+We believe that the method used by the CellProfiler team is out of date (see [CellProfiler PR #178](https://github.com/CellProfiler/CellProfiler-plugins/pull/178) for more information).
 
 #### Step 3a: Activate the CellProfiler GUI
 
@@ -214,15 +226,25 @@ Close the GUI and reopen to confirm the path is correct.
 
 # DeepProfiler Project Setup:
 
-Deep Profiler must be installed via Github.
+DeepProfiler must be installed via Github.
 Commit [`2fb3ed3`](https://github.com/cytomining/DeepProfiler/commit/2fb3ed3027cded6676b7e409687322ef67491ec7) was used while developing `idrstream`.
 Install the repository into `idrstream/` with:
-```sh
+
+```console
+# make sure that the conda environment `idrstream_dp` is activated
+conda activate idrstream_dp
 cd idrstream/
 git clone https://github.com/cytomining/DeepProfiler.git
 cd DeepProfiler/
-# make sure that the conda environment `idrstream_dp` is activated
 pip install -e .
+```
+
+Installing this version of DeepProfiler will downgrade numpy to the wrong version, so it is necessary to reinstall numpy with:
+
+```console
+# make sure that the conda environment `idrstream_dp` is activated
+conda activate idrstream_dp
+pip install numpy==1.23.3
 ```
 
 ## Example Usage
@@ -230,7 +252,7 @@ pip install -e .
 Example usage of `idrstream` can be found at [example_dp.ipynb](example_notebooks/example_dp.ipynb) and [example_cp.ipynb](example_notebooks/example_cp.ipynb).
 The converted python scripts for these notebooks and their logs can be found at ([example_dp.py](example_scripts/example_dp.py) and [example_cp.py](example_scripts/example_cp.py)).
 
-**Note**: You can use `idrstream` to extract object outlines as extra metadata by passing `extra_metadata=["object_outlines"]` during `idrstream.run_stream()`.
+**Note**: You can use `idrstream_dp` to extract object outlines as extra metadata by passing `extra_metadata=["object_outlines"]` during `idrstream_dp.run_stream()`.
 Similarly, you can choose the desired batch numbers with `batch_nums=[#,#,#]`.
 
 `example_dp.ipynb` - All positive/negative control wells from Mitocheck mitosis movies (idr0013 - Screen A).
@@ -270,3 +292,14 @@ In future maybe implement wait or check to see if downloaded file has been compl
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
 ```
+
+# Utilities
+
+## Merge CP and DP Data:
+
+After extracting CP and DP features with `IDR_stream`, one can combine these two sets of extracted features into one dataset that contains cell metadata (plate, well, frame, coordinates, etc), CP features, and DP features with the following tools:
+
+- [`merge_CP_DP.merge_CP_DP_batch_data(cp_batch_data, dp_batch_data)`](idrstream/merge_CP_DP.py#L11): Combines two datasets that each have metadata and their respective features into one dataframe with cell metadata, CP features, and DP features.
+- [`merge_CP_DP.save_merged_CP_DP_run(cp_data_dir_path, dp_data_dir_path, merged_data_dir_path)`](idrstream/merge_CP_DP.py#L116): Combines each batch from CP and DP `IDR_stream` runs into batches that have cell metadata, CP features, and DP features.
+
+Example usage of the merge utilities can found be in [example_merge.ipynb](example_notebooks/example_merge.ipynb).

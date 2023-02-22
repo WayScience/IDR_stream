@@ -26,10 +26,10 @@ from idrstream.CP_idr import CellProfilerRun
 
 pipeline_path = pathlib.Path("example_files/CP_files/mitocheck_idr_cp.cppipe")
 # need to fill in on fig
-plugins_directory = pathlib.Path("/home/jenna/Desktop/Github/CellProfiler/cellprofiler/modules/plugins")
+plugins_directory = pathlib.Path("../idrstream/CP_Plugins")
 idr_id = "idr0013"
 tmp_dir = pathlib.Path("../tmp/")
-final_data_dir = pathlib.Path("../mitocheck_control_features/CP_features")
+final_data_dir = pathlib.Path("../example_extracted_features/CP_features")
 try:
     shutil.rmtree(tmp_dir)
     # uncomment the line below if you would like to remove the final data directory (e.g. all .csv.gz files)
@@ -37,7 +37,7 @@ try:
 except:
     print("No files to remove")
 
-stream = CellProfilerRun(pipeline_path, plugins_directory, idr_id, tmp_dir, final_data_dir, log='cp_idrstream.log')
+stream = CellProfilerRun(pipeline_path, plugins_directory, idr_id, tmp_dir, final_data_dir, log='example_logs/cp_idrstream.log')
 
 
 # ## Initialize CellProfiler metadata compiler
@@ -56,7 +56,7 @@ stream.convert_tsv_to_csv(data_to_process_tsv, metadata_save_path)
 # In[4]:
 
 
-data_to_process = pd.read_csv("example_files/data_to_process.tsv", sep="\t")
+data_to_process = pd.read_csv("example_files/data_to_process.tsv", sep="\t", index_col=0)
 data_to_process
 
 
@@ -66,7 +66,7 @@ data_to_process
 
 
 # find the path in terminal using `ascli config ascp show`
-aspera_path = pathlib.Path("/home/jenna/.aspera/ascli/sdk/ascp")
+aspera_path = pathlib.Path("~/.aspera/ascli/sdk/ascp")
 aspera_key_path = pathlib.Path("example_files/asperaweb_id_dsa.openssh")
 screens_path = pathlib.Path("example_files/idr0013-screenA-plates.tsv")
 
@@ -78,7 +78,7 @@ stream.init_downloader(aspera_path, aspera_key_path, screens_path)
 # In[6]:
 
 
-fiji_path = pathlib.Path("/home/jenna/Desktop/test/Fiji.app")
+fiji_path = pathlib.Path("~/Desktop/Fiji.app")
 stream.init_preprocessor(fiji_path)
 
 
@@ -106,5 +106,5 @@ print(f">>> GPU activated? {use_GPU}")
 # In[9]:
 
 
-stream.run_cp_stream(data_to_process, batch_size=3, start_batch=0, batch_nums=[0])
+stream.run_cp_stream(data_to_process, batch_size=3, start_batch=0, batch_nums=[0,1,2])
 
