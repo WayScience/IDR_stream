@@ -82,7 +82,7 @@ RunCellpose:[module_num:5|svn_version:'Unknown'|variable_revision_number:3|show_
     GPU memory share for each worker:0.1
     Stitch Threshold:0.0
     Use 3D:No
-    Minimum size:-1
+    Minimum size:15
     Use Omnipose for mask reconstruction:No
     Invert images:No
     Remove objects that are touching the edge?:Yes
