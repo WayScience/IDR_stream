@@ -175,10 +175,6 @@ git checkout f3fcf1987db47c4a29506d240d0f69f117c82d2b
 For mitosis movie frames, we give PyBaSiC 2 frames before/after the desired frame (depending on position in movie) to perform illumination correction.
 We discuss different methods of illumination correction in [#1](https://github.com/WayScience/IDR_stream/issues/1).
 
-### PyTorch
-
-To use GPU for Cellpose, you will need to install PyTorch. From [their website](https://pytorch.org/get-started/locally/), use the correct installation for your OS. You can confirm if the GPU is working within the [example notebooks](example_notebooks).
-
 # CellProfiler Project Setup:
 
 CellProfiler will be used for both segmentation and feature extraction.
