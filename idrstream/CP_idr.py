@@ -47,14 +47,10 @@ class CellProfilerRun:
     -------
     init_cp_run(data_to_process)
         initialize cp project structure and metadata file in tmp folder
-    copy_CP_files(metadata_path)
-        copy project files into temporary directory of the CP project
     init_downloader(aspera_path, aspera_key_path, screens_path)
         initialize aspera downloader
     init_preprocessor(fiji_path)
         initialize basicpy preprocessor
-    convert_tsv_to_csv(data_to_process_tsv, metadata_save_path)
-        convert `data_to_process.tsv` file into a .csv for CellProfiler to read in when processing the images
     prepare_batch(batch_metadata)
         download data from a batch image and run further processes
         image data is saved in the CP project folder
@@ -185,25 +181,6 @@ class CellProfilerRun:
         """
         self.preprocessor = preprocess.BasicpyPreprocessor(fiji_path)
         self.logger.info("Basicpy preprocessor initialized")
-
-    def convert_tsv_to_csv(
-        self, data_to_process_tsv: pathlib.Path, metadata_save_path: pathlib.Path
-    ):
-        """
-        Convert `data_to_process.tsv` file into a .csv for CellProfiler to read in when processing the images
-
-        Parameters
-        ----------
-        data_to_process_tsv : str
-            string path to the `data_to_process.tsv` file
-        """
-        # read in metadata tsv file
-        data_to_process_csv = pd.read_csv(data_to_process_tsv, sep="\t")
-
-        # converting tsv file into csv
-        data_to_process_csv.to_csv(metadata_save_path, index=False)
-
-        self.logger.info("CellProfiler metadata has been converted and saved")
 
     def prepare_batch(self, batch_metadata: pd.DataFrame):
         """
