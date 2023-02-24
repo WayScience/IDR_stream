@@ -39,7 +39,10 @@ stream = DeepProfilerRun(idr_id, tmp_dir, final_data_dir, log='example_logs/dp_i
 # In[4]:
 
 
-aspera_path = pathlib.Path("~/.aspera/ascli/sdk/ascp")
+# path to users home dir
+home_dir_path = pathlib.Path.home()
+
+aspera_path = pathlib.Path(f"{home_dir_path}/.aspera/ascli/sdk/ascp")
 aspera_key_path = pathlib.Path("example_files/asperaweb_id_dsa.openssh")
 screens_path = pathlib.Path("example_files/idr0013-screenA-plates.tsv")
 save_dir = pathlib.Path("data/")
@@ -50,7 +53,7 @@ stream.init_downloader(aspera_path, aspera_key_path, screens_path)
 # In[5]:
 
 
-fiji_path = pathlib.Path("~/Desktop/Fiji.app")
+fiji_path = pathlib.Path(f"{home_dir_path}/Desktop/Fiji.app")
 stream.init_preprocessor(fiji_path)
 
 

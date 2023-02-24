@@ -9,7 +9,7 @@ import pathlib
 
 import sys
 sys.path.append("../")
-from idrstream.merge_CP_DP import merge_CP_DP_batch_data, merge_CP_DP_run_data
+from idrstream.merge_CP_DP import merge_CP_DP_batch_data, save_merged_CP_DP_run
 
 
 # In[2]:
@@ -36,5 +36,5 @@ cp_data_dir_path = pathlib.Path("../example_extracted_features/CP_features/")
 dp_data_dir_path = pathlib.Path("../example_extracted_features/DP_features/")
 merged_data_dir_path = pathlib.Path("../example_extracted_features/merged_features/")
 
-merge_CP_DP_run_data(cp_data_dir_path, dp_data_dir_path, merged_data_dir_path)
+save_merged_CP_DP_run(cp_data_dir_path, dp_data_dir_path, merged_data_dir_path)
 
