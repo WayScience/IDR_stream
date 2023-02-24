@@ -410,6 +410,7 @@ The default is set to "Yes".
 
         diam = self.expected_diameter.value if self.expected_diameter.value > 0 else None
         
+        # convert float image data to int image data to remove segmentation differences between the image types
         x_data = (x_data * 255).round().astype(numpy.uint8)
 
         try:
