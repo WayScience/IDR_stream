@@ -137,7 +137,8 @@ class CellProfilerRun:
             f"{self.CP_project_path}/inputs/images/data_to_process.csv"
         )
         metadata_save_path.parents[0].mkdir(parents=True, exist_ok=True)
-        # converting tsv file into csv
+        
+        # save metadata as csv so CellProfiler can read this metadata
         data_to_process.to_csv(metadata_save_path, index=False)
 
         # make directory for the output of cellprofiler
