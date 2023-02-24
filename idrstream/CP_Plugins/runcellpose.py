@@ -409,6 +409,8 @@ The default is set to "Yes".
             channels = [0, 0]
 
         diam = self.expected_diameter.value if self.expected_diameter.value > 0 else None
+        
+        x_data = (x_data * 255).round().astype(numpy.uint8)
 
         try:
             if float(cellpose_ver[0:3]) >= 0.7 and int(cellpose_ver[0])<2:
