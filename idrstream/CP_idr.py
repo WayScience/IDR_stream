@@ -45,6 +45,8 @@ class CellProfilerRun:
 
     Methods
     -------
+    init_cp_run(data_to_process)
+        initialize cp project structure and metadata file in tmp folder
     copy_CP_files(metadata_path)
         copy project files into temporary directory of the CP project
     init_downloader(aspera_path, aspera_key_path, screens_path)
@@ -125,6 +127,15 @@ class CellProfilerRun:
         self,
         data_to_process: pd.DataFrame,
     ):
+        """
+        Create the folder structures for a CP project in the tmp folder for the IDR_stream run.
+        Also, save a csv version of the IDR_stream metadata to the images folder of the run so CellProfiler can find the metadata for cells
+
+        Parameters
+        ----------
+        data_to_process : pd.DataFrame
+            dataframe with cell metadata (location, perturbation, etc)
+        """
         # make directory for the input of cellprofiler and copy metadata file into images folder
         metadata_save_path = pathlib.Path(
             f"{self.CP_project_path}/inputs/images/data_to_process.csv"
