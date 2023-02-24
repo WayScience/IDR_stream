@@ -121,31 +121,24 @@ class CellProfilerRun:
             self.logger.addHandler(file_handler)
             self.logger.info("IDR stream initialized")
 
-    def copy_CP_files(
+    def init_cp_run(
         self,
-        metadata_path: pathlib.Path,
+        data_to_process: pd.DataFrame,
     ):
-        """
-        copy project files into temporary directory of the CellProfiler project
-
-        Parameters
-        ----------
-        metadata_path : pathlib.Path
-            path to "data_to_process.tsv" to convert into a ".csv" file for CellProfiler to use as metadata
-        """
         # make directory for the input of cellprofiler and copy metadata file into images folder
         metadata_save_path = pathlib.Path(
-            f"{self.CP_project_path}/inputs/images/{metadata_path.name}"
+            f"{self.CP_project_path}/inputs/images/data_to_process.csv"
         )
         metadata_save_path.parents[0].mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(metadata_path, metadata_save_path)
+        # converting tsv file into csv
+        data_to_process.to_csv(metadata_save_path, index=False)
 
         # make directory for the output of cellprofiler
         output_save_path = pathlib.Path(f"{self.CP_project_path}/outputs/features/")
         output_save_path.mkdir(parents=True, exist_ok=True)
         self.CP_output_path = output_save_path
 
-        self.logger.info("Copied metadata file for CellProfiler run to use")
+        self.logger.info("CellProfiler stream tmp dir structure created!")
 
     def init_downloader(
         self,
@@ -282,7 +275,6 @@ class CellProfilerRun:
             "ObjectNumber",
             "Metadata_Frames",
             "Metadata_Well_Number",
-            "Metadata_Unnamed: 0",
         ]
 
         # remove unnecessary metadata columns
@@ -337,7 +329,6 @@ class CellProfilerRun:
         batch_size: int = 10,
         start_batch: int = 0,
         batch_nums: str = "all",
-        extra_metadata: list = [],
     ):
         """
         extract features from IDR study given metadata of images to extract features from using a specific method
@@ -352,16 +343,16 @@ class CellProfilerRun:
             batch to start feature extraction from, by default 0
         batch_nums : str, list, optional
             list of batch numbers to extract features from, by default "all"
-        extra_metadata : str, list, optional
-            list of extra metadata to include in final dataframe outputs (object_outlines, object_boxes, etc), by default []
         """
         start_time = time.time()
+
+        # init cp tmp dir structures/files
+        self.init_cp_run(data_to_process)
 
         batches = math.ceil(data_to_process.shape[0] / batch_size)
         self.logger.info(
             f"Running IDR stream with: \nbatch_size {batch_size} \nstart_batch {start_batch} \nbatches {batches}"
         )
-        self.extra_metadata = extra_metadata
         # prepare, profile, compile, and delete intermediate files for each batch
         for batch_num in range(batches):
             batch_metadata = data_to_process.iloc[0:batch_size]
