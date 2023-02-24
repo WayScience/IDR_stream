@@ -409,6 +409,10 @@ The default is set to "Yes".
             channels = [0, 0]
 
         diam = self.expected_diameter.value if self.expected_diameter.value > 0 else None
+        
+        # convert float image data to int image data to remove segmentation differences between CP and DP runs
+        # (DP uses int image data)
+        x_data = (x_data * 255).round().astype(numpy.uint8)
 
         try:
             if float(cellpose_ver[0:3]) >= 0.7 and int(cellpose_ver[0])<2:
