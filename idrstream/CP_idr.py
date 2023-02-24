@@ -132,13 +132,13 @@ class CellProfilerRun:
         data_to_process : pd.DataFrame
             dataframe with cell metadata (location, perturbation, etc)
         """
-        # make directory for the input of cellprofiler and copy metadata file into images folder
+        # make an images directory for the input of CellProfiler
         metadata_save_path = pathlib.Path(
             f"{self.CP_project_path}/inputs/images/data_to_process.csv"
         )
         metadata_save_path.parents[0].mkdir(parents=True, exist_ok=True)
         
-        # save metadata as csv so CellProfiler can read this metadata
+        # save metadata to the images directory as csv for CellProfiler to read
         data_to_process.to_csv(metadata_save_path, index=False)
 
         # make directory for the output of cellprofiler
