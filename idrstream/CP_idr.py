@@ -226,7 +226,10 @@ class CellProfilerRun:
             self.preprocessor.save_frames(
                 plate, well_num, well_movie_path, frames_save_path, frame_nums
             )
-            self.logger.info("Saved corrected frames")
+            if self.preprocessor.perform_illumination_correction:
+                self.logger.info("Saved corrected frames")
+            else:
+                self.logger.info("Saved frames")
 
     def profile_batch_with_CP(self):
         """
