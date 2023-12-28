@@ -38,7 +38,7 @@ class BasicpyPreprocessor:
         save corrected frames from the desired moive at movie load path to the frames save path
     """
 
-    def __init__(self, fiji_path: pathlib.Path):
+    def __init__(self, fiji_path: pathlib.Path, perform_illumination_correction: bool):
         """
         __init__ function for BasicpyPreprocessor class
 
@@ -46,9 +46,12 @@ class BasicpyPreprocessor:
         ----------
         fiji_path : pathlib.Path
             path to installed FIJI program, ex pathlib.Path("/home/user/Fiji.app")
+        perform_illumination_correction : bool
+            whether to perform illumination correction
         """
         original_path = os.getcwd()
         self.ij = imagej.init(fiji_path)
+        self.perform_illumination_correction = perform_illumination_correction
         # imagej init sets directory to fiji_path so have to go back to original dir
         os.chdir(original_path)
 
@@ -188,11 +191,11 @@ class BasicpyPreprocessor:
             short_cor_movie = self.pybasic_illumination_correction(short_org_movie)
             return short_cor_movie[-1]  # return last frame (desired frame)
 
-    def movie_to_corrected_frames(
+    def movie_to_frames(
         self, movie_load_path: pathlib.Path, frame_nums: list
     ):
         """
-        convert movie to desired corrected frames
+        convert movie to desired frames
 
         Parameters
         ----------
@@ -204,7 +207,32 @@ class BasicpyPreprocessor:
         Returns
         -------
         list
-            list of desired corrected frames
+            list of desired frames
+        """
+        original_movie = self.load_mitocheck_movie_data(movie_load_path)
+        
+        frames_list = []
+        for frame_num in frame_nums:
+            frames_list.append(original_movie[frame_num - 1])
+        return frames_list
+
+    def movie_to_corrected_frames(
+        self, movie_load_path: pathlib.Path, frame_nums: list
+    ):
+        """
+        convert movie to desired illumination corrected frames
+
+        Parameters
+        ----------
+        movie_load_path : pathlib.Path
+            path to mitosis movie to load
+        frame_nums : list
+            list of frame numbers to keep from movie
+
+        Returns
+        -------
+        list
+            list of desired illumination corrected frames
         """
         original_movie = self.load_mitocheck_movie_data(movie_load_path)
 
@@ -223,7 +251,7 @@ class BasicpyPreprocessor:
                 frames_list.append(corrected_movie[frame_num - 1])
             return frames_list
 
-    def save_corrected_frames(
+    def save_frames(
         self,
         plate: str,
         well_num: int,
@@ -245,14 +273,18 @@ class BasicpyPreprocessor:
         frames_save_path : pathlib.Path
             path to save corrected frames
         frame_nums : list
-            list of desired frame numbers to extract from mitosis movie
+            list of desired frame numbers to extract from mitosis movie 
         """
         frames_save_path.mkdir(parents=True, exist_ok=True)
-
-        corrected_frames_list = self.movie_to_corrected_frames(
-            movie_load_path, frame_nums
-        )
-        for index, frame in enumerate(corrected_frames_list):
+        
+        if self.perform_illumination_correction:
+            frames_list = self.movie_to_corrected_frames(
+                movie_load_path, frame_nums
+            )
+        else:
+            frames_list = self.movie_to_frames(movie_load_path, frame_nums)
+            
+        for index, frame in enumerate(frames_list):
             frame_save_path = pathlib.Path(
                 f"{frames_save_path}/{plate}_{well_num}_{frame_nums[index]}.tif"
             )

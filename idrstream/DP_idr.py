@@ -170,7 +170,7 @@ class DeepProfilerRun:
         )
         self.logger.info("Aspera downloader initialized")
 
-    def init_preprocessor(self, fiji_path: pathlib.Path):
+    def init_preprocessor(self, fiji_path: pathlib.Path, perform_illumination_correction: bool):
         """
         initialize basicpy preprocessor
 
@@ -178,8 +178,10 @@ class DeepProfilerRun:
         ----------
         fiji_path : pathlib.Path
             path to Fiji.app folder
+        perform_illumination_correction : bool
+            whether to perform illumination correction on images
         """
-        self.preprocessor = preprocess.BasicpyPreprocessor(fiji_path)
+        self.preprocessor = preprocess.BasicpyPreprocessor(fiji_path, perform_illumination_correction)
         self.logger.info("Basicpy preprocessor initialized")
 
     def init_segmentor(self, model_specs: dict):
@@ -237,10 +239,13 @@ class DeepProfilerRun:
             frames_save_path = pathlib.Path(
                 f"{self.DP_project_path}/inputs/images/{plate}/"
             )
-            self.preprocessor.save_corrected_frames(
+            self.preprocessor.save_frames(
                 plate, well_num, well_movie_path, frames_save_path, frame_nums
             )
-            self.logger.info("Saved corrected frames")
+            if self.preprocessor.perform_illumination_correction:
+                self.logger.info("Saved corrected frames")
+            else:
+                self.logger.info("Saved frames")
 
             objects_save_path = pathlib.Path(
                 f"{self.DP_project_path}/inputs/locations/{plate}/"
