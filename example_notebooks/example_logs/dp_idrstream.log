@@ -1,66 +1,115 @@
-2023-02-23 21:42:35,891 - INFO - IDR stream initialized
-2023-02-23 21:42:35,917 - INFO - Aspera downloader initialized
-2023-02-23 21:42:38,705 - INFO - Basicpy preprocessor initialized
-2023-02-23 21:42:39,402 - INFO - CellPose segmentor initialized
-2023-02-23 21:42:39,447 - INFO - Copied Deep Profiler config and checkpoint files
-2023-02-23 21:42:39,500 - INFO - Running IDR stream with: 
+2023-12-16 09:35:43,251 - INFO - IDR stream initialized
+2023-12-16 09:35:43,260 - INFO - Aspera downloader initialized
+2023-12-16 09:35:45,950 - INFO - Basicpy preprocessor initialized
+2023-12-16 09:35:46,661 - INFO - CellPose segmentor initialized
+2023-12-16 09:35:46,678 - INFO - Copied Deep Profiler config and checkpoint files
+2023-12-16 09:35:46,682 - INFO - Running IDR stream with: 
 batch_size 3 
 start_batch 0 
 batches 2248 
 batch nums [0, 1, 2] 
 extra metadata []
-2023-02-23 21:42:39,500 - INFO - Profiling batch 0 with DeepProfiler
-2023-02-23 21:42:39,501 - INFO - Processing well A4 from LT0001_02, frames [50]
-2023-02-23 21:42:52,181 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00004_01.ch5
-2023-02-23 21:42:55,748 - INFO - Saved corrected frames
-2023-02-23 21:43:00,357 - INFO - Saved nuclei locations
-2023-02-23 21:43:00,357 - INFO - Processing well A15 from LT0001_02, frames [50]
-2023-02-23 21:43:08,507 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00015_01.ch5
-2023-02-23 21:43:12,285 - INFO - Saved corrected frames
-2023-02-23 21:43:15,586 - INFO - Saved nuclei locations
-2023-02-23 21:43:15,587 - INFO - Processing well B2 from LT0001_02, frames [50]
-2023-02-23 21:43:22,336 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00026_01.ch5
-2023-02-23 21:43:25,303 - INFO - Saved corrected frames
-2023-02-23 21:43:28,507 - INFO - Saved nuclei locations
-2023-02-23 21:43:28,508 - INFO - Compiled index.csv file to ../tmp/DP_project/inputs/metadata/index.csv
-2023-02-23 21:43:37,764 - INFO - Deep Profiler run done
-2023-02-23 21:43:37,792 - INFO - Batch features compiled with PyCytominer
-2023-02-23 21:43:38,363 - INFO - Saved compiled batch features to ../example_extracted_features/DP_features/batch_0.csv.gz
-2023-02-23 21:43:38,364 - INFO - Temporary batch files cleared
-2023-02-23 21:43:38,365 - INFO - Profiling batch 1 with DeepProfiler
-2023-02-23 21:43:38,365 - INFO - Processing well C1 from LT0001_02, frames [50]
-2023-02-23 21:43:45,151 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00049_01.ch5
-2023-02-23 21:43:48,141 - INFO - Saved corrected frames
-2023-02-23 21:43:51,282 - INFO - Saved nuclei locations
-2023-02-23 21:43:51,282 - INFO - Processing well C4 from LT0001_02, frames [50]
-2023-02-23 21:44:00,348 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00052_01.ch5
-2023-02-23 21:44:03,455 - INFO - Saved corrected frames
-2023-02-23 21:44:06,319 - INFO - Saved nuclei locations
-2023-02-23 21:44:06,319 - INFO - Processing well C15 from LT0001_02, frames [50]
-2023-02-23 21:44:13,673 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00063_01.ch5
-2023-02-23 21:44:16,835 - INFO - Saved corrected frames
-2023-02-23 21:44:19,597 - INFO - Saved nuclei locations
-2023-02-23 21:44:19,598 - INFO - Compiled index.csv file to ../tmp/DP_project/inputs/metadata/index.csv
-2023-02-23 21:44:28,487 - INFO - Deep Profiler run done
-2023-02-23 21:44:28,510 - INFO - Batch features compiled with PyCytominer
-2023-02-23 21:44:28,971 - INFO - Saved compiled batch features to ../example_extracted_features/DP_features/batch_1.csv.gz
-2023-02-23 21:44:28,972 - INFO - Temporary batch files cleared
-2023-02-23 21:44:28,973 - INFO - Profiling batch 2 with DeepProfiler
-2023-02-23 21:44:28,973 - INFO - Processing well D2 from LT0001_02, frames [50]
-2023-02-23 21:44:36,997 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00074_01.ch5
-2023-02-23 21:44:40,255 - INFO - Saved corrected frames
-2023-02-23 21:44:43,604 - INFO - Saved nuclei locations
-2023-02-23 21:44:43,604 - INFO - Processing well M16 from LT0001_02, frames [50]
-2023-02-23 21:44:51,127 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00304_01.ch5
-2023-02-23 21:44:53,500 - INFO - Saved corrected frames
-2023-02-23 21:44:56,200 - INFO - Saved nuclei locations
-2023-02-23 21:44:56,200 - INFO - Processing well N3 from LT0001_02, frames [50]
-2023-02-23 21:45:03,572 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00315_01.ch5
-2023-02-23 21:45:05,899 - INFO - Saved corrected frames
-2023-02-23 21:45:08,676 - INFO - Saved nuclei locations
-2023-02-23 21:45:08,677 - INFO - Compiled index.csv file to ../tmp/DP_project/inputs/metadata/index.csv
-2023-02-23 21:45:17,590 - INFO - Deep Profiler run done
-2023-02-23 21:45:17,613 - INFO - Batch features compiled with PyCytominer
-2023-02-23 21:45:18,057 - INFO - Saved compiled batch features to ../example_extracted_features/DP_features/batch_2.csv.gz
-2023-02-23 21:45:18,058 - INFO - Temporary batch files cleared
-2023-02-23 21:45:18,093 - INFO - Stream run done in 158.59282517433167 seconds!
+2023-12-16 09:35:46,682 - INFO - Profiling batch 0 with DeepProfiler
+2023-12-16 09:35:46,683 - INFO - Processing well A4 from LT0001_02, frames [50]
+2023-12-16 09:35:50,205 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00004_01.ch5
+2023-12-16 09:35:50,598 - ERROR - Error while profiling batch 0: 'NoneType' object has no attribute 'values'
+2023-12-16 09:35:50,599 - INFO - Profiling batch 1 with DeepProfiler
+2023-12-16 09:35:50,599 - INFO - Processing well C1 from LT0001_02, frames [50]
+2023-12-16 09:35:53,744 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00049_01.ch5
+2023-12-16 09:35:54,048 - ERROR - Error while profiling batch 1: 'NoneType' object has no attribute 'values'
+2023-12-16 09:35:54,048 - INFO - Profiling batch 2 with DeepProfiler
+2023-12-16 09:35:54,048 - INFO - Processing well D2 from LT0001_02, frames [50]
+2023-12-16 09:35:57,203 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00074_01.ch5
+2023-12-16 09:35:57,507 - ERROR - Error while profiling batch 2: 'NoneType' object has no attribute 'values'
+2023-12-16 09:35:57,562 - INFO - Stream run done in 10.879776239395142 seconds!
+2023-12-16 09:37:03,767 - INFO - IDR stream initialized
+2023-12-16 09:37:03,775 - INFO - Aspera downloader initialized
+2023-12-16 09:37:06,552 - INFO - Basicpy preprocessor initialized
+2023-12-16 09:37:07,337 - INFO - CellPose segmentor initialized
+2023-12-16 09:37:07,354 - INFO - Copied Deep Profiler config and checkpoint files
+2023-12-16 09:37:07,360 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0, 1, 2] 
+extra metadata []
+2023-12-16 09:37:07,360 - INFO - Profiling batch 0 with DeepProfiler
+2023-12-16 09:37:07,361 - INFO - Processing well A4 from LT0001_02, frames [50]
+2023-12-16 09:37:10,883 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00004_01.ch5
+2023-12-16 09:37:11,273 - ERROR - Error while profiling batch 0: 'NoneType' object has no attribute 'values'
+2023-12-16 09:37:11,273 - INFO - Profiling batch 1 with DeepProfiler
+2023-12-16 09:37:11,274 - INFO - Processing well C1 from LT0001_02, frames [50]
+2023-12-16 09:37:14,418 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00049_01.ch5
+2023-12-16 09:37:14,721 - ERROR - Error while profiling batch 1: 'NoneType' object has no attribute 'values'
+2023-12-16 09:37:14,721 - INFO - Profiling batch 2 with DeepProfiler
+2023-12-16 09:37:14,722 - INFO - Processing well D2 from LT0001_02, frames [50]
+2023-12-16 09:37:17,872 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00074_01.ch5
+2023-12-16 09:37:18,175 - ERROR - Error while profiling batch 2: 'NoneType' object has no attribute 'values'
+2023-12-16 09:37:18,232 - INFO - Stream run done in 10.872296333312988 seconds!
+2023-12-28 09:25:13,432 - INFO - IDR stream initialized
+2023-12-28 09:28:04,091 - INFO - IDR stream initialized
+2023-12-28 09:28:04,098 - INFO - Aspera downloader initialized
+2023-12-28 09:28:06,695 - INFO - Basicpy preprocessor initialized
+2023-12-28 09:28:07,464 - INFO - CellPose segmentor initialized
+2023-12-28 09:28:07,479 - INFO - Copied Deep Profiler config and checkpoint files
+2023-12-28 09:28:07,485 - INFO - Running IDR stream with: 
+batch_size 3 
+start_batch 0 
+batches 2248 
+batch nums [0, 1, 2] 
+extra metadata []
+2023-12-28 09:28:07,485 - INFO - Profiling batch 0 with DeepProfiler
+2023-12-28 09:28:07,485 - INFO - Processing well A4 from LT0001_02, frames [50]
+2023-12-28 09:28:14,462 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00004_01.ch5
+2023-12-28 09:28:18,369 - INFO - Saved corrected frames
+2023-12-28 09:28:26,184 - INFO - Saved nuclei locations
+2023-12-28 09:28:26,184 - INFO - Processing well A15 from LT0001_02, frames [50]
+2023-12-28 09:28:33,060 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00015_01.ch5
+2023-12-28 09:28:37,205 - INFO - Saved corrected frames
+2023-12-28 09:28:41,460 - INFO - Saved nuclei locations
+2023-12-28 09:28:41,460 - INFO - Processing well B2 from LT0001_02, frames [50]
+2023-12-28 09:28:47,878 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00026_01.ch5
+2023-12-28 09:28:50,991 - INFO - Saved corrected frames
+2023-12-28 09:28:55,016 - INFO - Saved nuclei locations
+2023-12-28 09:28:55,017 - INFO - Compiled index.csv file to ../tmp/DP_project/inputs/metadata/index.csv
+2023-12-28 09:29:09,675 - INFO - Deep Profiler run done
+2023-12-28 09:29:09,713 - INFO - Batch features compiled with PyCytominer
+2023-12-28 09:29:10,315 - INFO - Saved compiled batch features to ../example_extracted_features/DP_features/batch_0.csv.gz
+2023-12-28 09:29:10,316 - INFO - Temporary batch files cleared
+2023-12-28 09:29:10,317 - INFO - Profiling batch 1 with DeepProfiler
+2023-12-28 09:29:10,317 - INFO - Processing well C1 from LT0001_02, frames [50]
+2023-12-28 09:29:16,837 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00049_01.ch5
+2023-12-28 09:29:19,688 - INFO - Saved corrected frames
+2023-12-28 09:29:23,668 - INFO - Saved nuclei locations
+2023-12-28 09:29:23,668 - INFO - Processing well C4 from LT0001_02, frames [50]
+2023-12-28 09:29:29,928 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00052_01.ch5
+2023-12-28 09:29:33,372 - INFO - Saved corrected frames
+2023-12-28 09:29:37,215 - INFO - Saved nuclei locations
+2023-12-28 09:29:37,215 - INFO - Processing well C15 from LT0001_02, frames [50]
+2023-12-28 09:29:43,283 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00063_01.ch5
+2023-12-28 09:29:46,535 - INFO - Saved corrected frames
+2023-12-28 09:29:50,315 - INFO - Saved nuclei locations
+2023-12-28 09:29:50,317 - INFO - Compiled index.csv file to ../tmp/DP_project/inputs/metadata/index.csv
+2023-12-28 09:30:01,575 - INFO - Deep Profiler run done
+2023-12-28 09:30:01,598 - INFO - Batch features compiled with PyCytominer
+2023-12-28 09:30:02,054 - INFO - Saved compiled batch features to ../example_extracted_features/DP_features/batch_1.csv.gz
+2023-12-28 09:30:02,055 - INFO - Temporary batch files cleared
+2023-12-28 09:30:02,055 - INFO - Profiling batch 2 with DeepProfiler
+2023-12-28 09:30:02,055 - INFO - Processing well D2 from LT0001_02, frames [50]
+2023-12-28 09:30:08,861 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00074_01.ch5
+2023-12-28 09:30:12,064 - INFO - Saved corrected frames
+2023-12-28 09:30:16,317 - INFO - Saved nuclei locations
+2023-12-28 09:30:16,317 - INFO - Processing well M16 from LT0001_02, frames [50]
+2023-12-28 09:30:22,319 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00304_01.ch5
+2023-12-28 09:30:24,706 - INFO - Saved corrected frames
+2023-12-28 09:30:28,498 - INFO - Saved nuclei locations
+2023-12-28 09:30:28,498 - INFO - Processing well N3 from LT0001_02, frames [50]
+2023-12-28 09:30:34,486 - INFO - Movie downloaded to ../tmp/downloads/LT0001_02/00315_01.ch5
+2023-12-28 09:30:36,767 - INFO - Saved corrected frames
+2023-12-28 09:30:40,708 - INFO - Saved nuclei locations
+2023-12-28 09:30:40,709 - INFO - Compiled index.csv file to ../tmp/DP_project/inputs/metadata/index.csv
+2023-12-28 09:30:51,476 - INFO - Deep Profiler run done
+2023-12-28 09:30:51,497 - INFO - Batch features compiled with PyCytominer
+2023-12-28 09:30:51,964 - INFO - Saved compiled batch features to ../example_extracted_features/DP_features/batch_2.csv.gz
+2023-12-28 09:30:51,965 - INFO - Temporary batch files cleared
+2023-12-28 09:30:51,999 - INFO - Stream run done in 164.51408076286316 seconds!
