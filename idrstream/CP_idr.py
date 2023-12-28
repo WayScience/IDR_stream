@@ -153,6 +153,7 @@ class CellProfilerRun:
         aspera_path: pathlib.Path,
         aspera_key_path: pathlib.Path,
         screens_path: pathlib.Path,
+        idr_index_name : str
     ):
         """
         initialize aspera downloader
@@ -165,9 +166,11 @@ class CellProfilerRun:
             path to aspera ssh key
         screens_path : pathlib.Path
             path to screens file used to locate IDR data
+        idr_index_name : str
+            index name for IDR study, ex "idr0013-neumann-mitocheck"
         """
         self.downloader = download.AsperaDownloader(
-            aspera_path, aspera_key_path, screens_path, self.idr_id
+            aspera_path, aspera_key_path, screens_path, idr_index_name
         )
         self.logger.info("Aspera downloader initialized")
 
