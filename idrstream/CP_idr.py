@@ -259,8 +259,8 @@ class CellProfilerRun:
             cp_output["Metadata_Well_Number"] + "_" + cp_output["Metadata_Frames"]
         )
 
-        # list of all unnecessary columns in the outputted .csv file from CellProfiler
-        columns_to_drop = [
+        # List of all unnecessary columns to check in the cp_output
+        unneeded_columns = [
             "Metadata_FileLocation",
             "Metadata_Frame",
             "Metadata_Series",
@@ -271,8 +271,12 @@ class CellProfilerRun:
             "Metadata_Well_Number",
         ]
 
-        # remove unnecessary metadata columns
+        # Identify which unneeded columns are present in cp_output
+        columns_to_drop = [col for col in unneeded_columns if col in cp_output.columns]
+
+        # Remove identified unnecessary columns
         cp_output = cp_output.drop(columns_to_drop, axis=1)
+
 
         # change the name of 'Metadata_Orginal Gene Replicate' to 'Metadata_Gene'
         cp_output = cp_output.rename(
