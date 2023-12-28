@@ -174,7 +174,7 @@ class CellProfilerRun:
         )
         self.logger.info("Aspera downloader initialized")
 
-    def init_preprocessor(self, fiji_path: pathlib.Path):
+    def init_preprocessor(self, fiji_path: pathlib.Path, perfrom_illumination_correction: bool):
         """
         initialize basicpy preprocessor
 
@@ -182,8 +182,10 @@ class CellProfilerRun:
         ----------
         fiji_path : pathlib.Path
             path to Fiji.app folder
+        perfrom_illumination_correction : bool
+            whether to perform illumination correction on images
         """
-        self.preprocessor = preprocess.BasicpyPreprocessor(fiji_path)
+        self.preprocessor = preprocess.BasicpyPreprocessor(fiji_path, perfrom_illumination_correction)
         self.logger.info("Basicpy preprocessor initialized")
 
     def prepare_batch(self, batch_metadata: pd.DataFrame):
@@ -221,7 +223,7 @@ class CellProfilerRun:
                 f"{self.CP_project_path}/inputs/images/{plate}/"
             )
             self.CP_images_path = pathlib.Path(f"{self.CP_project_path}/inputs/images/")
-            self.preprocessor.save_corrected_frames(
+            self.preprocessor.save_frames(
                 plate, well_num, well_movie_path, frames_save_path, frame_nums
             )
             self.logger.info("Saved corrected frames")
