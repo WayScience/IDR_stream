@@ -214,11 +214,7 @@ class CellProfilerRun:
                 plate, well_num, download_save_path
             )
             self.logger.info(f"Movie downloaded to: {well_movie_path}")
-
-            # give time for movie to fully save before trying to open it
-            # otherwise ImageJ tries to open to movie before it has been completely saved and it errors out
-            time.sleep(0.3)
-
+            
             frames_save_path = pathlib.Path(
                 f"{self.CP_project_path}/inputs/images/{plate}/"
             )

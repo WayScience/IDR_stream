@@ -232,10 +232,6 @@ class DeepProfilerRun:
             )
             self.logger.info(f"Movie downloaded to {well_movie_path}")
 
-            # Aspera downloader called in self.downloader.download_image can take extra time to finalize download depending on network speed.
-            # This gives time for movie to fully save before trying to open it
-            time.sleep(0.3)
-
             frames_save_path = pathlib.Path(
                 f"{self.DP_project_path}/inputs/images/{plate}/"
             )

@@ -1,17 +1,15 @@
-from importlib.resources import path
-import pandas as pd
 import os
+import time
+import errno
 import pathlib
+import warnings
+from random import choice
 
 import imagej
 import skimage
 import numpy as np
 from IPython.utils.io import capture_output
-
-import warnings
 import idrstream.PyBaSiC.pybasic as pybasic
-
-from random import choice
 
 
 class BasicpyPreprocessor:
@@ -55,6 +53,34 @@ class BasicpyPreprocessor:
         # imagej init sets directory to fiji_path so have to go back to original dir
         os.chdir(original_path)
 
+    def wait_for_file(self, file_path: str, timeout: int = 5):
+        """
+        Waits for a file to become available at the specified file path.
+
+        Parameters
+        ----------
+            file_path (str): The path of the file to wait for.
+            timeout (int, optional): The maximum time to wait in seconds. Defaults to 5.
+
+        Returns
+        -------
+            bool: True if the file becomes available within the timeout, False otherwise.
+        """
+        start_time = time.time()
+        while True:
+            try:
+                # Attempt to open the file in exclusive mode to check its availability
+                with open(file_path, "rb") as file:
+                    return True
+            except IOError as e:
+                if e.errno != errno.EACCES:
+                    raise  # Not a permission error, re-raise
+                # File is not accessible yet, wait a bit and retry
+                time.sleep(0.1)
+                if time.time() - start_time > timeout:
+                    # Timeout reached, file not ready
+                    return False
+
     def load_mitocheck_movie_data(self, movie_load_path: pathlib.Path) -> np.ndarray:
         """
         get numpy array of movie data from .ch5 file
@@ -69,12 +95,17 @@ class BasicpyPreprocessor:
         np.ndarray
             array of movie data
         """
-        # imagej prints lots of output that isnt necessary, unfortunately some will still come through
-        with capture_output():
-            jmovie = self.ij.io().open(str(movie_load_path.resolve()))
-            movie = self.ij.py.from_java(jmovie)
-            movie_arr = movie.values[:, :, :, 0]
-            return movie_arr
+        # wait for file to be fully written and accessible
+        if self.wait_for_file(movie_load_path):
+            # imagej prints lots of output that isnt necessary, unfortunately some will still come through
+            with capture_output():
+                jmovie = self.ij.io().open(str(movie_load_path.resolve()))
+                movie = self.ij.py.from_java(jmovie)
+                movie_arr = movie.values[:, :, :, 0]
+                return movie_arr
+
+        else:
+            raise Exception(f"File {movie_load_path} not ready after 5 seconds")
 
     def pybasic_illumination_correction(self, brightfield_images: np.ndarray):
         """
@@ -191,9 +222,7 @@ class BasicpyPreprocessor:
             short_cor_movie = self.pybasic_illumination_correction(short_org_movie)
             return short_cor_movie[-1]  # return last frame (desired frame)
 
-    def movie_to_frames(
-        self, movie_load_path: pathlib.Path, frame_nums: list
-    ):
+    def movie_to_frames(self, movie_load_path: pathlib.Path, frame_nums: list):
         """
         convert movie to desired frames
 
@@ -210,7 +239,7 @@ class BasicpyPreprocessor:
             list of desired frames
         """
         original_movie = self.load_mitocheck_movie_data(movie_load_path)
-        
+
         frames_list = []
         for frame_num in frame_nums:
             frames_list.append(original_movie[frame_num - 1])
@@ -273,17 +302,15 @@ class BasicpyPreprocessor:
         frames_save_path : pathlib.Path
             path to save corrected frames
         frame_nums : list
-            list of desired frame numbers to extract from mitosis movie 
+            list of desired frame numbers to extract from mitosis movie
         """
         frames_save_path.mkdir(parents=True, exist_ok=True)
-        
+
         if self.perform_illumination_correction:
-            frames_list = self.movie_to_corrected_frames(
-                movie_load_path, frame_nums
-            )
+            frames_list = self.movie_to_corrected_frames(movie_load_path, frame_nums)
         else:
             frames_list = self.movie_to_frames(movie_load_path, frame_nums)
-            
+
         for index, frame in enumerate(frames_list):
             frame_save_path = pathlib.Path(
                 f"{frames_save_path}/{plate}_{well_num}_{frame_nums[index]}.tif"
