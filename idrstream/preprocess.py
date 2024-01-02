@@ -24,15 +24,19 @@ class BasicpyPreprocessor:
 
     Methods
     -------
+    wait_for_file(file_path, timeout)
+        Waits for a file to become available at the specified file path
     load_mitocheck_movie_data(movie_load_path)
         get numpy array of movie data from .ch5 file
     pybasic_illumination_correction(brightfield_images)
         use pybasic to correct brighfield images
     random_movie_sample(frame, max_frame_num, num_added_frames)
         get 2 random frames from movie in addition to frame of interest
+    movie_to_frames(movie_load_path, frame_nums)
+        get list of frames from mitosis movie at movie load path
     movie_to_corrected_frames(movie_load_path, frame_nums)
         get list corrected frames from mitosis movie at movie load path
-    save_corrected_frames(plate, well_num, movie_load_path, frames_save_path, frame_nums)
+    save_frames(plate, well_num, movie_load_path, frames_save_path, frame_nums)
         save corrected frames from the desired moive at movie load path to the frames save path
     """
 
