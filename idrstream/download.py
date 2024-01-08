@@ -121,7 +121,7 @@ class AsperaDownloader:
         idr_location = f"fasp-public@fasp.ebi.ac.uk:/pub/databases/IDR/{self.idr_index_name }/{image_path} "
 
         # -l is flag for maximum download speed (500m is 500 mb/s)
-        command = f"sudo {self.aspera_path} -TQ -l500m -P 33001 -i {self.aspera_key_path} {idr_location} {save_dir}"
+        command = f"sudo {self.aspera_path} -TQ -l 500m -P 33001 -i {self.aspera_key_path} {idr_location} {save_dir}"
         os.system(command)
 
         return pathlib.Path(f"{save_dir}/00{str(well_num).zfill(3)}_01.ch5")
