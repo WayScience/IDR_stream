@@ -45,7 +45,7 @@ class AsperaDownloader:
         aspera_path: pathlib.Path,
         aspera_key_path: pathlib.Path,
         screens_path: pathlib.Path,
-        idr_id: str,
+        idr_index_name: str,
     ):
         """
         __init__ function for AsperaDownloader class
@@ -58,15 +58,15 @@ class AsperaDownloader:
             path to aspera openssh key
         screens_path : pathlib.Path
             path to tsv with curated IDR screen data for specific study
-        idr_id : str
-            accession ID for IDR study, ex "idr0013"
+        idr_index_name : str
+            index name for IDR study, ex "idr0013-neumann-mitocheck"
         """
         self.aspera_path = aspera_path
         self.aspera_key_path = aspera_key_path
         self.screens = pd.read_csv(
             screens_path, sep="\t", header=None, names=["Plate", "Screen"]
         )
-        self.idr_id = idr_id
+        self.idr_index_name = idr_index_name
 
     def get_IDR_mitocheck_movie_path(self, plate: str, well_num: int) -> str:
         """
@@ -118,11 +118,10 @@ class AsperaDownloader:
         """
         save_dir.mkdir(parents=True, exist_ok=True)
         image_path = self.get_IDR_mitocheck_movie_path(plate, well_num)
-        idr_location = f"{self.idr_id}@fasp.ebi.ac.uk:{image_path} "
+        idr_location = f"fasp-public@fasp.ebi.ac.uk:/pub/databases/IDR/{self.idr_index_name }/{image_path} "
 
         # -l is flag for maximum download speed (500m is 500 mb/s)
-        command = f"sudo {self.aspera_path} -TQ -l500m -P 33001 -i {self.aspera_key_path} {idr_location} {save_dir}"
-        # print(command)
+        command = f"sudo {self.aspera_path} -TQ -l 500m -P 33001 -i {self.aspera_key_path} {idr_location} {save_dir}"
         os.system(command)
 
         return pathlib.Path(f"{save_dir}/00{str(well_num).zfill(3)}_01.ch5")

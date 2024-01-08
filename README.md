@@ -93,7 +93,7 @@ Compile CP features in a proper order and remove irrelevant metadata from the fi
 5) Delete all intermediate files from batch run and run next batch!
 
 **Note:** Do not run more than one instance of an `idrstream` at once! 
-Doing so will cause issues with multiple instances of CellPose trying to utilize the same GPU resources.
+Doing so will cause issues with multiple instances of CellPose/DeepProfiler trying to utilize the same GPU resources.
 
 # Setup
 

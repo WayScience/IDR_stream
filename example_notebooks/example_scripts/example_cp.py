@@ -29,7 +29,7 @@ pipeline_path = pathlib.Path("example_files/CP_files/mitocheck_idr_cp.cppipe")
 plugins_directory = pathlib.Path("../idrstream/CP_Plugins")
 idr_id = "idr0013"
 tmp_dir = pathlib.Path("../tmp/")
-final_data_dir = pathlib.Path("../example_extracted_features/CP_features")
+final_data_dir = pathlib.Path("../example_extracted_features/CP_features/")
 try:
     shutil.rmtree(tmp_dir)
     # uncomment the line below if you would like to remove the final data directory (e.g. all .csv.gz files)
@@ -62,8 +62,9 @@ home_dir_path = pathlib.Path.home()
 aspera_path = pathlib.Path(f"{home_dir_path}/.aspera/ascli/sdk/ascp")
 aspera_key_path = pathlib.Path("example_files/asperaweb_id_dsa.openssh")
 screens_path = pathlib.Path("example_files/idr0013-screenA-plates.tsv")
+idr_index_name = "idr0013-neumann-mitocheck"
 
-stream.init_downloader(aspera_path, aspera_key_path, screens_path)
+stream.init_downloader(aspera_path, aspera_key_path, screens_path, idr_index_name)
 
 
 # ## Initialize Fiji preprocessor
@@ -72,7 +73,8 @@ stream.init_downloader(aspera_path, aspera_key_path, screens_path)
 
 
 fiji_path = pathlib.Path(f"{home_dir_path}/Desktop/Fiji.app")
-stream.init_preprocessor(fiji_path)
+perform_illumination_correction = True
+stream.init_preprocessor(fiji_path, perform_illumination_correction)
 
 
 # ## Confirm that GPU is activated for Cellpose to run
@@ -82,7 +84,6 @@ stream.init_preprocessor(fiji_path)
 
 use_GPU = core.use_gpu()
 print(f">>> GPU activated? {use_GPU}")
-# logger_setup()
 
 
 # ## Run idrstream batches

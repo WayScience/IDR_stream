@@ -153,6 +153,7 @@ class CellProfilerRun:
         aspera_path: pathlib.Path,
         aspera_key_path: pathlib.Path,
         screens_path: pathlib.Path,
+        idr_index_name : str
     ):
         """
         initialize aspera downloader
@@ -165,13 +166,15 @@ class CellProfilerRun:
             path to aspera ssh key
         screens_path : pathlib.Path
             path to screens file used to locate IDR data
+        idr_index_name : str
+            index name for IDR study, ex "idr0013-neumann-mitocheck"
         """
         self.downloader = download.AsperaDownloader(
-            aspera_path, aspera_key_path, screens_path, self.idr_id
+            aspera_path, aspera_key_path, screens_path, idr_index_name
         )
         self.logger.info("Aspera downloader initialized")
 
-    def init_preprocessor(self, fiji_path: pathlib.Path):
+    def init_preprocessor(self, fiji_path: pathlib.Path, perfrom_illumination_correction: bool):
         """
         initialize basicpy preprocessor
 
@@ -179,8 +182,10 @@ class CellProfilerRun:
         ----------
         fiji_path : pathlib.Path
             path to Fiji.app folder
+        perfrom_illumination_correction : bool
+            whether to perform illumination correction on images
         """
-        self.preprocessor = preprocess.BasicpyPreprocessor(fiji_path)
+        self.preprocessor = preprocess.BasicpyPreprocessor(fiji_path, perfrom_illumination_correction)
         self.logger.info("Basicpy preprocessor initialized")
 
     def prepare_batch(self, batch_metadata: pd.DataFrame):
@@ -209,19 +214,18 @@ class CellProfilerRun:
                 plate, well_num, download_save_path
             )
             self.logger.info(f"Movie downloaded to: {well_movie_path}")
-
-            # give time for movie to fully save before trying to open it
-            # otherwise ImageJ tries to open to movie before it has been completely saved and it errors out
-            time.sleep(0.3)
-
+            
             frames_save_path = pathlib.Path(
                 f"{self.CP_project_path}/inputs/images/{plate}/"
             )
             self.CP_images_path = pathlib.Path(f"{self.CP_project_path}/inputs/images/")
-            self.preprocessor.save_corrected_frames(
+            self.preprocessor.save_frames(
                 plate, well_num, well_movie_path, frames_save_path, frame_nums
             )
-            self.logger.info("Saved corrected frames")
+            if self.preprocessor.perform_illumination_correction:
+                self.logger.info("Saved corrected frames")
+            else:
+                self.logger.info("Saved frames")
 
     def profile_batch_with_CP(self):
         """
@@ -254,8 +258,8 @@ class CellProfilerRun:
             cp_output["Metadata_Well_Number"] + "_" + cp_output["Metadata_Frames"]
         )
 
-        # list of all unnecessary columns in the outputted .csv file from CellProfiler
-        columns_to_drop = [
+        # List of all unnecessary columns to check in the cp_output
+        unneeded_columns = [
             "Metadata_FileLocation",
             "Metadata_Frame",
             "Metadata_Series",
@@ -266,8 +270,12 @@ class CellProfilerRun:
             "Metadata_Well_Number",
         ]
 
-        # remove unnecessary metadata columns
+        # Identify which unneeded columns are present in cp_output
+        columns_to_drop = [col for col in unneeded_columns if col in cp_output.columns]
+
+        # Remove identified unnecessary columns
         cp_output = cp_output.drop(columns_to_drop, axis=1)
+
 
         # change the name of 'Metadata_Orginal Gene Replicate' to 'Metadata_Gene'
         cp_output = cp_output.rename(

@@ -26,7 +26,7 @@ data_to_process
 
 idr_id = "idr0013"
 tmp_dir = pathlib.Path("../tmp/")
-final_data_dir = pathlib.Path("../example_extracted_features/DP_features")
+final_data_dir = pathlib.Path("../example_extracted_features/DP_features/")
 try:
     shutil.rmtree(tmp_dir)
     # shutil.rmtree(final_data_dir)
@@ -45,16 +45,17 @@ home_dir_path = pathlib.Path.home()
 aspera_path = pathlib.Path(f"{home_dir_path}/.aspera/ascli/sdk/ascp")
 aspera_key_path = pathlib.Path("example_files/asperaweb_id_dsa.openssh")
 screens_path = pathlib.Path("example_files/idr0013-screenA-plates.tsv")
-save_dir = pathlib.Path("data/")
+idr_index_name = "idr0013-neumann-mitocheck"
 
-stream.init_downloader(aspera_path, aspera_key_path, screens_path)
+stream.init_downloader(aspera_path, aspera_key_path, screens_path, idr_index_name)
 
 
 # In[5]:
 
 
 fiji_path = pathlib.Path(f"{home_dir_path}/Desktop/Fiji.app")
-stream.init_preprocessor(fiji_path)
+perform_illumination_correction = True
+stream.init_preprocessor(fiji_path, perform_illumination_correction)
 
 
 # In[6]:
